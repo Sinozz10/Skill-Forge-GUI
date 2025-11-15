@@ -9,16 +9,17 @@ public class DashBoard extends JFrame{
     private JPanel navBar;
     private JPanel contentPanel;
     private JPanel dashPanel;
-    private JPanel navButtons;
+    protected JPanel navButtons;
+    private JButton homeButton;
 
-
-    public DashBoard(String adminName) {
+    public DashBoard() {
         setTitle("Dashboard");
         setContentPane(dashPanel);
         setSize(750, 400);
         setVisible(true);
 
         logoutButton.setBackground(Color.LIGHT_GRAY);
+        homeButton.setBackground(Color.LIGHT_GRAY);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -27,6 +28,13 @@ public class DashBoard extends JFrame{
         navBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
