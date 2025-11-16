@@ -5,30 +5,41 @@ import java.awt.event.ActionListener;
 
 public class InstructorDashboard extends DashBoard{
 
-    public InstructorDashboard(Instructor instructor) {
+    public InstructorDashboard(Instructor instructor, CourseDatabaseManager databaseManager) {
         super(instructor);
         navButtons.setLayout(new GridLayout(1,3, 10, 10));
 
-        JButton coursesButton = new JButton();
-        coursesButton.setBackground(Color.LIGHT_GRAY);
-        coursesButton.setText("My Courses");
-        coursesButton.addActionListener(new ActionListener() {
+        JButton addButton = new JButton();
+        addButton.setBackground(Color.LIGHT_GRAY);
+        addButton.setText("Add Course");
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                changeContentPanel(new CourseAdd(databaseManager, instructor.getID()));
             }
         });
-        navButtons.add(coursesButton);
+        navButtons.add(addButton);
 
-        JButton studentsButton = new JButton();
-        studentsButton.setBackground(Color.LIGHT_GRAY);
-        studentsButton.setText("Students");
-        studentsButton.addActionListener(new ActionListener() {
+        JButton editButton = new JButton();
+        editButton.setBackground(Color.LIGHT_GRAY);
+        editButton.setText("Edit Course");
+        editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                changeContentPanel(new CourseEdit(databaseManager));
             }
         });
-        navButtons.add(studentsButton);
+        navButtons.add(editButton);
+
+        JButton deleteButton = new JButton();
+        deleteButton.setBackground(Color.LIGHT_GRAY);
+        deleteButton.setText("Delete Course");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPanel(new CourseDelete(databaseManager, InstructorDashboard.this));
+            }
+        });
+        navButtons.add(deleteButton);
     }
 }

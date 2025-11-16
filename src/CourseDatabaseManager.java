@@ -27,10 +27,12 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
             if (list != null) {
                 records = list;
             }
+            System.out.println(records);
         } catch (IOException e) {
             System.err.println("Error file not found: "+e.getMessage());
             e.printStackTrace();
             throw new RuntimeException();
         }
+
     }
 }

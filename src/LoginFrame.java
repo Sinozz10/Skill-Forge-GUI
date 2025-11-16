@@ -77,7 +77,8 @@ public class LoginFrame extends JFrame {
                 if (user.getRole().equalsIgnoreCase("student")) {
                     new StudentDashboard((Student) user);
                 } else if (user.getRole().equalsIgnoreCase("instructor")) {
-                    new InstructorDashboard((Instructor) user);
+                    CourseDatabaseManager database = new CourseDatabaseManager("courses.json");
+                    new InstructorDashboard((Instructor) user, database);
                 }
 
             } else {

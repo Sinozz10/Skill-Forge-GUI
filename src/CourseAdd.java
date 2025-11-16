@@ -1,32 +1,75 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CourseAdd extends JPanel {
     private JButton ADDButton;
-    private JTextField title;
     private JTextField description;
-    private CourseDatabaseManager databaseManager;
+    private JPanel add;
+    private JTextField CourseName;
+    private final String instructorId;
+    private final CourseDatabaseManager databaseManager;
 
-    public CourseAdd(CourseDatabaseManager databaseManager) {
+    public CourseAdd(CourseDatabaseManager databaseManager, String instructorId) {
         this.databaseManager = databaseManager;
+        this.instructorId = instructorId;
+
+        setLayout(new BorderLayout());
+        add(add,BorderLayout.CENTER);
+
         ADDButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
-
-                    String courseId = "C" + (records.size() + 1);
-
-                    Course newCourse = new Course(courseId, title, description);
-
-                    addRecord(newCourse);
-                    saveToFile();
-
-                    return newCourse;
-
-
+                handleAddCourse();
             }
         });
+    }
+
+    private void handleAddCourse() {
+        String courseName = CourseName.getText().trim();
+        String courseDescription = description.getText().trim();
+
+        if(courseName.isEmpty() || courseDescription.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid course name!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try{
+            String courseID = generateCourseID();
+            Course newCourse = new Course(courseID, courseName, courseDescription, instructorId);
+            databaseManager.addRecord(newCourse);
+            databaseManager.saveToFile();
+
+            JOptionPane.showMessageDialog(this, "Course added successfully!" + courseID, "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            CourseName.setText("");
+            CourseName.requestFocus();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error adding course!", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private String generateCourseID() {
+        int highest = getHighestID();// Count existing users of this role
+        return String.format("C%04d", highest + 1);
+    }
+
+    private int getHighestID() {
+        int highest = 0;
+        for (Course course : databaseManager.getRecords()) {
+            String courseId = course.getID();
+            // 3mltaha 3ashan t-Extract number from ID
+            try {
+                String numberPart = courseId.substring(1); // Remove prefix
+                int idNumber = Integer.parseInt(numberPart);
+                if (idNumber > highest) {
+                    highest = idNumber;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return highest;
     }
 }

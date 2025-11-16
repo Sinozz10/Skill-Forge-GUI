@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course implements Record{
-    private final String courseId, title , description , instructorId ;
+    private final String courseId, instructorId;
+    private String title , description;
     private List<Lesson> lessons = new ArrayList<>();
     private List<Student> students = new ArrayList<>();
 
@@ -30,6 +31,10 @@ public class Course implements Record{
         return courseId;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -42,12 +47,20 @@ public class Course implements Record{
         return lessons;
     }
 
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
-
     public List<Student> getStudents() {
         return students;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 
     public void setStudents(List<Student> students) {

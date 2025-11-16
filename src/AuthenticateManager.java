@@ -70,7 +70,7 @@ public class AuthenticateManager {
         int highest = 0;
         for (User user : database.getRecords()) {
             if (user.getRole().equalsIgnoreCase(role)) {
-                String userId = user.userID;
+                String userId = user.getID();
                 // 3mltaha 3ashan t-Extract number from ID
                 try {
                     String numberPart = userId.substring(1); // Remove prefix
