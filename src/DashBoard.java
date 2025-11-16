@@ -12,8 +12,10 @@ public class DashBoard extends JFrame{
     protected JPanel navButtons;
     private JButton homeButton;
 
-    public DashBoard() {
-        setTitle("Dashboard");
+    protected User currUser;
+
+    public DashBoard(User currUser) {
+        setTitle("Dashboard - " + currUser.getUsername());
         setContentPane(dashPanel);
         setSize(750, 400);
         setVisible(true);
@@ -30,7 +32,7 @@ public class DashBoard extends JFrame{
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                handleLogout();
             }
         });
 
@@ -49,4 +51,21 @@ public class DashBoard extends JFrame{
         contentPanel.revalidate();
         contentPanel.repaint();
     }
+
+    private void handleLogout() {
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            System.out.println("USER LOGOUT");
+            System.out.println("===========================================");
+            System.out.println("User: " + currUser.getUsername());
+            System.out.println("Role: " + currUser.getRole().toUpperCase());
+            System.out.println("Time: " + java.time.LocalDateTime.now());
+            System.out.println("===========================================\n");
+            this.dispose();
+            new entryFrame();
+        } else {
+            System.out.println("Logout cancelled");
+        }
+    }
+
 }
