@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public abstract class User {
     //Attributes
     protected String username;
@@ -5,16 +7,15 @@ public abstract class User {
     protected String uID;
     protected String email;
     protected String hashedPassword;
-    protected CourseDB database;
+    protected ArrayList<Course> courses = new ArrayList<>();
 
     //Constructor
-    public User(String username, String role, String uID, String email, String hashedPassword, CourseDB database) {
+    public User(String username, String role, String uID, String email, String hashedPassword) {
         this.username = username;
         this.role = role;
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.uID = uID;
-        this.database = database;
     }
 
 
@@ -67,5 +68,21 @@ public abstract class User {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
+    }
+
+    public ArrayList<Course> getCourseIDs(){
+        return courseIDs;
+    }
+
+    public void setCourses(ArrayList<Course> courseIDs){
+        this.courseIDs = courseIDs;
+    }
+
+    public void addCourse(Course course){
+        courses.add(course);
+    }
+
+    public void removeCourse(Course course){
+        courses.remove(course);
     }
 }

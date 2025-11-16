@@ -1,33 +1,73 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Progress {
-    private int courseID;
+    private Course course;
     private String studentID;
     private Date completionDate;
-    private ArrayList<Integer> lessonIDs = new ArrayList<>();
-    private ArrayList<Boolean> tracker = new ArrayList<>();
+    private ArrayList<Tracker> trackers = new ArrayList<>();
 
-    public Progress(int courseID, String  studentID, CourseDB database) {
-        this.courseID = courseID;
+    public Progress(Course course, String studentID) {
+        this.course = course;
         this.studentID = studentID;
-        for (Lesson lesson: database.fetchLessonsByCourse(courseID)){
-            lessonIDs.add(lesson.getLessonID());
-            tracker.add(false);
+        for (Lesson lesson: course.getLessons()){
+            trackers.add(new Tracker(lesson));
+        }
+    }
+
+    private Tracker findTracker(Lesson lesson){
+        for(Tracker tracker: trackers){
+            if (tracker.getLesson() == lesson){
+                return tracker;
+                break;
+            }
+        }
+        return null;
+    }
+
+    public void completeLesson(Lesson lesson) {
+        Tracker tracker = findTracker(lesson);
+        if (tracker != null){
+            tracker.setState(true);
+        }else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void unCompleteLesson(Lesson lesson) {
+        Tracker tracker = findTracker(lesson);
+        if (tracker != null){
+            tracker.setState(false);
+        }else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public ArrayList<Tracker> getTrackers(){
+        return trackers;
+    }
+
+    public void updateTrackers(){
+        ArrayList<Lesson> completed = new ArrayList<>();
+        for (Tracker tracker: trackers){
+            if (tracker.getState()){
+                completed.add(tracker.getLesson());
+            }
         }
 
+        trackers.clear();
+        for (Lesson lesson: course.getLessons()){
+            if (completed.contains(lesson)){
+                trackers.add(new Tracker(lesson, true));
+            }else {
+                trackers.add(new Tracker(lesson));
+            }
+        }
     }
 
-    public void completeLesson(int lessonID) {
-        tracker.set(lessonIDs.indexOf(lessonID), true);
-    }
-
-    public void unCompleteLesson(int lessonID) {
-        tracker.set(lessonIDs.indexOf(lessonID), false);
-    }
-
-    public int getCourseID() {
-        return courseID;
+    public Course getCourse() {
+        return course;
     }
 
     public String getStudentID() {
