@@ -1,12 +1,7 @@
-package src;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDB {
-
-
-
     private List<Course> allCourses = new ArrayList<>();
 
     public void updateCourse(Course updated) {
