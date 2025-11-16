@@ -10,9 +10,7 @@ public class Enrol extends JPanel {
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel("Enroll In a Course");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 20));
-        add(title, BorderLayout.NORTH);
+
 
         DefaultListModel<Course> model = new DefaultListModel<>();
 
