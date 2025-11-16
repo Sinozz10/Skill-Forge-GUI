@@ -2,14 +2,20 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InstructorChoices  {
+public class InstructorChoice extends JFrame {
     private JButton addButton;
     private JButton editButton;
     private JButton deleteButton;
-    private JTextField DeleteID;
-    private JTextField EditID;
 
-    public InstructorChoices() {
+    public InstructorChoice() {
+
+        setTitle("Instructor");
+        setSize(500, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -25,6 +31,8 @@ public class InstructorChoices  {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                CourseDelete c = new CourseDelete();
+                setVisible(false);
 
             }
         });
