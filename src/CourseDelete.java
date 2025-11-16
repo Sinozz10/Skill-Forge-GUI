@@ -3,15 +3,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.sun.org.apache.xerces.internal.util.DOMUtil.setVisible;
-
-public class CourseDelete extends CourseDatabaseManager {
+public class CourseDelete extends JPanel {
     private JTextField DeleteID;
     private JButton confirmDeleteButton;
+    private CourseDatabaseManager databaseManager;
 
-    public CourseDelete() {
-
-
+    public CourseDelete(CourseDatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
         confirmDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
