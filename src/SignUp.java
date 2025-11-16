@@ -89,13 +89,13 @@ public class SignUp extends JFrame {
         try {
             User newUser = authManager.signup(username, email, password, userRole);
             System.out.println("Status: SUCCESS");
-            System.out.println("User ID: " + newUser.getID());
+            System.out.println("User ID: " + newUser.getuID());
 
             if (userRole.equalsIgnoreCase("student")) {
                 System.out.println(" NEW STUDENT REGISTERED");
                 System.out.println(" Name: " + newUser.getUsername());
                 System.out.println(" Email: " + newUser.getEmail());
-                System.out.println(" ID: " + newUser.getID());
+                System.out.println(" ID: " + newUser.getuID());
             } else if (userRole.equalsIgnoreCase("instructor")) {
                 System.out.println(" NEW INSTRUCTOR REGISTERED");
                 System.out.println(" Name: " + newUser);
