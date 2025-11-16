@@ -1,7 +1,7 @@
 public class AuthenticateManager {
-    private final JsonDatabaseManager database;
+    private final UserDatabaseManager database;
 
-    public AuthenticateManager(JsonDatabaseManager database) {
+    public AuthenticateManager(UserDatabaseManager database) {
         this.database = database;
     }
 

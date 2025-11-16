@@ -1,9 +1,7 @@
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseDB {
+public class CourseDatabaseManager {
     private List<Course> allCourses = new ArrayList<>();
 
     public void updateCourse(Course updated) {

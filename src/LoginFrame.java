@@ -8,11 +8,11 @@ public class LoginFrame extends JFrame {
     private JButton loginButton;
     private JButton backButton;
 
-    private JsonDatabaseManager database;
+    private UserDatabaseManager database;
     private AuthenticateManager auth;
 
     public LoginFrame() {
-        this.database = new JsonDatabaseManager();
+        this.database = new UserDatabaseManager();
         this.auth= new AuthenticateManager(database);
         setTitle("Login");
         setContentPane(login);
