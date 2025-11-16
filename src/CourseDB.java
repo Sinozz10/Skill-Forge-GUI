@@ -32,6 +32,15 @@ public class CourseDB {
         }
         return null;
     }
+    public boolean findCourse(String courseId) {
+        for (int i = 0; i < allCourses.size(); i++) {
+            if (allCourses.get(i).getCourseId().equals(courseId)) {
+                return true;}
+            }
+        return false;
+    }
+
+
     public List<String> getStudentsByInstructor(String instructorId) {
         List<String> allStudents = new ArrayList<>();
 
