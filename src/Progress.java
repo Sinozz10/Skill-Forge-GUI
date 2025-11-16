@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,7 +19,6 @@ public class Progress {
         for(Tracker tracker: trackers){
             if (tracker.getLesson() == lesson){
                 return tracker;
-                break;
             }
         }
         return null;

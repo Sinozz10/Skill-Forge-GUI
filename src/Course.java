@@ -4,7 +4,7 @@ import java.util.List;
 public class Course {
     private final String courseId, title , description , instructorId ;
     private List<Lesson> lessons = new ArrayList<>();
-    private List<Stuednt> students = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
 
     public Course(String courseId, String title, String description, String instructorId) {
         this.courseId = courseId;
@@ -45,28 +45,29 @@ public class Course {
         this.lessons = lessons;
     }
 
-    public List<Stuedent> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<String> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
-    public void enrollStudent(String studentId) {
-        if (!students.contains(studentId)) {
-            students.add(studentId);
+
+    public void enrollStudent(Student student) {
+        if (!students.contains(student)) {
+            students.add(student);
         }
     }
     public void addLesson(Lesson lesson) {
         lessons.add(lesson);
     }
 
-    public void deleteLesson(String lessonId) {
-        for (int i = 0; i < lessons.size(); i++) {
-            if (lessons.get(i).getLessonId().equals(lessonId)) {
-                lessons.remove(i);
-                return;  }
-            } }
+    public void deleteLesson(Lesson lesson) {
+        if (!lessons.contains(lesson)) {
+            lessons.remove(lesson);
+        }
+    }
+
     public Lesson getLessonById(String lessonId) {
         for (Lesson lesson : lessons) {
             if (lesson.getLessonId().equals(lessonId)) {
@@ -75,6 +76,4 @@ public class Course {
         }
         return null ;
     }
-
-
-    }
+}

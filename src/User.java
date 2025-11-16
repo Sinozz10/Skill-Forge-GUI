@@ -70,12 +70,12 @@ public abstract class User {
         this.hashedPassword = hashedPassword;
     }
 
-    public ArrayList<Course> getCourseIDs(){
-        return courseIDs;
+    public ArrayList<Course> getCourses(){
+        return courses;
     }
 
-    public void setCourses(ArrayList<Course> courseIDs){
-        this.courseIDs = courseIDs;
+    public void setCourses(ArrayList<Course> courses){
+        this.courses = courses;
     }
 
     public void addCourse(Course course){
