@@ -6,7 +6,7 @@ import java.util.List;
 public class Course {
     private final String courseId, title , description , instructorId ;
     private List<Lesson> lessons = new ArrayList<>();
-    private List<String> students = new ArrayList<>();
+    private List<Stuednt> students = new ArrayList<>();
 
     public Course(String courseId, String title, String description, String instructorId) {
         this.courseId = courseId;
@@ -47,7 +47,7 @@ public class Course {
         this.lessons = lessons;
     }
 
-    public List<String> getStudents() {
+    public List<Stuedent> getStudents() {
         return students;
     }
 
