@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public abstract class User implements Record{
+public class User implements Record{
     //Attributes
     protected String username;
     protected String role; //identifier

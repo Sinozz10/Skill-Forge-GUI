@@ -3,10 +3,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.lang.reflect.Type;
+
 import com.google.gson.reflect.TypeToken;
 
 public class UserDatabaseManager extends JsonDatabaseManager<User>{
-    Type listType = new TypeToken<ArrayList<User>>(){}.getType();
+    Type listType = null;
     public UserDatabaseManager(String filename) {
         super(filename);
     }
@@ -17,6 +18,9 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
         File file = new File(filename);
         if (!file.exists() || file.length() == 0) {
             return;
+        }
+        if (listType == null) {
+            listType = new TypeToken<ArrayList<User>>(){}.getType();
         }
         try (FileReader reader = new FileReader(filename)) {
             ArrayList<User> list = gson.fromJson(reader, listType);

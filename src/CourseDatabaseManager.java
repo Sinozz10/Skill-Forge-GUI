@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
 public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
-    Type listType = new TypeToken<ArrayList<Course>>(){}.getType();
+    Type listType = null;
 
     public CourseDatabaseManager(String filename) {
         super(filename);
@@ -18,6 +18,9 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
         File file = new File(filename);
         if (!file.exists() || file.length() == 0) {
             return;
+        }
+        if (listType == null) {
+            listType = new TypeToken<ArrayList<User>>(){}.getType();
         }
         try (FileReader reader = new FileReader(filename)) {
             ArrayList<Course> list = gson.fromJson(reader, listType);
