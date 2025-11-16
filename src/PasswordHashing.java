@@ -24,7 +24,7 @@ public class PasswordHashing {
             }
         }
 
-        public static boolean verifyPassword(String plainPassword, String hashedPassword) {
+        public static boolean verifyPassword(String plainPassword, String hashedPassword){
             String hashedInput = hashPassword(plainPassword);
             return hashedInput.equals(hashedPassword);
         }

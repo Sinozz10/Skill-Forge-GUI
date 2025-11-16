@@ -15,7 +15,7 @@ public class LoginFrame extends JFrame {
         this.auth= new AuthenticateManager(database);
         setTitle("Login");
         setContentPane(login);
-        setSize(500, 200);
+        setSize(280, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -63,13 +63,7 @@ public class LoginFrame extends JFrame {
     private void handleLogin() {
         String userName = this.userName.getText().trim();
         String password = new String(passWord.getPassword());
-
-        System.out.println("==========================");
-        System.out.println("Username: " + userName);
-        System.out.println("Time: " + java.time.LocalDateTime.now());
-
         if (userName.isEmpty() || password.isEmpty()) {
-            System.out.println("Status: FAILED - Empty credentials");
             JOptionPane.showMessageDialog(this, "Please enter both userName and password!", "Missing Information", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -77,24 +71,6 @@ public class LoginFrame extends JFrame {
         try {
             User user = auth.login(userName, password);
             if (user != null) {
-                System.out.println("Status: SUCCESS");
-                System.out.println("User ID: " + user.getID());
-                System.out.println("Username: " + user.getUsername());
-                System.out.println("Role: " + user.getRole().toUpperCase());
-                System.out.println("===========================================\n");
-
-                if (user.getRole().equals("student")) {
-                    System.out.println(" STUDENT LOGIN DETECTED");
-                    System.out.println("   Name: " + user.getUsername());
-                    System.out.println("   Email: " + user.getEmail());
-                    System.out.println("   Opening Student Dashboard...\n");
-                } else if (user.getRole().equals("instructor")) {
-                    System.out.println(" INSTRUCTOR LOGIN DETECTED");
-                    System.out.println(" Name: " + user.getUsername());
-                    System.out.println(" Email: " + user.getEmail());
-                    System.out.println("   Opening Instructor Dashboard...\n");
-                }
-
                 JOptionPane.showMessageDialog(this, "Login successful!\nWelcome, " + user.getUsername(), "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
 
@@ -105,20 +81,15 @@ public class LoginFrame extends JFrame {
                 }
 
             } else {
-                System.out.println(" FAILED - Invalid credentials- Wrong userName or password");
                 JOptionPane.showMessageDialog(this, "Invalid userName or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 passWord.setText("");
                 passWord.requestFocus();
             }
 
         } catch (IllegalArgumentException e) {
-            System.out.println("Status: FAILED - Validation error");
-            System.out.println("Error: " + e.getMessage());
-            System.out.println("===========================================\n");
             JOptionPane.showMessageDialog(this, e.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
 
         } catch (Exception e) {
-            System.out.println("Status: FAILED - System error");
             JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }

@@ -11,7 +11,7 @@ public class EntryFrame extends JFrame {
     public EntryFrame() {
         setTitle("Skill Forge - Welcome");
         setContentPane(Entry);
-        setSize(500, 400);
+        setSize(180, 120);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -20,15 +20,15 @@ public class EntryFrame extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               dispose();
                new LoginFrame();
+               dispose();
             }
         });
         signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
                 new SignUp();
+                dispose();
             }
         });
     }

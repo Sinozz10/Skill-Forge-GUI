@@ -35,14 +35,14 @@ public class AuthenticateManager {
         return newUser;
     }
 
-    public User login(String email, String password) {
+    public User login(String username, String password) {
         // 1. Check if fields are empty
-        if (email.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
             return null;
         }
 
         // 2. Get user from database
-        User user = database.getRecordByEmail(email);
+        User user = database.getRecordByUsername(username);
         if (user == null) {
             return null; // User not found
         }
@@ -50,9 +50,13 @@ public class AuthenticateManager {
         // 3. Check if password matches
         String hashedPassword = PasswordHashing.hashPassword(password);
         if (hashedPassword.equals(user.getHashedPassword())) {
-            return user; // Login successful!
-        }
 
+            if (user.getRole().equalsIgnoreCase("student")) {
+                return new Student(user.getID(), user.getRole(), username, user.getEmail(), hashedPassword);
+            } else {
+                return new Instructor(user.getID(), user.getRole(), username, user.getEmail(), hashedPassword);
+            }
+        }
         return null; // Wrong password
     }
 

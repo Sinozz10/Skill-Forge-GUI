@@ -20,7 +20,7 @@ public class SignUp extends JFrame {
         setTitle("SignUp");
         setContentPane(SignUp);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500,200);
+        setSize(450,250);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -66,6 +66,8 @@ public class SignUp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleSignUp();
+                dispose();
+                new LoginFrame();
             }
         });
     }
@@ -106,22 +108,7 @@ public class SignUp extends JFrame {
 
         try {
             User newUser = authManager.signup(username, email, password, userRole);
-            System.out.println("Status: SUCCESS");
-            System.out.println("User ID: " + newUser.getID());
-
-            if (userRole.equalsIgnoreCase("student")) {
-                System.out.println(" NEW STUDENT REGISTERED");
-                System.out.println(" Name: " + newUser.getUsername());
-                System.out.println(" Email: " + newUser.getEmail());
-                System.out.println(" ID: " + newUser.getID());
-            } else if (userRole.equalsIgnoreCase("instructor")) {
-                System.out.println(" NEW INSTRUCTOR REGISTERED");
-                System.out.println(" Name: " + newUser);
-                System.out.println(" Email: " + newUser);
-                System.out.println(" ID: " + newUser);
-            }
-
-            JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + "You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + " You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
             dispose();
             new LoginFrame();
