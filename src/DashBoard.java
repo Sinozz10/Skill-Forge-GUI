@@ -55,16 +55,8 @@ public class DashBoard extends JFrame{
     private void handleLogout() {
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            System.out.println("USER LOGOUT");
-            System.out.println("===========================================");
-            System.out.println("User: " + currUser.getUsername());
-            System.out.println("Role: " + currUser.getRole().toUpperCase());
-            System.out.println("Time: " + java.time.LocalDateTime.now());
-            System.out.println("===========================================\n");
             this.dispose();
             new EntryFrame();
-        } else {
-            System.out.println("Logout cancelled");
         }
     }
 }
