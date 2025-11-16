@@ -42,4 +42,13 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
         }
         return null;
     }
+
+    public User getRecordByUsername(String name) {
+        for(User record: records){
+            if (record.getUsername().equals(name)){
+                return record;
+            }
+        }
+        return null;
+    }
 }
