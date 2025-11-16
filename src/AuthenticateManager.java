@@ -30,8 +30,8 @@ public class AuthenticateManager {
             newUser = new Instructor(userId, role, username, email, hashedPassword);
         }
 
+        database.addRecord(newUser);
         database.saveToFile();
-
         return newUser;
     }
 

@@ -77,6 +77,25 @@ public class SignUp extends JFrame {
         String confirmedPass = new String(ConfirmedPass.getPassword());
         String userRole = (String) role.getSelectedItem();
 
+        if (!ValidationResult.isValidUsername(username)) {
+            JOptionPane.showMessageDialog(this, ValidationResult.getUsernameError(), "Invalid Username", JOptionPane.ERROR_MESSAGE);
+            userName.selectAll();
+            userName.requestFocus();
+            return;
+        }
+
+        if (!ValidationResult.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, ValidationResult.getEmailError(), "Invalid Email", JOptionPane.ERROR_MESSAGE);
+            Email.selectAll();
+            Email.requestFocus();
+            return;
+        }
+
+        if (!ValidationResult.isValidPassword(password)) {
+            JOptionPane.showMessageDialog(this, ValidationResult.getPasswordError(),
+                    "Invalid Password", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if(!password.equals(confirmedPass)){
             JOptionPane.showMessageDialog(null, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
             ConfirmedPass.setText("");

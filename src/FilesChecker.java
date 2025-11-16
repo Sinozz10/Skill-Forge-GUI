@@ -20,7 +20,7 @@ public class FilesChecker {
         }
     }
 
-    public static String getDirectory(){
-        return directory;
+    public static String getPath(String filename){
+        return directory + filename;
     }
 }

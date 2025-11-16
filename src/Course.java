@@ -65,9 +65,7 @@ public class Course implements Record{
     }
 
     public void deleteLesson(Lesson lesson) {
-        if (!lessons.contains(lesson)) {
-            lessons.remove(lesson);
-        }
+        lessons.remove(lesson);
     }
 
     public Lesson getLessonById(String lessonId) {

@@ -1,13 +1,17 @@
 import com.google.gson.Gson;
-
+import java.io.*;
 import java.util.ArrayList;
 
 public abstract class JsonDatabaseManager<T extends Record> {
+    protected final String filename;
+    protected final Gson gson = new Gson();
+    protected ArrayList<T> records = new ArrayList<>();
+
     public JsonDatabaseManager(String filename){
         FilesChecker.checkFile(filename);
+        this.filename = FilesChecker.getPath(filename);
+        readFromFile();
     }
-
-    protected final ArrayList<T> records = new ArrayList<>();
 
     public ArrayList<T> getRecords() {
         return records;
@@ -20,6 +24,10 @@ public abstract class JsonDatabaseManager<T extends Record> {
                 return;
             }
         }
+    }
+
+    public void addRecord(T newRecord) {
+        records.add(newRecord);
     }
 
     public void deleteCourse(String recordID) {
@@ -35,22 +43,23 @@ public abstract class JsonDatabaseManager<T extends Record> {
         return null;
     }
 
-    public boolean findCourse(String recordID) {
+    public boolean findRecord(String recordID) {
         return getRecordByID(recordID) != null;
     }
 
     public void saveToFile(){
-
+        try(FileWriter writer = new FileWriter(filename)){
+            writer.write(gson.toJson(records));
+        }catch (IOException e){
+            System.err.println("Error writing to file:" + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
-    public void readFromFile(){
+    public abstract void readFromFile();
 
-    }
-
-    static void main() {
-        Gson gson = new Gson();
-        Lesson lesson = new Lesson("id", "title", "content");
-        Tracker tracker = new Tracker(lesson);
-        System.out.println(gson.toJson(tracker));
+    public String getFilename() {
+        return filename;
     }
 }
