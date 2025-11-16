@@ -1,3 +1,5 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,18 @@ public class Course {
         this.title = title;
         this.description = description;
         this.instructorId = instructorId;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId='" + courseId + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", instructorId='" + instructorId + '\'' +
+                ", lessons=" + lessons +
+                ", students=" + students +
+                '}';
     }
 
     public String getCourseId() {
@@ -48,11 +62,21 @@ public class Course {
     public void addLesson(Lesson lesson) {
         lessons.add(lesson);
     }
+
     public void deleteLesson(String lessonId) {
         for (int i = 0; i < lessons.size(); i++) {
             if (lessons.get(i).getLessonId().equals(lessonId)) {
                 lessons.remove(i);
                 return;  }
             } }
+    public Lesson getLessonById(String lessonId) {
+        for (Lesson lesson : lessons) {
+            if (lesson.getLessonId().equals(lessonId)) {
+                return lesson;
+            }
+        }
+        return null ;
+    }
+
 
     }
