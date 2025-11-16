@@ -62,10 +62,9 @@ public class DashBoard extends JFrame{
             System.out.println("Time: " + java.time.LocalDateTime.now());
             System.out.println("===========================================\n");
             this.dispose();
-            new entryFrame();
+            new EntryFrame();
         } else {
             System.out.println("Logout cancelled");
         }
     }
-
 }

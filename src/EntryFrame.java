@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class entryFrame extends JFrame {
+public class EntryFrame extends JFrame {
     private JPanel Entry;
     private JButton signUpButton;
     private JButton loginButton;
     private JLabel WelcomeMessage;
 
-    public entryFrame() {
+    public EntryFrame() {
         setTitle("Skill Forge - Welcome");
         setContentPane(Entry);
         setSize(500, 400);
