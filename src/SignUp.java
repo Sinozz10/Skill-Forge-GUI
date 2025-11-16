@@ -67,7 +67,6 @@ public class SignUp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 handleSignUp();
                 dispose();
-                new LoginFrame();
             }
         });
     }
