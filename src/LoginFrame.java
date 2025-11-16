@@ -8,6 +8,9 @@ public class LoginFrame extends JFrame {
     private JButton loginButton;
     private JButton backButton;
 
+    private JsonDatabaseManager database;
+    private AuthenticateManager auth;
+
     public LoginFrame() {
         this.database = new JsonDatabaseManager();
         this.auth= new AuthenticateManager(database);
@@ -97,10 +100,10 @@ public class LoginFrame extends JFrame {
 
                 JOptionPane.showMessageDialog(this, "Login successful!\nWelcome, " + user.getUsername(), "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                if (user.getRole().equals("student")) {
-                    new StudentDashboard((Student) user, database);
-                } else if (user.getRole().equals("instructor")) {
-                    new InstructorDashboard((Instructor) user, database);
+                if (user.getRole().equals("Student")) {
+                    new StudentDashboard((Student) user);
+                } else if (user.getRole().equals("Instructor")) {
+                    new InstructorDashboard((Instructor) user);
                 }
 
             } else {
@@ -118,7 +121,6 @@ public class LoginFrame extends JFrame {
 
         } catch (Exception e) {
             System.out.println("Status: FAILED - System error");
-            System.out.println("Error: " + e.getMessage());
             JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }

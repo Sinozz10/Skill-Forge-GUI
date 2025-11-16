@@ -14,8 +14,8 @@ public class DashBoard extends JFrame{
 
     protected User currUser;
 
-    public DashBoard() {
-        setTitle("Dashboard");
+    public DashBoard(User currUser) {
+        setTitle("Dashboard - " + currUser.getUsername());
         setContentPane(dashPanel);
         setSize(750, 400);
         setVisible(true);

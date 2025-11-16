@@ -3,8 +3,8 @@ import java.util.ArrayList;
 public class Student extends User{
     private ArrayList<Progress> progressTrackers = new ArrayList<>();
 
-    public Student(String username, String role, String uID, String email, String hashedPassword) {
-        super(username, role, uID, email, hashedPassword);
+    public Student(String uID, String role, String username, String email, String hashedPassword) {
+        super(uID, role, username, email, hashedPassword);
     }
 
     @Override

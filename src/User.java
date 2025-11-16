@@ -10,7 +10,7 @@ public abstract class User {
     protected ArrayList<Course> courses = new ArrayList<>();
 
     //Constructor
-    public User(String username, String role, String uID, String email, String hashedPassword) {
+    public User(String uID, String role, String username, String email, String hashedPassword) {
         this.username = username;
         this.role = role;
         this.email = email;

@@ -1,10 +1,10 @@
 public class AuthenticateManager {
-    private JsonDatabaseManager database;
+    private final JsonDatabaseManager database;
 
     public AuthenticateManager(JsonDatabaseManager database) {
         this.database = database;
     }
-    public User signup(String username, String email, String password, String role) {
+    public User signup(String uID, String role, String username, String email, String password) {
         // Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("All fields are required!");
@@ -23,9 +23,9 @@ public class AuthenticateManager {
 
         User newUser;
         if (role.equalsIgnoreCase("student")) {
-            newUser = new Student(userId, role, username, email, hashedPassword, database);
+            newUser = new Student(userId, role, username, email, hashedPassword);
         } else {
-            newUser = new Instructor(userId, role, username, email, hashedPassword, database);
+            newUser = new Instructor(userId, role, username, email, hashedPassword);
         }
 
         database.saveUser(newUser);
@@ -62,7 +62,6 @@ public class AuthenticateManager {
 
      private int getHighestID(String role) {
         int highest = 0;
-        String prefix = role.equalsIgnoreCase("student") ? "S" : "I";
         for (User user : database.getAllUsers()) {
             if (user.getRole().equalsIgnoreCase(role)) {
                 String userId = user.uID;

@@ -7,7 +7,8 @@ public class StudentDashboard extends DashBoard{
     private JButton viewButton = new JButton();
     private JButton enrollButton = new JButton();
 
-    public StudentDashboard() {
+    public StudentDashboard(Student student) {
+        super(student);
         navButtons.setLayout(new GridLayout(1,3, 10, 10));
 
         viewButton.setBackground(Color.LIGHT_GRAY);
@@ -31,7 +32,4 @@ public class StudentDashboard extends DashBoard{
         navButtons.add(enrollButton);
     }
 
-    static void main() {
-        new StudentDashboard();
-    }
 }

@@ -16,6 +16,8 @@ public class SignUp extends JFrame {
     private AuthenticateManager authManager;
 
     public SignUp() {
+        this.database = new JsonDatabaseManager();
+        this.authManager = new AuthenticateManager(database);
         setTitle("SignUp");
         setContentPane(SignUp);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +61,6 @@ public class SignUp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 new entryFrame();
-
             }
         });
         signUpButton.addActionListener(new ActionListener() {
@@ -84,7 +85,7 @@ public class SignUp extends JFrame {
         }
 
         try {
-
+            String hashedpass =
             User newUser = authManager.signup(username, email, password, Role);
             System.out.println("Status: SUCCESS");
             System.out.println("User ID: " + newUser.getuID());

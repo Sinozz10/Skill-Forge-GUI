@@ -28,8 +28,11 @@ public class entryFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-
+                new SignUp();
             }
         });
     }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new entryFrame());
+//    }
 }

@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-
 public class Instructor extends User{
-    public Instructor(String username, String role, String uID, String email, String hashedPassword) {
-        super(username, role, uID, email, hashedPassword);
+    public Instructor(String uID, String role, String username, String email, String hashedPassword) {
+        super(uID, role, username, email, hashedPassword);
     }
 }
