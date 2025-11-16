@@ -1,11 +1,9 @@
 public class AuthenticateManager {
-
     private JsonDatabaseManager database;
 
     public AuthenticateManager(JsonDatabaseManager database) {
         this.database = database;
     }
-
     public User signup(String username, String email, String password, String role) {
         // Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
@@ -21,16 +19,13 @@ public class AuthenticateManager {
         String hashedPassword = PasswordHashing.hashPassword(password);
 
         // Generate unique ID
-        String userId = role.equalsIgnoreCase("student") ?
-                "S" + System.currentTimeMillis() :
-                "I" + System.currentTimeMillis();
-
+        String userId = generatedID(role);
 
         User newUser;
         if (role.equalsIgnoreCase("student")) {
-            newUser = new Student(userId, username, email, hashedPassword, database);
+            newUser = new Student(userId, role, username, email, hashedPassword, database);
         } else {
-            newUser = new Instructor(userId, username, email, hashedPassword, database);
+            newUser = new Instructor(userId, role, username, email, hashedPassword, database);
         }
 
         database.saveUser(newUser);
@@ -58,5 +53,31 @@ public class AuthenticateManager {
 
         return null; // Wrong password
     }
-}
+
+    private String generatedID(String role) {
+        String prefix = role.equalsIgnoreCase("student") ? "S" : "I";
+        int highest = getHighestID(role);// Count existing users of this role
+        return String.format("%s%04d", prefix, highest + 1);
+    }
+
+     private int getHighestID(String role) {
+        int highest = 0;
+        String prefix = role.equalsIgnoreCase("student") ? "S" : "I";
+        for (User user : database.getAllUsers()) {
+            if (user.getRole().equalsIgnoreCase(role)) {
+                String userId = user.uID;
+                // 3mltaha 3ashan t-Extract number from ID
+                try {
+                    String numberPart = userId.substring(1); // Remove prefix
+                    int idNumber = Integer.parseInt(numberPart);
+                    if (idNumber > highest) {
+                        highest = idNumber;
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        return highest;
+    }
 }

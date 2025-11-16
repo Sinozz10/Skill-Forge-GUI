@@ -70,7 +70,6 @@ public class LoginFrame extends JFrame {
         if (userName.isEmpty() || password.isEmpty()) {
             System.out.println("Status: FAILED - Empty credentials");
             System.out.println("===========================================\n");
-
             JOptionPane.showMessageDialog(this, "Please enter both userName and password!", "Missing Information", JOptionPane.WARNING_MESSAGE);
             return;
         }
