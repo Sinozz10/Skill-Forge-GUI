@@ -76,7 +76,7 @@ public class LoginFrame extends JFrame {
         }
 
         try {
-            SuperUser user = auth.login(userName, password);
+            User user = auth.login(userName, password);
             if (user != null) {
                 System.out.println("Status: SUCCESS");
                 System.out.println("User ID: " + user.getuID());

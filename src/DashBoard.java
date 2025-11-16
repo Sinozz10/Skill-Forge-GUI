@@ -12,7 +12,7 @@ public class DashBoard extends JFrame{
     protected JPanel navButtons;
     private JButton homeButton;
 
-    protected SuperUser currUser;
+    protected User currUser;
 
     public DashBoard() {
         setTitle("Dashboard");

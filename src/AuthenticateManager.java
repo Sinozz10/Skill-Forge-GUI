@@ -6,7 +6,7 @@ public class AuthenticateManager {
         this.database = database;
     }
 
-    public SuperUser signup(String username, String email, String password, String role) {
+    public User signup(String username, String email, String password, String role) {
         // Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("All fields are required!");
@@ -26,11 +26,11 @@ public class AuthenticateManager {
                 "I" + System.currentTimeMillis();
 
 
-        SuperUser newUser;
+        User newUser;
         if (role.equalsIgnoreCase("student")) {
-            newUser = new Student(userId, username, email, hashedPassword);
+            newUser = new Student(userId, username, email, hashedPassword, database);
         } else {
-            newUser = new Instructor(userId, username, email, hashedPassword);
+            newUser = new Instructor(userId, username, email, hashedPassword, database);
         }
 
         database.saveUser(newUser);
@@ -38,14 +38,14 @@ public class AuthenticateManager {
         return newUser;
     }
 
-    public SuperUser login(String email, String password) {
+    public User login(String email, String password) {
         // 1. Check if fields are empty
         if (email.isEmpty() || password.isEmpty()) {
             return null;
         }
 
         // 2. Get user from database
-        SuperUser user = database.getUserByEmail(email);
+        User user = database.getUserByEmail(email);
         if (user == null) {
             return null; // User not found
         }

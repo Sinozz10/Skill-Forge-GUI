@@ -1,18 +1,20 @@
-public abstract class SuperUser {
+public abstract class User {
     //Attributes
-    private String username;
-    private String role; //identifier
-    private String uID;
-    private String email;
-    private String hashedPassword;
+    protected String username;
+    protected String role; //identifier
+    protected String uID;
+    protected String email;
+    protected String hashedPassword;
+    protected CourseDB database;
 
     //Constructor
-    public SuperUser(String username, String role, String uID, String email, String hashedPassword) {
+    public User(String username, String role, String uID, String email, String hashedPassword, CourseDB database) {
         this.username = username;
         this.role = role;
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.uID = uID;
+        this.database = database;
     }
 
 
@@ -21,9 +23,9 @@ public abstract class SuperUser {
     public String toString() {
         return "User{" +
                 "userId='" + uID + '\'' +
-                ", role='" + role + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
+                ",role='" + role + '\'' +
+                ",username='" + username + '\'' +
+                ",email='" + email + '\'' +
                 '}';
     }
 
