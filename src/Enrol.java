@@ -10,7 +10,9 @@ public class Enrol extends JPanel {
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel("Enroll In a Course");
-
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        add(title, BorderLayout.NORTH);
 
         DefaultListModel<Course> model = new DefaultListModel<>();
 
@@ -29,10 +31,32 @@ public class Enrol extends JPanel {
         enrollButton.addActionListener(e -> {
 
             Course selected = l.getSelectedValue();
+
             if (selected == null) {
                 JOptionPane.showMessageDialog(this, "Select a course first!");
                 return;
             }
+
+
+            boolean already = false;
+            for (int i = 0; i < student.getEnrolledCourses().size(); i++) {
+                if (student.getEnrolledCourses().get(i).equals(selected.getID())) {
+                    already = true;
+                    break;
+                }
+            }
+
+            if (already) {
+                JOptionPane.showMessageDialog(this, "You are already enrolled!");
+                return;
+            }
+
+
+            student.getEnrolledCourses().add(selected.getID());
+
+
+            selected.enrollStudent(student);
+
 
             d.updateRecord(selected);
             d.saveToFile();
