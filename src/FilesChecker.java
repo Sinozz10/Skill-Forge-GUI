@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 public class FilesChecker {
     private static final String directory = "files/";
 
-    public static void filesChecker(String filename){
+    public static void checkFile(String filename){
         Path directory = Paths.get("files");
         try{
             if (Files.notExists(directory)) {Files.createDirectory(directory);}

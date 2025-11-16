@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course {
+public class Course implements Record{
     private final String courseId, title , description , instructorId ;
     private List<Lesson> lessons = new ArrayList<>();
     private List<Student> students = new ArrayList<>();
@@ -25,7 +25,8 @@ public class Course {
                 '}';
     }
 
-    public String getCourseId() {
+    @Override
+    public String getID() {
         return courseId;
     }
 
@@ -58,6 +59,7 @@ public class Course {
             students.add(student);
         }
     }
+
     public void addLesson(Lesson lesson) {
         lessons.add(lesson);
     }

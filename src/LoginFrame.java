@@ -12,7 +12,7 @@ public class LoginFrame extends JFrame {
     private AuthenticateManager auth;
 
     public LoginFrame() {
-        this.database = new UserDatabaseManager();
+        this.database = new UserDatabaseManager("users.json");
         this.auth= new AuthenticateManager(database);
         setTitle("Login");
         setContentPane(login);
@@ -79,7 +79,7 @@ public class LoginFrame extends JFrame {
             User user = auth.login(userName, password);
             if (user != null) {
                 System.out.println("Status: SUCCESS");
-                System.out.println("User ID: " + user.getuID());
+                System.out.println("User ID: " + user.getID());
                 System.out.println("Username: " + user.getUsername());
                 System.out.println("Role: " + user.getRole().toUpperCase());
                 System.out.println("===========================================\n");

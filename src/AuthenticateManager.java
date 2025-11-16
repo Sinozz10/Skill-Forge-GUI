@@ -12,7 +12,7 @@ public class AuthenticateManager {
         }
 
         // Check if email already exists
-        if (database.getUserByEmail(email) != null) {
+        if (database.getRecordByEmail(email) != null) {
             throw new IllegalArgumentException("Email already registered!");
         }
 
@@ -29,7 +29,7 @@ public class AuthenticateManager {
             newUser = new Instructor(userId, role, username, email, hashedPassword);
         }
 
-        database.saveUser(newUser);
+        database.saveToFile();
 
         return newUser;
     }
@@ -41,7 +41,7 @@ public class AuthenticateManager {
         }
 
         // 2. Get user from database
-        User user = database.getUserByEmail(email);
+        User user = database.getRecordByEmail(email);
         if (user == null) {
             return null; // User not found
         }
@@ -63,9 +63,9 @@ public class AuthenticateManager {
 
      private int getHighestID(String role) {
         int highest = 0;
-        for (User user : database.getAllUsers()) {
+        for (User user : database.getRecords()) {
             if (user.getRole().equalsIgnoreCase(role)) {
-                String userId = user.uID;
+                String userId = user.userID;
                 // 3mltaha 3ashan t-Extract number from ID
                 try {
                     String numberPart = userId.substring(1); // Remove prefix

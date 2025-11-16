@@ -10,7 +10,7 @@ public class Student extends User{
     @Override
     public void addCourse(Course course){
         courses.add(course);
-        progressTrackers.add(new Progress(course, uID));
+        progressTrackers.add(new Progress(course, userID));
     }
 
     @Override

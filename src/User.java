@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public abstract class User {
+public abstract class User implements Record{
     //Attributes
     protected String username;
     protected String role; //identifier
-    protected String uID;
+    protected String userID;
     protected String email;
     protected String hashedPassword;
     protected ArrayList<Course> courses = new ArrayList<>();
@@ -15,7 +15,7 @@ public abstract class User {
         this.role = role;
         this.email = email;
         this.hashedPassword = hashedPassword;
-        this.uID = uID;
+        this.userID = uID;
     }
 
 
@@ -23,19 +23,16 @@ public abstract class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + uID + '\'' +
+                "userId='" + userID + '\'' +
                 ",role='" + role + '\'' +
                 ",username='" + username + '\'' +
                 ",email='" + email + '\'' +
                 '}';
     }
 
-    public String getuID() {
-        return uID;
-    }
-
-    public void setuID(String uID) {
-        this.uID = uID;
+    @Override
+    public String getID() {
+        return userID;
     }
 
     public String getUsername() {
