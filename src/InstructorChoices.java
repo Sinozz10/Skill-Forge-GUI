@@ -25,7 +25,10 @@ public class InstructorChoices  {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if()
+                if(findCourse(DeleteID))
+                {
+                    deleteCourse(DeleteID);
+                }
 
             }
         });
