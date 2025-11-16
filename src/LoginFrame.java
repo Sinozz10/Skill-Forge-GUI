@@ -65,14 +65,12 @@ public class LoginFrame extends JFrame {
         String userName = this.userName.getText().trim();
         String password = new String(passWord.getPassword());
 
-        System.out.println("LOGIN ATTEMPT");
-        System.out.println("===========================================");
-        System.out.println("Email: " + userName);
+        System.out.println("==========================");
+        System.out.println("Username: " + userName);
         System.out.println("Time: " + java.time.LocalDateTime.now());
 
         if (userName.isEmpty() || password.isEmpty()) {
             System.out.println("Status: FAILED - Empty credentials");
-            System.out.println("===========================================\n");
             JOptionPane.showMessageDialog(this, "Please enter both userName and password!", "Missing Information", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -93,16 +91,17 @@ public class LoginFrame extends JFrame {
                     System.out.println("   Opening Student Dashboard...\n");
                 } else if (user.getRole().equals("instructor")) {
                     System.out.println(" INSTRUCTOR LOGIN DETECTED");
-                    System.out.println("   Name: " + user.getUsername());
-                    System.out.println("   Email: " + user.getEmail());
+                    System.out.println(" Name: " + user.getUsername());
+                    System.out.println(" Email: " + user.getEmail());
                     System.out.println("   Opening Instructor Dashboard...\n");
                 }
 
                 JOptionPane.showMessageDialog(this, "Login successful!\nWelcome, " + user.getUsername(), "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                if (user.getRole().equals("Student")) {
+
+                if (user.getRole().equalsIgnoreCase("student")) {
                     new StudentDashboard((Student) user);
-                } else if (user.getRole().equals("Instructor")) {
+                } else if (user.getRole().equalsIgnoreCase("instructor")) {
                     new InstructorDashboard((Instructor) user);
                 }
 

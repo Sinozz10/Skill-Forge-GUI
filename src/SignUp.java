@@ -76,26 +76,27 @@ public class SignUp extends JFrame {
         String email = Email.getText();
         String password = new String(Password.getPassword());
         String confirmedPass = new String(ConfirmedPass.getPassword());
-        String Role = (String) role.getSelectedItem();
+        String userRole = (String) role.getSelectedItem();
 
         if(!password.equals(confirmedPass)){
             JOptionPane.showMessageDialog(null, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
             ConfirmedPass.setText("");
+            Password.setText("");
             Password.requestFocus();
+            return;
         }
 
         try {
-            String hashedpass =
-            User newUser = authManager.signup(username, email, password, Role);
+            User newUser = authManager.signup(username, email, password, userRole);
             System.out.println("Status: SUCCESS");
             System.out.println("User ID: " + newUser.getuID());
 
-            if (role.equals("Student")) {
+            if (userRole.equalsIgnoreCase("student")) {
                 System.out.println(" NEW STUDENT REGISTERED");
                 System.out.println(" Name: " + newUser.getUsername());
                 System.out.println(" Email: " + newUser.getEmail());
                 System.out.println(" ID: " + newUser.getuID());
-            } else if (role.equals("Instructor")) {
+            } else if (userRole.equalsIgnoreCase("instructor")) {
                 System.out.println(" NEW INSTRUCTOR REGISTERED");
                 System.out.println(" Name: " + newUser);
                 System.out.println(" Email: " + newUser);
@@ -103,7 +104,9 @@ public class SignUp extends JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + "You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            LoginFrame loginFrame = new LoginFrame();
+
+            dispose();
+            new LoginFrame();
         } catch (IllegalArgumentException e){
             System.out.println("Status: FAILED - " + e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage(), "Signup Failed", JOptionPane.ERROR_MESSAGE);

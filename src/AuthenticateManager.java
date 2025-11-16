@@ -4,7 +4,8 @@ public class AuthenticateManager {
     public AuthenticateManager(JsonDatabaseManager database) {
         this.database = database;
     }
-    public User signup(String uID, String role, String username, String email, String password) {
+
+    public User signup(String username, String email, String password, String role) {
         // Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("All fields are required!");
