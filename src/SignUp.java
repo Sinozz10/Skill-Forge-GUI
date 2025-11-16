@@ -12,7 +12,7 @@ public class SignUp extends JFrame {
     private JButton backButton;
     private JButton signUpButton;
 
-    private JsonDatabaseManager database;
+    private final JsonDatabaseManager database;
     private AuthenticateManager authManager;
 
     public SignUp() {
