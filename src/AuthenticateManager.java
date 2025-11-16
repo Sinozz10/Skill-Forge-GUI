@@ -1,3 +1,4 @@
+
 public class AuthenticateManager {
     private final UserDatabaseManager database;
 

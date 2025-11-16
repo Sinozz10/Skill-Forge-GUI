@@ -12,11 +12,10 @@ public class SignUp extends JFrame {
     private JButton backButton;
     private JButton signUpButton;
 
-    private final UserDatabaseManager database;
-    private AuthenticateManager authManager;
+    private final AuthenticateManager authManager;
 
     public SignUp() {
-        this.database = new UserDatabaseManager("users.json");
+        UserDatabaseManager database = new UserDatabaseManager("users.json");
         this.authManager = new AuthenticateManager(database);
         setTitle("SignUp");
         setContentPane(SignUp);

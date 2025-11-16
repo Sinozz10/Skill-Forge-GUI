@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Progress {
-    private Course course;
-    private String studentID;
+    private final Course course;
+    private final String studentID;
     private Date completionDate;
-    private ArrayList<Tracker> trackers = new ArrayList<>();
+    private final ArrayList<Tracker> trackers = new ArrayList<>();
 
     public Progress(Course course, String studentID) {
         this.course = course;

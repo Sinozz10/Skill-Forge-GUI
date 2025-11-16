@@ -1,5 +1,5 @@
 public class Tracker {
-    private Lesson lesson;
+    private final Lesson lesson;
     private boolean state;
 
     public Tracker(Lesson lesson) {

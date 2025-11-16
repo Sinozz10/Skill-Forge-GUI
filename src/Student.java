@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Student extends User{
-    private ArrayList<Progress> progressTrackers = new ArrayList<>();
+    private final ArrayList<Progress> progressTrackers = new ArrayList<>();
 
     public Student(String uID, String role, String username, String email, String hashedPassword) {
         super(uID, role, username, email, hashedPassword);

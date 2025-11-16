@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public abstract class JsonDatabaseManager<T extends Record> {
@@ -43,5 +45,12 @@ public abstract class JsonDatabaseManager<T extends Record> {
 
     public void readFromFile(){
 
+    }
+
+    static void main() {
+        Gson gson = new Gson();
+        Lesson lesson = new Lesson("id", "title", "content");
+        Tracker tracker = new Tracker(lesson);
+        System.out.println(gson.toJson(tracker));
     }
 }
