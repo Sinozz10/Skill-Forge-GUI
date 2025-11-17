@@ -2,33 +2,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course implements Record{
-    private final String courseId, instructorId;
+    private final String courseID, instructorID;
     private String title , description;
-    private List<Lesson> lessons = new ArrayList<>();
+    private List<Chapter> chapters = new ArrayList<>();
     private List<Student> students = new ArrayList<>();
 
-    public Course(String courseId, String title, String description, String instructorId) {
-        this.courseId = courseId;
+    public Course(String courseID, String title, String description, String instructorID) {
+        this.courseID = courseID;
         this.title = title;
         this.description = description;
-        this.instructorId = instructorId;
+        this.instructorID = instructorID;
     }
 
     @Override
     public String toString() {
         return "Course{" +
-                "courseId='" + courseId + '\'' +
+                "courseId='" + courseID + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", instructorId='" + instructorId + '\'' +
-                ", lessons=" + lessons +
+                ", instructorId='" + instructorID + '\'' +
+                ", chapters=" + chapters +
                 ", students=" + students +
                 '}';
     }
 
     @Override
     public String getID() {
-        return courseId;
+        return courseID;
     }
 
     public String getTitle() {
@@ -39,12 +39,12 @@ public class Course implements Record{
         return description;
     }
 
-    public String getInstructorId() {
-        return instructorId;
+    public String getInstructorID() {
+        return instructorID;
     }
 
-    public List<Lesson> getLessons() {
-        return lessons;
+    public List<Chapter> getChapters() {
+        return chapters;
     }
 
     public List<Student> getStudents() {
@@ -59,8 +59,8 @@ public class Course implements Record{
         this.description = description;
     }
 
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
     }
 
     public void setStudents(List<Student> students) {
@@ -73,18 +73,18 @@ public class Course implements Record{
         }
     }
 
-    public void addLesson(Lesson lesson) {
-        lessons.add(lesson);
+    public void addChapter(Chapter chapter) {
+        chapters.add(chapter);
     }
 
-    public void deleteLesson(Lesson lesson) {
-        lessons.remove(lesson);
+    public void deleteLesson(Chapter chapter) {
+        chapters.remove(chapter);
     }
 
-    public Lesson getLessonById(String lessonId) {
-        for (Lesson lesson : lessons) {
-            if (lesson.getLessonId().equals(lessonId)) {
-                return lesson;
+    public Chapter getLessonById(String courseId) {
+        for (Chapter chapter : chapters) {
+            if (chapter.getChapterID().equals(courseId)) {
+                return chapter;
             }
         }
         return null ;
