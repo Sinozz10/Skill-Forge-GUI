@@ -1,13 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class CardScrollPane extends JFrame {
+public class CardScrollPane extends JPanel {
     private final CourseDatabaseManager courseDB;
     private JPanel contentPanel;
     private JScrollPane scrollPane;
 
     public CardScrollPane(CourseDatabaseManager courseDB) {
         this.courseDB = courseDB;
+
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
 
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(Color.LIGHT_GRAY);
@@ -17,22 +20,12 @@ public class CardScrollPane extends JFrame {
             card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             contentPanel.add(card);
             contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            System.out.println("Added card for: " + course.getTitle());
         }
 
         scrollPane = new JScrollPane(contentPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
+        setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
-
-        setSize(750, 400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    static void main() {
-        new CardScrollPane(new CourseDatabaseManager("courses.json"));
     }
 }
