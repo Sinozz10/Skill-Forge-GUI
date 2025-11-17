@@ -8,8 +8,10 @@ public class Card extends JPanel{
     private JLabel instructor;
     private JLabel title;
     private JTextPane description;
+    private final Course course;
 
     public Card(Course course) {
+        this.course = course;
         setLayout(new BorderLayout());
         add(cardPanel, BorderLayout.CENTER);
 
@@ -50,5 +52,9 @@ public class Card extends JPanel{
 
     public void rightClickHandler(MouseEvent e){
 //        System.out.println("right click detected");
+    }
+
+    public Course getCourse() {
+        return course;
     }
 }

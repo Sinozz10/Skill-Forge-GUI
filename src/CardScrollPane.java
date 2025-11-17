@@ -9,16 +9,17 @@ import java.util.List;
 public class CardScrollPane extends JPanel {
     private final CourseDatabaseManager courseDB;
     private JPanel contentPanel;
-    private JScrollPane scrollPane;
+    private final JScrollPane scrollPane;
     private JTextField searchBar;
     private JButton searchButton;
     private JPanel cardPanel;
     private JPanel listPanel;
     private ArrayList<Course> loadedCourses;
+    private final Instructor instructor;
 
-
-    public CardScrollPane(CourseDatabaseManager courseDB) {
+    public CardScrollPane(CourseDatabaseManager courseDB, Instructor instructor) {
         this.courseDB = courseDB;
+        this.instructor = instructor;
 
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.LIGHT_GRAY);
@@ -91,8 +92,6 @@ public class CardScrollPane extends JPanel {
         }
     }
 
-
-
     public void search(){
         String key = searchBar.getText().trim().toLowerCase();
         if (key.isEmpty()) {
@@ -109,27 +108,8 @@ public class CardScrollPane extends JPanel {
         displayLoadedCourses();
     }
 
-    // popup menu
     public void rightClickHandler(MouseEvent e){
-        final JPopupMenu popupMenu = new JPopupMenu();
 
-        JMenuItem editItem = new JMenuItem("Edit");
-        editItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        popupMenu.add(editItem);
-
-        JMenuItem deleteItem = new JMenuItem("Delete");
-        deleteItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        popupMenu.add(deleteItem);
-
-        popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
     private void leftClickHandler(MouseEvent e) {
