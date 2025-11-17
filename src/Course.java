@@ -5,7 +5,7 @@ public class Course implements Record{
     private final String courseID, instructorID;
     private String title , description;
     private List<Chapter> chapters = new ArrayList<>();
-    private List<Student> students = new ArrayList<>();
+    private List<String> studentIDs = new ArrayList<>();
 
     public Course(String courseID, String title, String description, String instructorID) {
         this.courseID = courseID;
@@ -22,7 +22,7 @@ public class Course implements Record{
                 ", description='" + description + '\'' +
                 ", instructorId='" + instructorID + '\'' +
                 ", chapters=" + chapters +
-                ", students=" + students +
+                ", studentIDs=" + studentIDs +
                 '}';
     }
 
@@ -47,8 +47,8 @@ public class Course implements Record{
         return chapters;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<String> getStudentIDs() {
+        return studentIDs;
     }
 
     public void setTitle(String title) {
@@ -63,14 +63,18 @@ public class Course implements Record{
         this.chapters = chapters;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setStudents(List<String> studentIDs) {
+        this.studentIDs = studentIDs;
     }
 
     public void enrollStudent(Student student) {
-        if (!students.contains(student)) {
-            students.add(student);
+        if (!studentIDs.contains(student.getID())) {
+            studentIDs.add(student.getID());
         }
+    }
+
+    public void unEnrollStudent(Student student) {
+        studentIDs.remove(student.getID());
     }
 
     public void addChapter(Chapter chapter) {

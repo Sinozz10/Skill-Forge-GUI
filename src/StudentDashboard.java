@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StudentDashboard extends DashBoard{
-
-    public StudentDashboard(Student student) {
-        super(student);
+    public StudentDashboard(Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
+        super(courseDB, userDB);
+        setTitle("Dashboard - " + student.getUsername());
         navButtons.setLayout(new GridLayout(1,3, 10, 10));
 
         JButton viewButton = new JButton();
@@ -26,7 +26,7 @@ public class StudentDashboard extends DashBoard{
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new Enroll((Student) currUser));
+                changeContentPanel(new Enroll(student));
             }
         });
         navButtons.add(enrollButton);

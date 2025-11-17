@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Student extends User{
     private final ArrayList<Progress> progressTrackers = new ArrayList<>();
@@ -9,15 +10,15 @@ public class Student extends User{
 
     @Override
     public void addCourse(Course course){
-        courses.add(course);
+        courseIDs.add(course.getID());
         progressTrackers.add(new Progress(course, userID));
     }
 
     @Override
     public void removeCourse(Course course){
-        courses.remove(course);
+        courseIDs.remove(course.getID());
         for(Progress prog: progressTrackers){
-           if (prog.getCourse() == course){
+           if (course.getID().equals(prog.getCourseID())){
                progressTrackers.remove(prog);
                break;
            }

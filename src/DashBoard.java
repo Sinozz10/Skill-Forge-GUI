@@ -11,11 +11,12 @@ public class DashBoard extends JFrame{
     private JPanel dashPanel;
     protected JPanel navButtons;
     private JButton homeButton;
+    protected final CourseDatabaseManager courseDB;
+    protected final UserDatabaseManager userDB;
 
-    protected User currUser;
-
-    public DashBoard(User currUser) {
-        setTitle("Dashboard - " + currUser.getUsername());
+    public DashBoard(CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
+        this.courseDB = courseDB;
+        this.userDB = userDB;
         setContentPane(dashPanel);
         setSize(750, 400);
         setVisible(true);

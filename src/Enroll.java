@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Enroll extends JPanel {
 
@@ -25,39 +27,43 @@ public class Enroll extends JPanel {
         JScrollPane scroll = new JScrollPane(l);
         add(scroll, BorderLayout.CENTER);
 
-        enrollButton.addActionListener(e -> {
-            Course selected = l.getSelectedValue();
+        enrollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-            if (selected == null) {
-                JOptionPane.showMessageDialog(this, "Select a course first!");
-                return;
-            }
+                Course selected = l.getSelectedValue();
 
-
-            boolean already = false;
-            for (Course course: student.getCourses()) {
-                if (course.getID().equals(selected)) {
-                    already = true;
-                    break;
+                if (selected == null) {
+                    JOptionPane.showMessageDialog(Enroll.this, "Select a course first!");
+                    return;
                 }
+
+
+                boolean already = false;
+                for (String courseID: student.getCourseIDs()) {
+                    if (selected.getID().equals(courseID)) {
+                        already = true;
+                        break;
+                    }
+                }
+
+                if (already) {
+                    JOptionPane.showMessageDialog(Enroll.this, "You are already enrolled!");
+                    return;
+                }
+
+                student.addCourse(selected);
+                selected.enrollStudent(student);
+
+
+                databaseManager.updateRecord(selected);
+                databaseManager.saveToFile();
+
+                userDb.updateRecord(student);
+                userDb.saveToFile();
+
+                JOptionPane.showMessageDialog(Enroll.this, "Enrolled Successfully!");
             }
-
-            if (already) {
-                JOptionPane.showMessageDialog(this, "You are already enrolled!");
-                return;
-            }
-
-            student.addCourse(selected);
-            selected.enrollStudent(student);
-
-
-            databaseManager.updateRecord(selected);
-            databaseManager.saveToFile();
-
-            userDb.updateRecord(student);
-            userDb.saveToFile();
-
-            JOptionPane.showMessageDialog(this, "Enrolled Successfully!");
         });
         add(enrollButton, BorderLayout.SOUTH);
     }

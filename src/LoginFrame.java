@@ -74,11 +74,14 @@ public class LoginFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Login successful!\nWelcome, " + user.getUsername(), "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
 
+                CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
+                UserDatabaseManager userDB = new UserDatabaseManager("users.json");
+
                 if (user.getRole().equalsIgnoreCase("student")) {
-                    new StudentDashboard((Student) user);
+                    new StudentDashboard(new Student(user.getID(), user.getRole(), user.getUsername(), user.getEmail(), user.getHashedPassword()), courseDB, userDB);
                 } else if (user.getRole().equalsIgnoreCase("instructor")) {
-                    CourseDatabaseManager database = new CourseDatabaseManager("courses.json");
-                    new InstructorDashboard((Instructor) user, database);
+
+                    new InstructorDashboard(new Instructor(user.getID(), user.getRole(), user.getUsername(), user.getEmail(), user.getHashedPassword()), courseDB, userDB);
                 }
 
             } else {

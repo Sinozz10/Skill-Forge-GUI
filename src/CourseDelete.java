@@ -7,11 +7,13 @@ public class CourseDelete extends JPanel {
     private JTextField deleteID;
     private JButton confirmDeleteButton;
     private JPanel delete;
-    private final CourseDatabaseManager databaseManager;
+    private final CourseDatabaseManager courseDB;
+    private final UserDatabaseManager userDB;
     private final InstructorDashboard dashboard;
 
-    public CourseDelete(CourseDatabaseManager databaseManager,  InstructorDashboard dashboard) {
-        this.databaseManager = databaseManager;
+    public CourseDelete(CourseDatabaseManager courseDB, UserDatabaseManager userDB, Instructor instructor, InstructorDashboard dashboard) {
+        this.courseDB = courseDB;
+        this.userDB = userDB;
         this.dashboard = dashboard;
 
         setLayout(new BorderLayout());
@@ -20,21 +22,26 @@ public class CourseDelete extends JPanel {
         confirmDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleDelete();
+                handleDelete(instructor);
             }
         });
     }
 
-    private void handleDelete() {
+    private void handleDelete(Instructor instructor) {
         String id = deleteID.getText().trim();
         if  (id.isEmpty()) {
             JOptionPane.showMessageDialog(dashboard, "Please enter your ID", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-        if(databaseManager.findRecord(id))  {
+        if(courseDB.findRecord(id))  {
             int confirm = JOptionPane.showConfirmDialog(dashboard,"Are you sure you want to delete?","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
             if (confirm == JOptionPane.YES_OPTION) {
-                databaseManager.deleteCourse(id);
-                databaseManager.saveToFile();
+                courseDB.deleteCourse(id);
+                courseDB.saveToFile();
+
+                instructor.removeCourse(courseDB.getRecordByID(id));
+                userDB.updateRecord(instructor);
+                userDB.saveToFile();
+
                 JOptionPane.showMessageDialog(dashboard, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
                 deleteID.setText("");
                 deleteID.requestFocus();

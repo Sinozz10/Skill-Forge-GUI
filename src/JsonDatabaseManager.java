@@ -31,7 +31,7 @@ public abstract class JsonDatabaseManager<T extends Record> {
     }
 
     public void deleteCourse(String recordID) {
-        records.removeIf(records -> records.getID().equals(recordID));
+        records.removeIf(record -> recordID.equals(record.getID()));
     }
 
     public T getRecordByID(String recordID) {

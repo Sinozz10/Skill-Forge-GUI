@@ -48,8 +48,7 @@ public class AuthenticateManager {
         }
 
         // 3. Check if password matches
-        String hashedPassword = PasswordHashing.hashPassword(password);
-        if (hashedPassword.equals(user.getHashedPassword())) {
+        if (PasswordHashing.verifyPassword(password, user.getHashedPassword())) {
             return user;
         }
         return null; // Wrong password

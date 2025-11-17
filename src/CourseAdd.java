@@ -9,11 +9,13 @@ public class CourseAdd extends JPanel {
     private JPanel add;
     private JTextField CourseName;
     private final String instructorId;
-    private final CourseDatabaseManager databaseManager;
+    private final CourseDatabaseManager courseDB;
+    private final UserDatabaseManager userDB;
 
-    public CourseAdd(CourseDatabaseManager databaseManager, String instructorId) {
-        this.databaseManager = databaseManager;
-        this.instructorId = instructorId;
+    public CourseAdd(CourseDatabaseManager courseDB, UserDatabaseManager userDB, Instructor instructor) {
+        this.courseDB = courseDB;
+        this.userDB = userDB;
+        this.instructorId = instructor.getID();
 
         setLayout(new BorderLayout());
         add(add,BorderLayout.CENTER);
@@ -21,12 +23,12 @@ public class CourseAdd extends JPanel {
         ADDButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleAddCourse();
+                handleAddCourse(instructor);
             }
         });
     }
 
-    private void handleAddCourse() {
+    private void handleAddCourse(Instructor instructor) {
         String courseName = CourseName.getText().trim();
         String courseDescription = description.getText().trim();
 
@@ -37,8 +39,12 @@ public class CourseAdd extends JPanel {
         try{
             String courseID = generateCourseID();
             Course newCourse = new Course(courseID, courseName, courseDescription, instructorId);
-            databaseManager.addRecord(newCourse);
-            databaseManager.saveToFile();
+            courseDB.addRecord(newCourse);
+            courseDB.saveToFile();
+
+            instructor.addCourse(newCourse);
+            userDB.updateRecord(instructor);
+            userDB.saveToFile();
 
             JOptionPane.showMessageDialog(this, "Course added successfully!" + courseID, "Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -57,7 +63,7 @@ public class CourseAdd extends JPanel {
 
     private int getHighestID() {
         int highest = 0;
-        for (Course course : databaseManager.getRecords()) {
+        for (Course course : courseDB.getRecords()) {
             String courseId = course.getID();
             // 3mltaha 3ashan t-Extract number from ID
             try {

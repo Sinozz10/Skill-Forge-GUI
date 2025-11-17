@@ -7,7 +7,7 @@ public class User implements Record{
     protected String userID;
     protected String email;
     protected String hashedPassword;
-    protected ArrayList<Course> courses = new ArrayList<>();
+    protected ArrayList<String> courseIDs = new ArrayList<>();
 
     //Constructor
     public User(String uID, String role, String username, String email, String hashedPassword) {
@@ -67,19 +67,19 @@ public class User implements Record{
         this.hashedPassword = hashedPassword;
     }
 
-    public ArrayList<Course> getCourses(){
-        return courses;
+    public ArrayList<String> getCourseIDs(){
+        return courseIDs;
     }
 
-    public void setCourses(ArrayList<Course> courses){
-        this.courses = courses;
+    public void setCourses(ArrayList<String> courseIDs){
+        this.courseIDs = courseIDs;
     }
 
     public void addCourse(Course course){
-        courses.add(course);
+        courseIDs.add(course.getID());
     }
 
     public void removeCourse(Course course){
-        courses.remove(course);
+        courseIDs.remove(course.getID());
     }
 }

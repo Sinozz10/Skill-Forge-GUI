@@ -5,8 +5,9 @@ import java.awt.event.ActionListener;
 
 public class InstructorDashboard extends DashBoard{
 
-    public InstructorDashboard(Instructor instructor, CourseDatabaseManager databaseManager) {
-        super(instructor);
+    public InstructorDashboard(Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
+        super(courseDB, userDB);
+        setTitle("Dashboard - " + instructor.getUsername());
         navButtons.setLayout(new GridLayout(1,3, 10, 10));
 
         JButton addButton = new JButton();
@@ -15,7 +16,7 @@ public class InstructorDashboard extends DashBoard{
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseAdd(databaseManager, instructor.getID()));
+                changeContentPanel(new CourseAdd(courseDB, userDB, instructor));
             }
         });
         navButtons.add(addButton);
@@ -26,7 +27,7 @@ public class InstructorDashboard extends DashBoard{
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseEdit(databaseManager));
+                    changeContentPanel(new CourseEdit(courseDB));
             }
         });
         navButtons.add(editButton);
@@ -37,7 +38,7 @@ public class InstructorDashboard extends DashBoard{
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseDelete(databaseManager, InstructorDashboard.this));
+                changeContentPanel(new CourseDelete(courseDB, userDB, instructor, InstructorDashboard.this));
             }
         });
         navButtons.add(deleteButton);

@@ -2,16 +2,27 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Progress {
-    private final Course course;
+    private final String courseID;
     private final String studentID;
     private Date completionDate;
     private final ArrayList<Tracker> trackers = new ArrayList<>();
+    private boolean updateFlag = false;
 
     public Progress(Course course, String studentID) {
-        this.course = course;
+        this.courseID = course.getID();
         this.studentID = studentID;
-        for (Lesson lesson: course.getLessons()){
-            trackers.add(new Tracker(lesson));
+        for (Chapter chapter: course.getChapters()){
+            for (Lesson lesson: chapter.getLessons()){
+                trackers.add(new Tracker(lesson));
+            }
+        }
+    }
+
+    public Progress(Course course, String studentID, boolean updateFlag) {
+        this(course, studentID);
+        if (updateFlag){
+            updateTrackers(course);
+            updateFlag = false;
         }
     }
 
@@ -46,7 +57,7 @@ public class Progress {
         return trackers;
     }
 
-    public void updateTrackers(){
+    public void updateTrackers(Course course){
         ArrayList<Lesson> completed = new ArrayList<>();
         for (Tracker tracker: trackers){
             if (tracker.getState()){
@@ -55,17 +66,19 @@ public class Progress {
         }
 
         trackers.clear();
-        for (Lesson lesson: course.getLessons()){
-            if (completed.contains(lesson)){
-                trackers.add(new Tracker(lesson, true));
-            }else {
-                trackers.add(new Tracker(lesson));
+        for (Chapter chapter: course.getChapters()){
+            for (Lesson lesson: chapter.getLessons()){
+                if (completed.contains(lesson)){
+                    trackers.add(new Tracker(lesson, true));
+                }else {
+                    trackers.add(new Tracker(lesson));
+                }
             }
         }
     }
 
-    public Course getCourse() {
-        return course;
+    public String getCourseID() {
+        return courseID;
     }
 
     public String getStudentID() {
@@ -78,5 +91,12 @@ public class Progress {
 
     public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
+    }
+
+    public boolean isUpdateFlag() {
+        return updateFlag;}
+
+    public void setUpdateFlag(boolean updateFlag) {
+        this.updateFlag = updateFlag;
     }
 }
