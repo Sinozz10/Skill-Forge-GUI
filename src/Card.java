@@ -9,19 +9,11 @@ public class Card extends JPanel{
 
     public Card(Course course) {
         setLayout(new BorderLayout());
-
-        if (cardPanel==null){
-            cardPanel = new JPanel();
-
-        }else {
-            add(cardPanel,BorderLayout.NORTH);
-        }
+        add(cardPanel, BorderLayout.CENTER);
 
         title.setText(course.getTitle());
-        instructor.setText(course.getInstructorID());
+        instructor.setText("Instructor #: " + course.getInstructorID());
         description.setText(course.getDescription());
-
         description.setEditable(false);
-        description.setBackground(Color.GRAY);
     }
 }
