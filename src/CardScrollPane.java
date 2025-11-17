@@ -1,31 +1,137 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardScrollPane extends JPanel {
     private final CourseDatabaseManager courseDB;
     private JPanel contentPanel;
     private JScrollPane scrollPane;
+    private JTextField searchBar;
+    private JButton searchButton;
+    private JPanel cardPanel;
+    private JPanel listPanel;
+    private ArrayList<Course> loadedCourses;
+
 
     public CardScrollPane(CourseDatabaseManager courseDB) {
         this.courseDB = courseDB;
 
-        setLayout(new BorderLayout());
-        add(scrollPane, BorderLayout.CENTER);
+        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+        cardPanel.setBackground(Color.LIGHT_GRAY);
 
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.LIGHT_GRAY);
-
-        for (Course course : courseDB.getRecords()) {
-            Card card = new Card(course);
-            card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            contentPanel.add(card);
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        }
-
-        scrollPane = new JScrollPane(contentPanel);
+        scrollPane = new JScrollPane(cardPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(32);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        listPanel.setLayout(new BorderLayout());
+        listPanel.add(scrollPane, BorderLayout.CENTER);
+
+        loadedCourses = courseDB.getRecords();
+        displayLoadedCourses();
+
+        searchButton.setBackground(Color.LIGHT_GRAY);
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                search();
+            }
+        });
+
+        searchBar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                search();
+            }
+        });
+
         setLayout(new BorderLayout());
-        add(scrollPane, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
+    }
+
+    private ArrayList<Course> sortList(List<Course> courses){
+        ArrayList<Course> sortedCourses = new ArrayList<>(courses);
+
+        sortedCourses.sort((s1, s2) -> {
+            int n1 = Integer.parseInt(s1.getID().replaceAll("[^0-9]", ""));
+            int n2 = Integer.parseInt(s2.getID().replaceAll("[^0-9]", ""));
+            return Integer.compare(n1, n2);
+        });
+
+        return sortedCourses;
+    }
+
+    public void displayLoadedCourses(){
+        if (!loadedCourses.isEmpty()){
+            loadedCourses = sortList(loadedCourses);
+
+            cardPanel.removeAll();
+            cardPanel.revalidate();
+            cardPanel.repaint();
+
+            for (Course course : loadedCourses) {
+                Card card = new Card(course) {
+                    @Override
+                    public void rightClickHandler(MouseEvent e){
+                        CardScrollPane.this.rightClickHandler(e);
+                    }
+                    @Override
+                    public void leftClickHandler(MouseEvent e){
+                        CardScrollPane.this.leftClickHandler(e);
+                    }
+                };
+                card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                card.setMaximumSize(new Dimension(card.getPreferredSize().width*2, card.getPreferredSize().height));
+                cardPanel.add(card);
+                cardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+        }
+    }
+
+
+
+    public void search(){
+        String key = searchBar.getText().trim().toLowerCase();
+        if (key.isEmpty()) {
+            loadedCourses = courseDB.getRecords();
+        }else {
+            ArrayList<Course> searched = new ArrayList<>();
+            for (Course course : courseDB.getRecords()) {
+                if (course.getTitle().contains(key)){
+                    searched.add(course);
+                }
+            }
+            loadedCourses = searched;
+        }
+        displayLoadedCourses();
+    }
+
+    // popup menu
+    public void rightClickHandler(MouseEvent e){
+        final JPopupMenu popupMenu = new JPopupMenu();
+
+        JMenuItem editItem = new JMenuItem("Edit");
+        editItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        popupMenu.add(editItem);
+
+        JMenuItem deleteItem = new JMenuItem("Delete");
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        popupMenu.add(deleteItem);
+
+        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    private void leftClickHandler(MouseEvent e) {
     }
 }

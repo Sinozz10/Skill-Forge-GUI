@@ -22,19 +22,33 @@ public class Card extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    leftClickHandler();
+                    leftClickHandler(e);
                 } else if (SwingUtilities.isRightMouseButton(e)) {
-                    rightClickHandler();
+                    rightClickHandler(e);
                 }
             }
         });
+
+        description.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    leftClickHandler(e);
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    rightClickHandler(e);
+                }
+            }
+        });
+
+        description.setEnabled(false);
+        description.setDisabledTextColor(Color.BLACK);
     }
 
-    public void leftClickHandler(){
-        System.out.println("left click detected");
+    public void leftClickHandler(MouseEvent e){
+//        System.out.println("left click detected");
     }
 
-    public void rightClickHandler(){
-        System.out.println("right click detected");
+    public void rightClickHandler(MouseEvent e){
+//        System.out.println("right click detected");
     }
 }
