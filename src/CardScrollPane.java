@@ -15,11 +15,18 @@ public class CardScrollPane extends JPanel {
     private JPanel cardPanel;
     private JPanel listPanel;
     private ArrayList<Course> loadedCourses;
+    private ArrayList<Course> ownedCourses;
     private final Instructor instructor;
 
     public CardScrollPane(CourseDatabaseManager courseDB, Instructor instructor) {
         this.courseDB = courseDB;
         this.instructor = instructor;
+        ownedCourses = new ArrayList<>();
+        for(Course course: courseDB.getRecords()){
+            if (course.getID().equals(instructor.getID())){
+                ownedCourses.add(course);
+            }
+        }
 
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.LIGHT_GRAY);
@@ -65,7 +72,7 @@ public class CardScrollPane extends JPanel {
     }
 
     public void loadCoursesFromDatabase(){
-        loadedCourses = courseDB.getRecords();
+        loadedCourses = ownedCourses;
         displayLoadedCourses();
     }
 
@@ -99,10 +106,10 @@ public class CardScrollPane extends JPanel {
     public void search(){
         String key = searchBar.getText().trim().toLowerCase();
         if (key.isEmpty()) {
-            loadedCourses = courseDB.getRecords();
+            loadedCourses = ownedCourses;
         }else {
             ArrayList<Course> searched = new ArrayList<>();
-            for (Course course : courseDB.getRecords()) {
+            for (Course course : ownedCourses) {
                 if (course.getTitle().contains(key)){
                     searched.add(course);
                 }

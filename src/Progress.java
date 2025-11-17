@@ -18,21 +18,26 @@ public class Progress {
         }
     }
 
-    public Progress(Course course, String studentID, boolean updateFlag) {
-        this(course, studentID);
-        if (updateFlag){
-            updateTrackers(course);
-            updateFlag = false;
-        }
-    }
-
-    private Tracker findTracker(Lesson lesson){
+    public Tracker findTracker(Lesson lesson){
         for(Tracker tracker: trackers){
             if (tracker.getLessonID().equals(lesson.getLessonID())){
                 return tracker;
             }
         }
         return null;
+    }
+
+    public Double getCompletionPercentage(){
+        Double total = 0.0;
+        Double complete = 0.0;
+        for(Tracker tracker: trackers){
+            if (tracker.getState()){
+                complete++;
+            }
+            total++;
+        }
+
+        return complete/total;
     }
 
     public void completeLesson(Lesson lesson) {
