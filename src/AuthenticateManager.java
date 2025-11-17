@@ -1,6 +1,6 @@
 
 public class AuthenticateManager {
-    private final UserDatabaseManager database;
+    protected final UserDatabaseManager database;
     private final GenerationID idGenartor;
 
     public AuthenticateManager(UserDatabaseManager database) {

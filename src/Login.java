@@ -75,7 +75,7 @@ public class Login extends JFrame {
                 this.dispose();
 
                 CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
-                UserDatabaseManager userDB = new UserDatabaseManager("users.json");
+                UserDatabaseManager userDB = auth.database;
 
                 if (user.getRole().equalsIgnoreCase("student")) {
                     new StudentDashboard(new Student(user.getID(), user.getRole(), user.getUsername(), user.getEmail(), user.getHashedPassword()), courseDB, userDB);
