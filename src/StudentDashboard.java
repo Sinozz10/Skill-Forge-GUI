@@ -2,12 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 public class StudentDashboard extends DashBoard{
     public StudentDashboard(Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         super(courseDB, userDB);
         setTitle("Dashboard - " + student.getUsername());
-        navButtons.setLayout(new GridLayout(1,3, 10, 10));
+        navButtons.setLayout(new GridLayout(1,2, 10, 10));
 
         JButton viewButton = new JButton();
         viewButton.setBackground(Color.LIGHT_GRAY);
@@ -15,7 +16,7 @@ public class StudentDashboard extends DashBoard{
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new Browse());
+                changeContentPanel(new CardScrollPane(courseDB, course->student.courseIDs.contains(course.getID())));
             }
         });
         navButtons.add(viewButton);
@@ -26,10 +27,44 @@ public class StudentDashboard extends DashBoard{
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new Enroll(student));
+                changeContentPanel(new CardScrollPane(courseDB, course->!student.courseIDs.contains(course.getID())){
+                    @Override
+                    public void leftClickHandler(MouseEvent e){
+                        Component comp = e.getComponent();
+                        while (!(comp instanceof Card) && comp != null){
+                            comp = comp.getParent();
+                        }
+                        final Card clickedCard = (Card) comp;
+                        if (e.getClickCount() == 2){
+                            int confirm = JOptionPane.showConfirmDialog(StudentDashboard.this,
+                                    "Are you sure you want to enroll?",
+                                    "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                            if (confirm == JOptionPane.YES_OPTION) {
+                                Course selected = clickedCard.getCourse();
+                                student.addCourse(selected);
+                                selected.enrollStudent(student);
+
+
+                                courseDB.updateRecord(selected);
+                                courseDB.saveToFile();
+
+                                userDB.updateRecord(student);
+                                userDB.saveToFile();
+
+                                loadCoursesFromDatabase();
+                                JOptionPane.showMessageDialog(StudentDashboard.this, "Enrolled Successfully!");
+                            }
+                        }
+                    }
+                });
             }
         });
         navButtons.add(enrollButton);
     }
 
+    static void main() {
+        UserDatabaseManager userDB = new UserDatabaseManager("users.json");
+        new StudentDashboard((Student) userDB.getRecordByID("S0001"), new CourseDatabaseManager("courses.json"), userDB);
+    }
 }

@@ -28,7 +28,7 @@ public class InstructorDashboard extends DashBoard{
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    changeContentPanel(new CardScrollPane(courseDB, instructor) {
+                    changeContentPanel(new CardScrollPane(courseDB, course -> course.getInstructorID().equals(instructor.getID())) {
                         @Override
                         public void rightClickHandler(MouseEvent e){
                             Component comp = e.getComponent();

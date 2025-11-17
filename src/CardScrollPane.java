@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class CardScrollPane extends JPanel {
     private final CourseDatabaseManager courseDB;
@@ -15,16 +16,16 @@ public class CardScrollPane extends JPanel {
     private JPanel cardPanel;
     private JPanel listPanel;
     private ArrayList<Course> loadedCourses;
-    private ArrayList<Course> ownedCourses;
-    private final Instructor instructor;
+    private ArrayList<Course> availableCourses;
+    private CardScrollPaneFilter function;
 
-    public CardScrollPane(CourseDatabaseManager courseDB, Instructor instructor) {
+    public CardScrollPane(CourseDatabaseManager courseDB, CardScrollPaneFilter function) {
         this.courseDB = courseDB;
-        this.instructor = instructor;
-        ownedCourses = new ArrayList<>();
+        this.function = function;
+        availableCourses = new ArrayList<>();
         for(Course course: courseDB.getRecords()){
-            if (course.getID().equals(instructor.getID())){
-                ownedCourses.add(course);
+            if (function.filter(course)){
+                availableCourses.add(course);
             }
         }
 
@@ -72,7 +73,13 @@ public class CardScrollPane extends JPanel {
     }
 
     public void loadCoursesFromDatabase(){
-        loadedCourses = ownedCourses;
+        availableCourses = new ArrayList<>();
+        for(Course course: courseDB.getRecords()){
+            if (function.filter(course)){
+                availableCourses.add(course);
+            }
+        }
+        loadedCourses = availableCourses;
         displayLoadedCourses();
     }
 
@@ -106,10 +113,10 @@ public class CardScrollPane extends JPanel {
     public void search(){
         String key = searchBar.getText().trim().toLowerCase();
         if (key.isEmpty()) {
-            loadedCourses = ownedCourses;
+            loadedCourses = availableCourses;
         }else {
             ArrayList<Course> searched = new ArrayList<>();
-            for (Course course : ownedCourses) {
+            for (Course course : availableCourses) {
                 if (course.getTitle().contains(key)){
                     searched.add(course);
                 }
@@ -123,6 +130,6 @@ public class CardScrollPane extends JPanel {
 
     }
 
-    private void leftClickHandler(MouseEvent e) {
+    public void leftClickHandler(MouseEvent e) {
     }
 }
