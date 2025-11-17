@@ -59,6 +59,15 @@ public class CourseEdit extends JPanel {
     }
 
     private void handleEdit(){
+        String id = courseID.getText().trim();
+        String title = courseTitle.getText().trim();
+        String desc = description.getText().trim();
+
+        if (id.isEmpty() || title.isEmpty() || desc.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         Course c = databaseManager.getRecordByID(courseID.getText());
         if (c == null){
             JOptionPane.showMessageDialog(this, "Course not found", "Error", JOptionPane.ERROR_MESSAGE);
@@ -72,9 +81,9 @@ public class CourseEdit extends JPanel {
         JOptionPane.showMessageDialog(CourseEdit.this, "Course Edited Successfully!","Success", JOptionPane.INFORMATION_MESSAGE);
 
         courseID.setText("");
-        courseID.requestFocus();
         courseTitle.setText("");
         description.setText("");
+        courseID.requestFocus();
     }
 
 

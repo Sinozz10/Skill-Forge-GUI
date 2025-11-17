@@ -1,7 +1,6 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public abstract class JsonDatabaseManager<T extends Record> {
@@ -32,7 +31,7 @@ public abstract class JsonDatabaseManager<T extends Record> {
         records.add(newRecord);
     }
 
-    public void deleteCourse(String recordID) {
+    public void deleteRecord(String recordID) {
         records.removeIf(record -> recordID.equals(record.getID()));
     }
 

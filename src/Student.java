@@ -1,6 +1,10 @@
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Student extends User {
+    
+    @Expose
     private final ArrayList<Progress> progressTrackers = new ArrayList<>();
 
     public Student(String uID, String role, String username, String email, String hashedPassword) {

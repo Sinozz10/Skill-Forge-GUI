@@ -47,7 +47,7 @@ public class CourseDelete extends JPanel {
         if(courseDB.findRecord(id))  {
             int confirm = JOptionPane.showConfirmDialog(dashboard,"Are you sure you want to delete?","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
             if (confirm == JOptionPane.YES_OPTION) {
-                courseDB.deleteCourse(id);
+                courseDB.deleteRecord(id);
                 courseDB.saveToFile();
 
                 instructor.removeCourse(courseToDelete);
