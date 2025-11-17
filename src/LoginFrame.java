@@ -6,7 +6,7 @@ public class LoginFrame extends JFrame {
     private JPasswordField passWord;
     private JTextField userName;
     private JButton loginButton;
-    private JButton backButton;
+    private JButton signupButton;
 
     private final AuthenticateManager auth;
 
@@ -43,19 +43,19 @@ public class LoginFrame extends JFrame {
                 handleLogin();
             }
         });
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new EntryFrame();
-            }
-        });
         userName.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     passWord.requestFocus();
                 }
+            }
+        });
+        signupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new SignUp();
             }
         });
     }

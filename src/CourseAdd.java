@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CourseAdd extends JPanel {
     private JButton ADDButton;
@@ -11,11 +13,13 @@ public class CourseAdd extends JPanel {
     private final String instructorId;
     private final CourseDatabaseManager courseDB;
     private final UserDatabaseManager userDB;
+    private final GenerationID idGenartor;
 
     public CourseAdd(CourseDatabaseManager courseDB, UserDatabaseManager userDB, Instructor instructor) {
         this.courseDB = courseDB;
         this.userDB = userDB;
         this.instructorId = instructor.getID();
+        this.idGenartor = new GenerationID(userDB,courseDB);
 
         setLayout(new BorderLayout());
         add(add,BorderLayout.CENTER);
@@ -24,6 +28,22 @@ public class CourseAdd extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleAddCourse(instructor);
+            }
+        });
+        CourseName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    description.requestFocus();
+                }
+            }
+        });
+        description.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    handleAddCourse(instructor);
+                }
             }
         });
     }
@@ -37,7 +57,7 @@ public class CourseAdd extends JPanel {
         }
 
         try{
-            String courseID = generateCourseID();
+            String courseID = idGenartor.generateCourseID();
             Course newCourse = new Course(courseID, courseName, courseDescription, instructorId);
             courseDB.addRecord(newCourse);
             courseDB.saveToFile();
@@ -50,32 +70,11 @@ public class CourseAdd extends JPanel {
 
             CourseName.setText("");
             CourseName.requestFocus();
+            description.setText("");
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "Error adding course!", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
 
-    private String generateCourseID() {
-        int highest = getHighestID();// Count existing users of this role
-        return String.format("C%04d", highest + 1);
-    }
-
-    private int getHighestID() {
-        int highest = 0;
-        for (Course course : courseDB.getRecords()) {
-            String courseId = course.getID();
-            // 3mltaha 3ashan t-Extract number from ID
-            try {
-                String numberPart = courseId.substring(1); // Remove prefix
-                int idNumber = Integer.parseInt(numberPart);
-                if (idNumber > highest) {
-                    highest = idNumber;
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return highest;
-    }
 }

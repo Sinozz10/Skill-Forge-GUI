@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Student extends User{
     private final ArrayList<Progress> progressTrackers = new ArrayList<>();

@@ -1,9 +1,11 @@
 
 public class AuthenticateManager {
     private final UserDatabaseManager database;
+    private final GenerationID idGenartor;
 
     public AuthenticateManager(UserDatabaseManager database) {
         this.database = database;
+        this.idGenartor = new GenerationID(database,null);
     }
 
     public User signup(String username, String email, String password, String role) {
@@ -21,7 +23,7 @@ public class AuthenticateManager {
         String hashedPassword = PasswordHashing.hashPassword(password);
 
         // Generate unique ID
-        String userId = generatedID(role);
+        String userId = idGenartor.generateUserID(role);
 
         User newUser;
         if (role.equalsIgnoreCase("student")) {
@@ -54,29 +56,5 @@ public class AuthenticateManager {
         return null; // Wrong password
     }
 
-    private String generatedID(String role) {
-        String prefix = role.equalsIgnoreCase("student") ? "S" : "I";
-        int highest = getHighestID(role);// Count existing users of this role
-        return String.format("%s%04d", prefix, highest + 1);
-    }
 
-     private int getHighestID(String role) {
-        int highest = 0;
-        for (User user : database.getRecords()) {
-            if (user.getRole().equalsIgnoreCase(role)) {
-                String userId = user.getID();
-                // 3mltaha 3ashan t-Extract number from ID
-                try {
-                    String numberPart = userId.substring(1); // Remove prefix
-                    int idNumber = Integer.parseInt(numberPart);
-                    if (idNumber > highest) {
-                        highest = idNumber;
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        }
-        return highest;
-    }
 }

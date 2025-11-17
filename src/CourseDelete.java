@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CourseDelete extends JPanel {
     private JTextField deleteID;
@@ -23,6 +25,14 @@ public class CourseDelete extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDelete(instructor);
+            }
+        });
+        deleteID.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    handleDelete(instructor);
+                }
             }
         });
     }

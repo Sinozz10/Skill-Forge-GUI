@@ -57,7 +57,7 @@ public class DashBoard extends JFrame{
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
             this.dispose();
-            new EntryFrame();
+            new LoginFrame();
         }
     }
 }
