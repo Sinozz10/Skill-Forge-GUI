@@ -15,7 +15,7 @@ public class Login extends JFrame {
         this.auth= new AuthenticateManager(database);
         setTitle("Login");
         setContentPane(login);
-        setSize(280, 200);
+        setSize(300, 210);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
