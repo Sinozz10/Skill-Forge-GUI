@@ -31,7 +31,7 @@ public class SignUp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new LoginFrame();
+                new Login();
             }
         });
         signUpButton.addActionListener(new ActionListener() {
@@ -120,7 +120,7 @@ public class SignUp extends JFrame {
             User newUser = authManager.signup(username, email, password, userRole);
             JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + " You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-            new LoginFrame();
+            new Login();
         } catch (IllegalArgumentException e){
             System.out.println("Status: FAILED - " + e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage(), "Signup Failed", JOptionPane.ERROR_MESSAGE);

@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 
-public class LoginFrame extends JFrame {
+public class Login extends JFrame {
     private JPanel login;
     private JPasswordField passWord;
     private JTextField userName;
@@ -10,7 +10,7 @@ public class LoginFrame extends JFrame {
 
     private final AuthenticateManager auth;
 
-    public LoginFrame() {
+    public Login() {
         UserDatabaseManager database = new UserDatabaseManager("users.json");
         this.auth= new AuthenticateManager(database);
         setTitle("Login");
