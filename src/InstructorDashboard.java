@@ -9,7 +9,7 @@ public class InstructorDashboard extends DashBoard{
     public InstructorDashboard(Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         super(courseDB, userDB);
         setTitle("Dashboard - " + instructor.getUsername());
-        navButtons.setLayout(new GridLayout(1,2, 10, 10));
+        navButtons.setLayout(new GridLayout(1,3, 10, 10));
 
         JButton addButton = new JButton();
         addButton.setBackground(Color.LIGHT_GRAY);
@@ -22,10 +22,10 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(addButton);
 
-        JButton viewButton = new JButton();
-        viewButton.setBackground(Color.LIGHT_GRAY);
-        viewButton.setText("My Courses");
-        viewButton.addActionListener(new ActionListener() {
+        JButton viewCoursesButton = new JButton();
+        viewCoursesButton.setBackground(Color.LIGHT_GRAY);
+        viewCoursesButton.setText("My Courses");
+        viewCoursesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     changeContentPanel(new CardScrollPane(courseDB, course -> course.getInstructorID().equals(instructor.getID())) {
@@ -73,7 +73,18 @@ public class InstructorDashboard extends DashBoard{
                     });
             }
         });
-        navButtons.add(viewButton);
+        navButtons.add(viewCoursesButton);
+
+        JButton viewStudentsButton = new JButton();
+        viewStudentsButton.setBackground(Color.LIGHT_GRAY);
+        viewStudentsButton.setText("Add Course");
+        viewStudentsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPanel(new ViewStudents(courseDB, userDB, instructor));
+            }
+        });
+        navButtons.add(viewStudentsButton);
     }
 
     private void handleDelete(Instructor instructor, Course course) {
