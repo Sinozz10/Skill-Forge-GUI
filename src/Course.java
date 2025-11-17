@@ -81,11 +81,11 @@ public class Course implements Record{
         chapters.add(chapter);
     }
 
-    public void deleteLesson(Chapter chapter) {
+    public void deleteChapter(Chapter chapter) {
         chapters.remove(chapter);
     }
 
-    public Chapter getLessonById(String courseId) {
+    public Chapter getChapterById(String courseId) {
         for (Chapter chapter : chapters) {
             if (chapter.getChapterID().equals(courseId)) {
                 return chapter;

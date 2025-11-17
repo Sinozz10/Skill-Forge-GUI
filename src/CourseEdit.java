@@ -60,6 +60,11 @@ public class CourseEdit extends JPanel {
 
     private void handleEdit(){
         Course c = databaseManager.getRecordByID(courseID.getText());
+        if (c == null){
+            JOptionPane.showMessageDialog(this, "Course not found", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         c.setTitle(courseTitle.getText());
         c.setDescription(description.getText());
         databaseManager.updateRecord(c);

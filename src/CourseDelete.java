@@ -39,8 +39,10 @@ public class CourseDelete extends JPanel {
 
     private void handleDelete(Instructor instructor) {
         String id = deleteID.getText().trim();
+        Course courseToDelete = courseDB.getRecordByID(id);
         if  (id.isEmpty()) {
             JOptionPane.showMessageDialog(dashboard, "Please enter your ID", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
         }
         if(courseDB.findRecord(id))  {
             int confirm = JOptionPane.showConfirmDialog(dashboard,"Are you sure you want to delete?","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
@@ -48,7 +50,7 @@ public class CourseDelete extends JPanel {
                 courseDB.deleteCourse(id);
                 courseDB.saveToFile();
 
-                instructor.removeCourse(courseDB.getRecordByID(id));
+                instructor.removeCourse(courseToDelete);
                 userDB.updateRecord(instructor);
                 userDB.saveToFile();
 

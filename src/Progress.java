@@ -28,7 +28,7 @@ public class Progress {
 
     private Tracker findTracker(Lesson lesson){
         for(Tracker tracker: trackers){
-            if (tracker.getLesson() == lesson){
+            if (tracker.getLessonID().equals(lesson.getLessonID())){
                 return tracker;
             }
         }
@@ -40,7 +40,7 @@ public class Progress {
         if (tracker != null){
             tracker.setState(true);
         }else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Lesson not found in tracker");
         }
     }
 
@@ -49,7 +49,7 @@ public class Progress {
         if (tracker != null){
             tracker.setState(false);
         }else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Uncompleted lesson");
         }
     }
 
@@ -58,17 +58,17 @@ public class Progress {
     }
 
     public void updateTrackers(Course course){
-        ArrayList<Lesson> completed = new ArrayList<>();
+        ArrayList<String> completed = new ArrayList<>();
         for (Tracker tracker: trackers){
             if (tracker.getState()){
-                completed.add(tracker.getLesson());
+                completed.add(tracker.getLessonID());
             }
         }
 
         trackers.clear();
         for (Chapter chapter: course.getChapters()){
             for (Lesson lesson: chapter.getLessons()){
-                if (completed.contains(lesson)){
+                if (completed.contains(lesson.getLessonID())){
                     trackers.add(new Tracker(lesson, true));
                 }else {
                     trackers.add(new Tracker(lesson));

@@ -54,6 +54,7 @@ public class CourseAdd extends JPanel {
 
         if(courseName.isEmpty() || courseDescription.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a valid course name!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         try{
@@ -69,8 +70,9 @@ public class CourseAdd extends JPanel {
             JOptionPane.showMessageDialog(this, "Course added successfully!" + courseID, "Success", JOptionPane.INFORMATION_MESSAGE);
 
             CourseName.setText("");
-            CourseName.requestFocus();
             description.setText("");
+            CourseName.requestFocus();
+
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "Error adding course!", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();

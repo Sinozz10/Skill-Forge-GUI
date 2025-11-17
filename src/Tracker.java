@@ -1,19 +1,19 @@
 public class Tracker {
-    private final Lesson lesson;
+    private final String lessonID;
     private boolean state;
 
     public Tracker(Lesson lesson) {
-        this.lesson = lesson;
+        this.lessonID = lesson.getLessonID();
         this.state = false;
     }
 
     public Tracker(Lesson lesson, boolean state) {
-        this.lesson = lesson;
+        this.lessonID = lesson.getLessonID();
         this.state = state;
     }
 
-    public Lesson getLesson() {
-        return lesson;
+    public String getLessonID() {
+        return lessonID;
     }
 
     public boolean getState() {
