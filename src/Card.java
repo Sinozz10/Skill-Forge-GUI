@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Card extends JPanel{
     private JPanel cardPanel;
@@ -15,5 +17,24 @@ public class Card extends JPanel{
         instructor.setText("Instructor #: " + course.getInstructorID());
         description.setText(course.getDescription());
         description.setEditable(false);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    leftClickHandler();
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    rightClickHandler();
+                }
+            }
+        });
+    }
+
+    public void leftClickHandler(){
+        System.out.println("left click detected");
+    }
+
+    public void rightClickHandler(){
+        System.out.println("right click detected");
     }
 }
