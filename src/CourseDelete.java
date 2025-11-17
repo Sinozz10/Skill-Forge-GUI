@@ -4,13 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CourseDelete extends JPanel {
-    private JTextField DeleteID;
+    private JTextField deleteID;
     private JButton confirmDeleteButton;
     private JPanel delete;
     private final CourseDatabaseManager databaseManager;
+    private final InstructorDashboard dashboard;
 
-    public CourseDelete(CourseDatabaseManager databaseManager, InstructorDashboard dashboard) {
+    public CourseDelete(CourseDatabaseManager databaseManager,  InstructorDashboard dashboard) {
         this.databaseManager = databaseManager;
+        this.dashboard = dashboard;
 
         setLayout(new BorderLayout());
         add(delete, BorderLayout.CENTER);
@@ -18,13 +20,29 @@ public class CourseDelete extends JPanel {
         confirmDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String id = DeleteID.getText();
-                if(databaseManager.findRecord(id))  {
-                    databaseManager.deleteCourse(id);
-                } else {
-                    JOptionPane.showMessageDialog(dashboard,"Invalid ID");
-                }
+                handleDelete();
             }
         });
+    }
+
+    private void handleDelete() {
+        String id = deleteID.getText().trim();
+        if  (id.isEmpty()) {
+            JOptionPane.showMessageDialog(dashboard, "Please enter your ID", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        if(databaseManager.findRecord(id))  {
+            int confirm = JOptionPane.showConfirmDialog(dashboard,"Are you sure you want to delete?","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.YES_OPTION) {
+                databaseManager.deleteCourse(id);
+                databaseManager.saveToFile();
+                JOptionPane.showMessageDialog(dashboard, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
+                deleteID.setText("");
+                deleteID.requestFocus();
+            }
+        } else {
+            JOptionPane.showMessageDialog(dashboard,"Invalid ID", "Warning", JOptionPane.WARNING_MESSAGE);
+            deleteID.setText("");
+            deleteID.requestFocus();
+        }
     }
 }

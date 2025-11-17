@@ -35,9 +35,9 @@ public abstract class JsonDatabaseManager<T extends Record> {
     }
 
     public T getRecordByID(String recordID) {
-        for (T records: records){
-            if (records.getID().equals(recordID)){
-                return records;
+        for (T record: records){
+            if (recordID.equals(record.getID())){
+                return record;
             }
         }
         return null;

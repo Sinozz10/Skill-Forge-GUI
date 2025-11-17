@@ -26,7 +26,7 @@ public class StudentDashboard extends DashBoard{
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new Enrol((Student) currUser));
+                changeContentPanel(new Enroll((Student) currUser));
             }
         });
         navButtons.add(enrollButton);

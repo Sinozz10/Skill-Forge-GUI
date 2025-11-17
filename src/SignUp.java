@@ -66,7 +66,6 @@ public class SignUp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleSignUp();
-                dispose();
             }
         });
     }
@@ -108,7 +107,6 @@ public class SignUp extends JFrame {
         try {
             User newUser = authManager.signup(username, email, password, userRole);
             JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + " You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
             dispose();
             new LoginFrame();
         } catch (IllegalArgumentException e){

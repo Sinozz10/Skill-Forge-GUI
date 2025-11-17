@@ -20,14 +20,13 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
             return;
         }
         if (listType == null) {
-            listType = new TypeToken<ArrayList<User>>(){}.getType();
+            listType = new TypeToken<ArrayList<Course>>(){}.getType();
         }
         try (FileReader reader = new FileReader(filename)) {
             ArrayList<Course> list = gson.fromJson(reader, listType);
             if (list != null) {
                 records = list;
             }
-            System.out.println(records);
         } catch (IOException e) {
             System.err.println("Error file not found: "+e.getMessage());
             e.printStackTrace();

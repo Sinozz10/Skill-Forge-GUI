@@ -1,33 +1,31 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Enrol extends JPanel {
+public class Enroll extends JPanel {
 
-    public Enrol(Student student) {
-
-        CourseDatabaseManager d = new CourseDatabaseManager("courses.json");
-
+    public Enroll(Student student) {
+        UserDatabaseManager userDb = new UserDatabaseManager("users.json");
+        CourseDatabaseManager databaseManager = new CourseDatabaseManager("courses.json");
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel("Enroll In a Course");
+        add(title, BorderLayout.NORTH);
 
+        JButton enrollButton = new JButton("Enroll");
+        enrollButton.setBackground(Color.LIGHT_GRAY);
 
         DefaultListModel<Course> model = new DefaultListModel<>();
 
 
-        for (int i = 0; i < d.getRecords().size(); i++) {
-            model.addElement(d.getRecords().get(i));
+        for (int i = 0; i < databaseManager.getRecords().size(); i++) {
+            model.addElement(databaseManager.getRecords().get(i));
         }
 
         JList<Course> l = new JList<>(model);
         JScrollPane scroll = new JScrollPane(l);
         add(scroll, BorderLayout.CENTER);
 
-        JButton enrollButton = new JButton("Enroll");
-        enrollButton.setBackground(Color.LIGHT_GRAY);
-
         enrollButton.addActionListener(e -> {
-
             Course selected = l.getSelectedValue();
 
             if (selected == null) {
@@ -37,8 +35,8 @@ public class Enrol extends JPanel {
 
 
             boolean already = false;
-            for (int i = 0; i < student.getEnrolledCourses().size(); i++) {
-                if (student.getEnrolledCourses().get(i).equals(selected.getID())) {
+            for (Course course: student.getCourses()) {
+                if (course.getID().equals(selected)) {
                     already = true;
                     break;
                 }
@@ -49,19 +47,18 @@ public class Enrol extends JPanel {
                 return;
             }
 
-
-            student.getEnrolledCourses().add(selected.getID());
-
-
+            student.addCourse(selected);
             selected.enrollStudent(student);
 
 
-            d.updateRecord(selected);
-            d.saveToFile();
+            databaseManager.updateRecord(selected);
+            databaseManager.saveToFile();
+
+            userDb.updateRecord(student);
+            userDb.saveToFile();
 
             JOptionPane.showMessageDialog(this, "Enrolled Successfully!");
         });
-
         add(enrollButton, BorderLayout.SOUTH);
     }
 }
