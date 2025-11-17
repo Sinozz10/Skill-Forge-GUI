@@ -22,32 +22,46 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(addButton);
 
-        JButton editButton = new JButton();
-        editButton.setBackground(Color.LIGHT_GRAY);
-        editButton.setText("My Courses");
-        editButton.addActionListener(new ActionListener() {
+        JButton viewButton = new JButton();
+        viewButton.setBackground(Color.LIGHT_GRAY);
+        viewButton.setText("My Courses");
+        viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     changeContentPanel(new CardScrollPane(courseDB, instructor) {
                         @Override
                         public void rightClickHandler(MouseEvent e){
+                            Component comp = e.getComponent();
+                            while (!(comp instanceof Card) && comp != null){
+                                comp = comp.getParent();
+                            }
+                            final Card clickedCard = (Card) comp;
+
+                            // pop up menu
                             final JPopupMenu popupMenu = new JPopupMenu();
 
+                            // edit item
                             JMenuItem editItem = new JMenuItem("Edit");
                             editItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    changeContentPanel(new CourseEdit(courseDB));
                                 }
                             });
                             popupMenu.add(editItem);
 
+                            //delete item
                             JMenuItem deleteItem = new JMenuItem("Delete");
                             deleteItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,"Are you sure you want to delete?","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+                                    int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
+                                            "Are you sure you want to delete?",
+                                            "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
                                     if (confirm == JOptionPane.YES_OPTION) {
-                                        System.out.println(e.getSource());;
+                                        handleDelete(instructor, clickedCard.getCourse());
+                                        loadCoursesFromDatabase();
                                     }
 
                                 }
@@ -59,7 +73,7 @@ public class InstructorDashboard extends DashBoard{
                     });
             }
         });
-        navButtons.add(editButton);
+        navButtons.add(viewButton);
     }
 
     private void handleDelete(Instructor instructor, Course course) {

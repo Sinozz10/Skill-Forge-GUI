@@ -31,8 +31,7 @@ public class CardScrollPane extends JPanel {
         listPanel.setLayout(new BorderLayout());
         listPanel.add(scrollPane, BorderLayout.CENTER);
 
-        loadedCourses = courseDB.getRecords();
-        displayLoadedCourses();
+        loadCoursesFromDatabase();
 
         searchButton.setBackground(Color.LIGHT_GRAY);
         searchButton.addActionListener(new ActionListener() {
@@ -63,6 +62,11 @@ public class CardScrollPane extends JPanel {
         });
 
         return sortedCourses;
+    }
+
+    public void loadCoursesFromDatabase(){
+        loadedCourses = courseDB.getRecords();
+        displayLoadedCourses();
     }
 
     public void displayLoadedCourses(){
