@@ -78,10 +78,10 @@ public class Login extends JFrame {
                 UserDatabaseManager userDB = auth.database;
 
                 if (user.getRole().equalsIgnoreCase("student")) {
-                    new StudentDashboard(new Student(user.getID(), user.getRole(), user.getUsername(), user.getEmail(), user.getHashedPassword()), courseDB, userDB);
+                    new StudentDashboard((Student) userDB.getRecordByID(user.getID()), courseDB, userDB);
                 } else if (user.getRole().equalsIgnoreCase("instructor")) {
 
-                    new InstructorDashboard(new Instructor(user.getID(), user.getRole(), user.getUsername(), user.getEmail(), user.getHashedPassword()), courseDB, userDB);
+                    new InstructorDashboard((Instructor) userDB.getRecordByID(user.getID()), courseDB, userDB);
                 }
 
             } else {
