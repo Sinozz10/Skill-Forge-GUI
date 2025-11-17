@@ -1,10 +1,12 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.*;
 import java.util.ArrayList;
 
 public abstract class JsonDatabaseManager<T extends Record> {
     protected final String filename;
-    protected final Gson gson = new Gson();
+    protected final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     protected ArrayList<T> records = new ArrayList<>();
 
     public JsonDatabaseManager(String filename){
