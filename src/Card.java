@@ -12,7 +12,8 @@ public class Card extends JPanel{
         add(cardPanel, BorderLayout.CENTER);
 
         title.setText(course.getTitle());
-        instructor.setText(course.getInstructorID());
+        instructor.setText("Instructor #: " + course.getInstructorID());
         description.setText(course.getDescription());
+        description.setEditable(false);
     }
 }

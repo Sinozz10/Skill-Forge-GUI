@@ -1,3 +1,3 @@
 void main() {
-    new LoginFrame();
+    new Login();
 }
