@@ -28,7 +28,7 @@ public class InstructorDashboard extends DashBoard{
         viewCoursesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    changeContentPanel(new CardScrollPane(courseDB, course -> course.getInstructorID().equals(instructor.getID())) {
+                    changeContentPanel(new CardScrollPane(courseDB, course -> instructor.getID().equals(course.getInstructorID())) {
                         @Override
                         public void rightClickHandler(MouseEvent e){
                             Component comp = e.getComponent();
@@ -77,7 +77,7 @@ public class InstructorDashboard extends DashBoard{
 
         JButton viewStudentsButton = new JButton();
         viewStudentsButton.setBackground(Color.LIGHT_GRAY);
-        viewStudentsButton.setText("Add Course");
+        viewStudentsButton.setText("My Students");
         viewStudentsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
