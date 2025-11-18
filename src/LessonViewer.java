@@ -28,7 +28,7 @@ public class LessonViewer extends JPanel {
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
         boolean isCompleted = false;
         if (progress != null) {
-            Tracker tracker = progress.findTracker(lesson);
+            Tracker tracker = progress.getTrackerByID(lesson.getLessonID());
             if (tracker != null) {
                 isCompleted = tracker.isComplete();
             }
@@ -71,9 +71,9 @@ public class LessonViewer extends JPanel {
         }
 
         if (completeCheckbox.isSelected()) {
-            progress.completeLesson(lesson);
+            progress.completeLesson(lesson.getLessonID());
         } else {
-            progress.unCompleteLesson(lesson);
+            progress.unCompleteLesson(lesson.getLessonID());
         }
 
         userDB.updateRecord(student);

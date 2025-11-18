@@ -4,8 +4,8 @@ import java.util.List;
 public class Course implements Record{
     private final String courseID, instructorID;
     private String title , description;
-    private List<Chapter> chapters = new ArrayList<>();
-    private List<String> studentIDs = new ArrayList<>();
+    private ArrayList<Chapter> chapters = new ArrayList<>();
+    private ArrayList<String> studentIDs = new ArrayList<>();
 
     public Course(String courseID, String title, String description, String instructorID) {
         this.courseID = courseID;
@@ -43,11 +43,11 @@ public class Course implements Record{
         return instructorID;
     }
 
-    public List<Chapter> getChapters() {
+    public ArrayList<Chapter> getChapters() {
         return chapters;
     }
 
-    public List<String> getStudentIDs() {
+    public ArrayList<String> getStudentIDs() {
         return studentIDs;
     }
 
@@ -59,11 +59,11 @@ public class Course implements Record{
         this.description = description;
     }
 
-    public void setChapters(List<Chapter> chapters) {
+    public void setChapters(ArrayList<Chapter> chapters) {
         this.chapters = chapters;
     }
 
-    public void setStudents(List<String> studentIDs) {
+    public void setStudents(ArrayList<String> studentIDs) {
         this.studentIDs = studentIDs;
     }
 

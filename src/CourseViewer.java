@@ -40,7 +40,7 @@ public class CourseViewer extends JPanel {
                     for (Lesson lesson : chapter.getLessons()) {
                         boolean completed = false;
                         if (progress != null) {
-                            Tracker tracker = progress.findTracker(lesson);
+                            Tracker tracker = progress.getTrackerByID(lesson.getLessonID());
                             if (tracker != null) {
                                 completed = tracker.isComplete();
                             }

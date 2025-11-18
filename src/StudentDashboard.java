@@ -10,6 +10,11 @@ public class StudentDashboard extends DashBoard{
         setTitle("Dashboard - " + student.getUsername());
         navButtons.setLayout(new GridLayout(1,2, 10, 10));
 
+        for (Progress prog: student.getAllProgressTrackers()){
+            prog.updateTrackers(courseDB.getRecordByID(prog.getCourseID()));
+        }
+        userDB.saveToFile();
+
         JButton viewButton = new JButton();
         viewButton.setBackground(Color.LIGHT_GRAY);
         viewButton.setText("My Courses ");

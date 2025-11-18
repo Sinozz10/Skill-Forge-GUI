@@ -18,9 +18,9 @@ public class Progress {
         }
     }
 
-    public Tracker findTracker(Lesson lesson){
+    public Tracker getTrackerByID(String lessonID){
         for(Tracker tracker: trackers){
-            if (tracker.getLessonID().equals(lesson.getLessonID())){
+            if (tracker.getLessonID().equals(lessonID)){
                 return tracker;
             }
         }
@@ -40,8 +40,8 @@ public class Progress {
         return complete/total;
     }
 
-    public void completeLesson(Lesson lesson) {
-        Tracker tracker = findTracker(lesson);
+    public void completeLesson(String lessonID) {
+        Tracker tracker = getTrackerByID(lessonID);
         if (tracker != null){
             tracker.setComplete(true);
         }else {
@@ -49,8 +49,8 @@ public class Progress {
         }
     }
 
-    public void unCompleteLesson(Lesson lesson) {
-        Tracker tracker = findTracker(lesson);
+    public void unCompleteLesson(String lessonID) {
+        Tracker tracker = getTrackerByID(lessonID);
         if (tracker != null){
             tracker.setComplete(false);
         }else {
@@ -63,6 +63,10 @@ public class Progress {
     }
 
     public void updateTrackers(Course course){
+        if (!courseID.equals(course.getID())){
+            throw new IllegalArgumentException("Incorrect Course");
+        }
+
         ArrayList<String> completed = new ArrayList<>();
         for (Tracker tracker: trackers){
             if (tracker.isComplete()){

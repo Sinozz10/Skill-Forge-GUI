@@ -33,7 +33,7 @@ public class CardScrollPane extends JPanel {
 
         scrollPane = new JScrollPane(cardPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         listPanel.setLayout(new BorderLayout());
         listPanel.add(scrollPane, BorderLayout.CENTER);
