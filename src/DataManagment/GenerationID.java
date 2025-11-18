@@ -30,14 +30,14 @@ public class GenerationID {
         this.userDatabase = userDatabase;
     }
 
-    // Generate CustomDataTypes.User ID (CustomDataTypes.Student or CustomDataTypes.Instructor)
+    // Generate User ID (Student or Instructor)
     public String generateUserID(String role) {
         String prefix = role.equalsIgnoreCase("student") ? "S" : "I";
         int highest = getHighestUserID(role);
         return String.format("%s%04d", prefix, highest + 1);
     }
 
-    // Generate CustomDataTypes.Course ID
+    // Generate Course ID
     public String generateCourseID() {
         int highest = getHighestCourseID();
         return String.format("C%04d", highest + 1);
@@ -87,7 +87,7 @@ public class GenerationID {
         return String.format("CH%04d", highest + 1);
     }
 
-    // Generate CustomDataTypes.Lesson ID
+    // Generate Lesson ID
     public String generateLessonID() {
         int highest = getHighestLessonID();
         return String.format("L%04d", highest + 1);
