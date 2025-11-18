@@ -19,11 +19,15 @@ public class CourseEdit extends JPanel {
     private JPanel edit;
     private final CourseDatabaseManager databaseManager;
 
-    public CourseEdit(CourseDatabaseManager databaseManager){
+    public CourseEdit(CourseDatabaseManager databaseManager, Course course){
         this.databaseManager = databaseManager;
 
         setLayout(new BorderLayout());
         add(edit, BorderLayout.CENTER);
+
+        courseID.setText(course.getID());
+        courseTitle.setText(course.getTitle());
+        description.setText(course.getDescription());
 
         updateButton.addActionListener(new ActionListener() {
             @Override

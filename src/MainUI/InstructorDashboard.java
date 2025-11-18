@@ -57,7 +57,7 @@ public class InstructorDashboard extends DashBoard{
                         editItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                changeContentPanel(new CourseEdit(courseDB));
+                                changeContentPanel(new CourseEdit(courseDB, clickedCard.getCourse()));
                             }
                         });
                         popupMenu.add(editItem);
