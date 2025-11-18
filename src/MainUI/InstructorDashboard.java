@@ -27,78 +27,13 @@ public class InstructorDashboard extends DashBoard{
         navButtons.setLayout(new GridLayout(1,5, 10, 10));
         setResizable(false);
 
-        JButton addButton = new JButton("Add Course");
-        addButton.setForeground(Color.BLACK);
-        addButton.setBackground(Color.LIGHT_GRAY);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseAdd(courseDB, userDB, instructor));
-            }
-        });
-
         JButton viewCoursesButton = new JButton("My Courses");
         viewCoursesButton.setForeground(Color.BLACK);
         viewCoursesButton.setBackground(Color.LIGHT_GRAY);
         viewCoursesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardScrollPane pane = new CardScrollPane(courseDB, course -> instructor.getID().equals(course.getInstructorID())) {
-                    @Override
-                    public void rightClickHandler(MouseEvent e){
-                        Component comp = e.getComponent();
-                        while (!(comp instanceof Card) && comp != null){
-                            comp = comp.getParent();
-                        }
-                        final Card clickedCard = (Card) comp;
-
-                        // pop up menu
-                        final JPopupMenu popupMenu = new JPopupMenu();
-
-                        // edit item
-                        JMenuItem editItem = new JMenuItem("Edit");
-                        editItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        editItem.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                assert clickedCard != null;
-                                changeContentPanel(new CourseEdit(courseDB, clickedCard.getCourse()));
-                            }
-                        });
-                        popupMenu.add(editItem);
-
-                        //delete item
-                        JMenuItem deleteItem = new JMenuItem("Delete");
-                        deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        deleteItem.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
-                                        "Are you sure you want to delete?",
-                                        "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-
-                                if (confirm == JOptionPane.YES_OPTION) {
-                                    handleDelete(instructor, clickedCard.getCourse());
-                                    loadCoursesFromDatabase();
-                                }
-
-                            }
-                        });
-                        popupMenu.add(deleteItem);
-
-                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                    }
-                };
-
-                JPanel viewPanel = new JPanel();
-                viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
-                viewPanel.add(pane);
-                JPanel addPanel = new JPanel();
-                addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.X_AXIS));
-                addPanel.add(addButton);
-                viewPanel.add(addPanel);
-
-                changeContentPanel(viewPanel);
+                handleViewCourses();
             }
         });
         navButtons.add(viewCoursesButton);
@@ -114,33 +49,80 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(viewStudentsButton);
 
-        // Chapter & Lesson Management
-        JButton chapterButton = new JButton("Manage Chapters");
-        chapterButton.setForeground(Color.BLACK);
-        chapterButton.setBackground(Color.LIGHT_GRAY);
-        chapterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new ChapterManager(courseDB,userDB));
-            }
-        });
-        navButtons.add(chapterButton);
-
-
-        JButton lessonButton = new JButton("Manage Lessons");
-        lessonButton.setForeground(Color.BLACK);
-        lessonButton.setBackground(Color.LIGHT_GRAY);
-        lessonButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new LessonManager(courseDB,userDB));
-            }
-        });
-        navButtons.add(lessonButton);
-
         handleHomeButton();
     }
 
+
+    public void handleViewCourses(){
+        JButton addButton = new JButton("Add Course");
+        addButton.setForeground(Color.BLACK);
+        addButton.setBackground(Color.LIGHT_GRAY);
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPanel(new CourseAdd(courseDB, userDB, instructor));
+            }
+        });
+
+        CardScrollPane pane = new CardScrollPane(courseDB, course -> instructor.getID().equals(course.getInstructorID())) {
+            @Override
+            public void rightClickHandler(MouseEvent e){
+                Component comp = e.getComponent();
+                while (!(comp instanceof Card) && comp != null){
+                    comp = comp.getParent();
+                }
+                final Card clickedCard = (Card) comp;
+
+                // pop up menu
+                final JPopupMenu popupMenu = new JPopupMenu();
+
+                //delete item
+                JMenuItem deleteItem = new JMenuItem("Delete");
+                deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                deleteItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
+                                "Are you sure you want to delete?",
+                                "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                        if (confirm == JOptionPane.YES_OPTION) {
+                            handleDelete(instructor, clickedCard.getCourse());
+                            loadCoursesFromDatabase();
+                        }
+
+                    }
+                });
+                popupMenu.add(deleteItem);
+
+                popupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+
+            @Override
+            public void leftClickHandler(MouseEvent e){
+                Component comp = e.getComponent();
+                while (!(comp instanceof Card) && comp != null){
+                    comp = comp.getParent();
+                }
+                final Card clickedCard = (Card) comp;
+                if (e.getClickCount() == 2){
+                    assert clickedCard != null;
+                    Course selectedCourse = clickedCard.getCourse();
+                    changeContentPanel(new EditableCourseView(selectedCourse, instructor, courseDB, userDB, InstructorDashboard.this));
+                }
+            }
+        };
+
+        JPanel viewPanel = new JPanel();
+        viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
+        viewPanel.add(pane);
+        JPanel addPanel = new JPanel();
+        addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.X_AXIS));
+        addPanel.add(addButton);
+        viewPanel.add(addPanel);
+
+        changeContentPanel(viewPanel);
+    }
 
     private void handleDelete(Instructor instructor, Course course) {
         String id = course.getID();

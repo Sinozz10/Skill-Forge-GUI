@@ -8,7 +8,7 @@ public class Chapter {
     private int order;
     private String title;
 
-    public Chapter(String chapterID, String courseID,String title, int order) {
+    public Chapter(String chapterID, String courseID, String title, int order) {
         this.chapterID = chapterID;
         this.courseID = courseID;
         this.order = order;

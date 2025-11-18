@@ -1,10 +1,13 @@
 package MainUI;
 
 import CustomDataTypes.*;
+import CustomUIElements.Card;
 import CustomUIElements.CollapsablePanel;
 import CustomUIElements.LessonPanel;
 import DataManagment.CourseDatabaseManager;
 import DataManagment.UserDatabaseManager;
+import Dialogs.ChapterDialog;
+import Dialogs.LessonDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,11 +38,13 @@ public class EditableCourseView extends JPanel{
     private Lesson activeLesson = null;
     private JTextPane content = new JTextPane();
     private JPanel coursesPanel = new JPanel();
+    private InstructorDashboard dashboard;
 
-    public EditableCourseView(Course course, Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
+    public EditableCourseView(Course course, Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB, InstructorDashboard dashboard) {
         this.userDB = userDB;
         this.courseDB = courseDB;
         this.course = course;
+        this.dashboard = dashboard;
 
         setLayout(new BorderLayout());
         add(ecvPanel, BorderLayout.CENTER);
@@ -57,6 +62,7 @@ public class EditableCourseView extends JPanel{
                 course.setDescription(descriptionTextPane.getText());
                 course.setTitle(courseTitle.getText());
                 courseDB.saveToFile();
+                dashboard.handleViewCourses();
             }
         });
 
@@ -224,15 +230,31 @@ public class EditableCourseView extends JPanel{
     }
 
     private void addChapter(ActionEvent e){
+        Chapter chapter = new ChapterDialog(dashboard, course, courseDB).getResult();
 
-        courseDB.saveToFile();
-        generateSideBar();
+        if (chapter != null){
+            course.addChapter(chapter);
+            courseDB.saveToFile();
+            generateSideBar();
+        }
     }
 
     private void addLesson(ActionEvent e){
+        Component comp =(Component) e.getSource();
+        while (!(comp instanceof CollapsablePanel) && comp != null){
+            comp = comp.getParent();
+        }
+        CollapsablePanel clickedPanel = (CollapsablePanel) comp;
+        assert clickedPanel != null;
+        Chapter chapter = course.getChapterById(clickedPanel.getId());
 
-        courseDB.saveToFile();
-        generateSideBar();
+        Lesson lesson = new LessonDialog(dashboard, chapter, courseDB).getResult();
+
+        if (lesson != null){
+            chapter.addLesson(lesson);
+            courseDB.saveToFile();
+            generateSideBar();
+        }
     }
 
     private void deleteChapter(ActionEvent e){
@@ -310,20 +332,5 @@ public class EditableCourseView extends JPanel{
         contentPanel.add(panel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
-    }
-
-    static void main() {
-        UserDatabaseManager userDB = new UserDatabaseManager("users.json");
-        CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
-        Course course = courseDB.getRecordByID("C0006");
-        Instructor instructor = (Instructor) userDB.getRecordByID("I0002");
-
-        JFrame frame = new JFrame();
-        frame.setSize(900, 550);
-        frame.setLayout(new BorderLayout());
-        frame.add(new EditableCourseView(course, instructor, courseDB, userDB), BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }
