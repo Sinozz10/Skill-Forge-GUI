@@ -12,10 +12,12 @@ public class CollapsablePanel extends JPanel{
     private JLabel arrowLabel;
     private JPanel contentPanel;
     private String title;
+    private String id;
     private boolean expanded = true;
 
-    public CollapsablePanel(String title) {
+    public CollapsablePanel(String id, String title) {
         this.title = title;
+        this.id = id;
         setLayout(new BorderLayout());
         add(cPanel, BorderLayout.CENTER);
         setBackground(Color.LIGHT_GRAY);
@@ -95,6 +97,10 @@ public class CollapsablePanel extends JPanel{
 
     public String getTitle() {
         return title;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setTitle(String title) {

@@ -49,7 +49,7 @@ public class CourseView extends JPanel{
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
         for (Chapter chapter: sortedChapters){
-            CollapsablePanel cur = new CollapsablePanel(chapter.getTitle());
+            CollapsablePanel cur = new CollapsablePanel(chapter.getChapterID(), chapter.getTitle());
 
             ArrayList<Lesson> sortedLessons = chapter.getLessons();
             sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
