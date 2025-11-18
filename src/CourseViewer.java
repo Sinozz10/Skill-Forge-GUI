@@ -71,4 +71,23 @@ public class CourseViewer extends JPanel {
         });
     }
 
+    private void handleViewLesson(JList<String> list) {
+
+            String selected = list.getSelectedValue();
+            if (selected == null || !selected.contains("Lesson")) {
+                JOptionPane.showMessageDialog(this, "Select a lesson!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // Find the lesson
+            for (Chapter chapter : course.getChapters()) {
+                for (Lesson lesson : chapter.getLessons()) {
+                    if (selected.contains(lesson.getTitle())) {
+                        dashboard.changeContentPanel(new LessonViewer(lesson, student, courseDB, userDB, dashboard, course));
+                        return;
+                    }
+                }
+            }
+    }
+
 }
