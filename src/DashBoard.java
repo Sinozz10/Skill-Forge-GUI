@@ -39,6 +39,7 @@ public class DashBoard extends JFrame{
                 );
                 if (option == JOptionPane.YES_OPTION) {
                     userDB.saveToFile();
+                    courseDB.saveToFile();
                     System.exit(0);
                 }
             }

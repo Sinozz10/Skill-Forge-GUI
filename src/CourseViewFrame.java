@@ -120,6 +120,7 @@ public class CourseViewFrame extends JPanel{
                     );
                     if (option == JOptionPane.YES_OPTION) {
                         userDB.saveToFile();
+                        courseDB.saveToFile();
                         System.exit(0);
                     }
                 }
