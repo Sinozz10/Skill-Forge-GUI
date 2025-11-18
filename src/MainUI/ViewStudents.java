@@ -27,7 +27,7 @@ public class ViewStudents extends JPanel {
         for (String courseID : instructor.getCourseIDs()) {
             Course crs = courseDb.getRecordByID(courseID);
             if (crs != null) {
-                CollapsablePanel courseDropdown = new CollapsablePanel(crs.getTitle());
+                CollapsablePanel courseDropdown = new CollapsablePanel(crs.getID(), crs.getTitle());
                 for (String studentID : crs.getStudentIDs()){
                     Student stu = (Student) userDb.getRecordByID(studentID);
                     JLabel stuLabel = new JLabel(stu.getID());

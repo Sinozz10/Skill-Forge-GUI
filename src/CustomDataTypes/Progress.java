@@ -8,7 +8,6 @@ public class Progress {
     private final String studentID;
     private Date completionDate;
     private final ArrayList<Tracker> trackers = new ArrayList<>();
-    private boolean updateFlag = false;
 
     public Progress(Course course, String studentID) {
         this.courseID = course.getID();
@@ -102,12 +101,5 @@ public class Progress {
 
     public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
-    }
-
-    public boolean isUpdateFlag() {
-        return updateFlag;}
-
-    public void setUpdateFlag(boolean updateFlag) {
-        this.updateFlag = updateFlag;
     }
 }

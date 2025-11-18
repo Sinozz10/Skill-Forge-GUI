@@ -54,6 +54,10 @@ public class LessonPanel extends JPanel{
         lPanel.repaint();
     }
 
+    public Lesson getLesson() {
+        return lesson;
+    }
+
     public void leftClickHandler(MouseEvent e){
 
     }
