@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 
 public class Card extends JPanel{
     private JPanel cardPanel;
-    private JLabel instructor;
+    private JLabel id;
     private JLabel title;
     private JTextPane description;
     private JPanel headerPanel;
@@ -23,7 +23,7 @@ public class Card extends JPanel{
         setBackground(Color.LIGHT_GRAY);
 
         title.setText(course.getTitle());
-        instructor.setText("CustomDataTypes.Instructor #: " + course.getInstructorID());
+        id.setText("CourseID #: " + course.getID());
         description.setText(course.getDescription());
         description.setEditable(false);
 
