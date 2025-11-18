@@ -31,12 +31,14 @@ public class EditableCourseView extends JPanel{
     private JPanel editPanel;
     private CourseDatabaseManager courseDB;
     private UserDatabaseManager userDB;
+    private Course course;
     private Lesson activeLesson = null;
     private JTextPane content = new JTextPane();
 
     public EditableCourseView(Course course, Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         this.userDB = userDB;
         this.courseDB = courseDB;
+        this.course = course;
 
         setLayout(new BorderLayout());
         add(ecvPanel, BorderLayout.CENTER);
@@ -46,6 +48,33 @@ public class EditableCourseView extends JPanel{
 
         JPanel coursesPanel = new JPanel();
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
+
+        generateSideBar(coursesPanel);
+
+        saveExitButton.setBackground(Color.LIGHT_GRAY);
+        saveExitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                course.setDescription(descriptionTextPane.getText());
+                course.setTitle(courseTitle.getText());
+            }
+        });
+
+        scrollPane = new JScrollPane(coursesPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(32);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        listPanel.setLayout(new BorderLayout());
+        listPanel.add(scrollPane, BorderLayout.CENTER);
+
+        courseTitle.setText(course.getTitle());
+        descriptionTextPane.setText(course.getDescription());
+    }
+
+    public void generateSideBar(JPanel coursesPanel){
+        coursesPanel.removeAll();
+        coursesPanel.repaint();
+        coursesPanel.revalidate();
 
         JButton addChapterButton = new JButton("Add Chapter");
         addChapterButton.setBackground(Color.LIGHT_GRAY);
@@ -148,25 +177,22 @@ public class EditableCourseView extends JPanel{
             }
             coursesPanel.add(cur);
         }
+    }
 
-        saveExitButton.setBackground(Color.LIGHT_GRAY);
-        saveExitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                course.setDescription(descriptionTextPane.getText());
-                course.setTitle(courseTitle.getText());
-            }
-        });
+    private void addChapter(MouseEvent e){
 
-        scrollPane = new JScrollPane(coursesPanel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    }
 
-        listPanel.setLayout(new BorderLayout());
-        listPanel.add(scrollPane, BorderLayout.CENTER);
+    private void addLesson(MouseEvent e){
 
-        courseTitle.setText(course.getTitle());
-        descriptionTextPane.setText(course.getDescription());
+    }
+
+    private void deleteChapter(MouseEvent e){
+
+    }
+
+    private void deleteLesson(MouseEvent e){
+
     }
 
     public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson){
