@@ -75,7 +75,7 @@ public class CourseAdd extends JPanel {
             userDB.updateRecord(instructor);
             userDB.saveToFile();
 
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Course added successfully!" + courseID, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course added successfully!" + courseID, "Success", JOptionPane.INFORMATION_MESSAGE);
 
             CourseName.setText("");
             description.setText("");

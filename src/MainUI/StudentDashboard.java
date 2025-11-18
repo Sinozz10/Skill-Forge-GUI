@@ -30,9 +30,8 @@ public class StudentDashboard extends DashBoard{
         }
         userDB.saveToFile();
 
-        JButton viewButton = new JButton();
+        JButton viewButton = new JButton("My Courses");
         viewButton.setBackground(Color.LIGHT_GRAY);
-        viewButton.setText("My Courses ");
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,9 +53,8 @@ public class StudentDashboard extends DashBoard{
         });
         navButtons.add(viewButton);
 
-        JButton enrollButton = new JButton();
+        JButton enrollButton = new JButton("Enroll");
         enrollButton.setBackground(Color.LIGHT_GRAY);
-        enrollButton.setText("Enroll");
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

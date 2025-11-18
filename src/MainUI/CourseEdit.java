@@ -25,12 +25,6 @@ public class CourseEdit extends JPanel {
         setLayout(new BorderLayout());
         add(edit, BorderLayout.CENTER);
 
-        editSpecificLessonButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleEdit();
-            }
-        });
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

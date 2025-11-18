@@ -23,77 +23,83 @@ public class InstructorDashboard extends DashBoard{
         this.instructor = instructor;
 
         setTitle("Dashboard - " + instructor.getUsername());
-        navButtons.setLayout(new GridLayout(2,3, 10, 10));
+        navButtons.setLayout(new GridLayout(1,5, 10, 10));
 
-        JButton addButton = new JButton();
+        JButton addButton = new JButton("Add Course");
         addButton.setBackground(Color.LIGHT_GRAY);
-        addButton.setText("Add CustomDataTypes.Course");
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 changeContentPanel(new CourseAdd(courseDB, userDB, instructor));
             }
         });
-        navButtons.add(addButton);
 
-        JButton viewCoursesButton = new JButton();
+        JButton viewCoursesButton = new JButton("My Courses");
         viewCoursesButton.setBackground(Color.LIGHT_GRAY);
-        viewCoursesButton.setText("My Courses");
         viewCoursesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    changeContentPanel(new CardScrollPane(courseDB, course -> instructor.getID().equals(course.getInstructorID())) {
-                        @Override
-                        public void rightClickHandler(MouseEvent e){
-                            Component comp = e.getComponent();
-                            while (!(comp instanceof Card) && comp != null){
-                                comp = comp.getParent();
-                            }
-                            final Card clickedCard = (Card) comp;
-
-                            // pop up menu
-                            final JPopupMenu popupMenu = new JPopupMenu();
-
-                            // edit item
-                            JMenuItem editItem = new JMenuItem("Edit");
-                            editItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                            editItem.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    changeContentPanel(new CourseEdit(courseDB));
-                                }
-                            });
-                            popupMenu.add(editItem);
-
-                            //delete item
-                            JMenuItem deleteItem = new JMenuItem("Delete");
-                            deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                            deleteItem.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
-                                            "Are you sure you want to delete?",
-                                            "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-
-                                    if (confirm == JOptionPane.YES_OPTION) {
-                                        handleDelete(instructor, clickedCard.getCourse());
-                                        loadCoursesFromDatabase();
-                                    }
-
-                                }
-                            });
-                            popupMenu.add(deleteItem);
-
-                            popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                CardScrollPane pane = new CardScrollPane(courseDB, course -> instructor.getID().equals(course.getInstructorID())) {
+                    @Override
+                    public void rightClickHandler(MouseEvent e){
+                        Component comp = e.getComponent();
+                        while (!(comp instanceof Card) && comp != null){
+                            comp = comp.getParent();
                         }
-                    });
+                        final Card clickedCard = (Card) comp;
+
+                        // pop up menu
+                        final JPopupMenu popupMenu = new JPopupMenu();
+
+                        // edit item
+                        JMenuItem editItem = new JMenuItem("Edit");
+                        editItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        editItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                changeContentPanel(new CourseEdit(courseDB));
+                            }
+                        });
+                        popupMenu.add(editItem);
+
+                        //delete item
+                        JMenuItem deleteItem = new JMenuItem("Delete");
+                        deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        deleteItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
+                                        "Are you sure you want to delete?",
+                                        "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                                if (confirm == JOptionPane.YES_OPTION) {
+                                    handleDelete(instructor, clickedCard.getCourse());
+                                    loadCoursesFromDatabase();
+                                }
+
+                            }
+                        });
+                        popupMenu.add(deleteItem);
+
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                };
+
+                JPanel viewPanel = new JPanel();
+                viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
+                viewPanel.add(pane);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.X_AXIS));
+                addPanel.add(addButton);
+                viewPanel.add(addPanel);
+
+                changeContentPanel(viewPanel);
             }
         });
         navButtons.add(viewCoursesButton);
 
-        JButton viewStudentsButton = new JButton();
+        JButton viewStudentsButton = new JButton("My Students");
         viewStudentsButton.setBackground(Color.LIGHT_GRAY);
-        viewStudentsButton.setText("My Students");
         viewStudentsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,21 +108,9 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(viewStudentsButton);
 
-        JButton editCourseButton = new JButton();
-        editCourseButton.setBackground(Color.LIGHT_GRAY);
-        editCourseButton.setText("Edit CustomDataTypes.Course");
-        editCourseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseEdit(courseDB));
-            }
-        });
-        navButtons.add(editCourseButton);
-
-        // Row 2 - CustomDataTypes.Chapter & CustomDataTypes.Lesson Management
-        JButton chapterButton = new JButton();
+        // Row 2 - Chapter & Lesson Management
+        JButton chapterButton = new JButton("Manage Chapters");
         chapterButton.setBackground(Color.LIGHT_GRAY);
-        chapterButton.setText("Manage CustomDataTypes.Chapter");
         chapterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -126,9 +120,8 @@ public class InstructorDashboard extends DashBoard{
         navButtons.add(chapterButton);
 
 
-        JButton lessonButton = new JButton();
+        JButton lessonButton = new JButton("Manage Lessons");
         lessonButton.setBackground(Color.LIGHT_GRAY);
-        lessonButton.setText("Manage CustomDataTypes.Lesson");
         lessonButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
