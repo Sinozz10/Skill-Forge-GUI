@@ -11,25 +11,23 @@ public class ViewStudents extends JPanel {
         add(title, BorderLayout.NORTH);
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
+        JPanel studentList = new JPanel();
+        studentList.setLayout(new BoxLayout(studentList, BoxLayout.Y_AXIS));
 
         for (String courseID : instructor.getCourseIDs()) {
             Course crs = courseDb.getRecordByID(courseID);
             if (crs != null) {
-                listModel.addElement("Course: " + crs.getTitle());
-                if (crs.getStudentIDs().isEmpty()) {
-                    listModel.addElement("No Students enrolled yet !");
-                } else {
-                    for (String studentID : crs.getStudentIDs()) {
-                        User std = userDb.getRecordByID(studentID);
-                        if (std != null) {
-                            listModel.addElement(" - " + std.getUsername());
-                        }
-                    }
+                CollapsablePanel courseDropdown = new CollapsablePanel(crs.getTitle());
+                for (String studentID : crs.getStudentIDs()){
+                    Student stu = (Student) userDb.getRecordByID(studentID);
+                    JLabel stuLabel = new JLabel(stu.getID());
+                    courseDropdown.addContent(stuLabel);
                 }
+                studentList.add(courseDropdown);
             }
         }
 
-        JList<String> studentList = new JList<>(listModel);
+
         add(new JScrollPane(studentList), BorderLayout.CENTER);
     }
 }
