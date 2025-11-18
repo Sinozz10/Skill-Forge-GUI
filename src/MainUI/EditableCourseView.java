@@ -77,7 +77,18 @@ public class EditableCourseView extends JPanel{
 
                         }
                     });
+
+                    JMenuItem deleteChapter = new JMenuItem("Delete Chapter");
+                    deleteChapter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    deleteChapter.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                        }
+                    });
+
                     popupMenu.add(changeOrder);
+                    popupMenu.add(deleteChapter);
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             };
@@ -117,7 +128,18 @@ public class EditableCourseView extends JPanel{
 
                             }
                         });
+
+                        JMenuItem deleteLesson = new JMenuItem("Delete Lesson");
+                        deleteLesson.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        deleteLesson.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+
+                            }
+                        });
+
                         popupMenu.add(changeOrder);
+                        popupMenu.add(deleteLesson);
                         popupMenu.show(e.getComponent(), e.getX(), e.getY());
                     }
                 };
