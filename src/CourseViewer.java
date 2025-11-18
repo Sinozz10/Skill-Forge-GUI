@@ -42,7 +42,7 @@ public class CourseViewer extends JPanel {
                         if (progress != null) {
                             Tracker tracker = progress.findTracker(lesson);
                             if (tracker != null) {
-                                completed = tracker.getState();
+                                completed = tracker.isComplete();
                             }
                         }
                         String status = completed ? " [DONE]" : " [ ]";

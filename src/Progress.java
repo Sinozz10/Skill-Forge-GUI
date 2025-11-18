@@ -31,7 +31,7 @@ public class Progress {
         Double total = 0.0;
         Double complete = 0.0;
         for(Tracker tracker: trackers){
-            if (tracker.getState()){
+            if (tracker.isComplete()){
                 complete++;
             }
             total++;
@@ -43,7 +43,7 @@ public class Progress {
     public void completeLesson(Lesson lesson) {
         Tracker tracker = findTracker(lesson);
         if (tracker != null){
-            tracker.setState(true);
+            tracker.setComplete(true);
         }else {
             throw new IllegalArgumentException("Lesson not found in tracker");
         }
@@ -52,7 +52,7 @@ public class Progress {
     public void unCompleteLesson(Lesson lesson) {
         Tracker tracker = findTracker(lesson);
         if (tracker != null){
-            tracker.setState(false);
+            tracker.setComplete(false);
         }else {
             throw new IllegalArgumentException("Uncompleted lesson");
         }
@@ -65,7 +65,7 @@ public class Progress {
     public void updateTrackers(Course course){
         ArrayList<String> completed = new ArrayList<>();
         for (Tracker tracker: trackers){
-            if (tracker.getState()){
+            if (tracker.isComplete()){
                 completed.add(tracker.getLessonID());
             }
         }

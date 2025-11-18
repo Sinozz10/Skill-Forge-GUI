@@ -16,11 +16,11 @@ public class Tracker {
         return lessonID;
     }
 
-    public boolean getState() {
+    public boolean isComplete() {
         return state;
     }
 
-    public void setState(boolean state) {
+    public void setComplete(boolean state) {
         this.state = state;
     }
 }

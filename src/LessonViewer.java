@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class LessonViewer extends JPanel {
     private final Lesson lesson;
@@ -31,7 +30,7 @@ public class LessonViewer extends JPanel {
         if (progress != null) {
             Tracker tracker = progress.findTracker(lesson);
             if (tracker != null) {
-                isCompleted = tracker.getState();
+                isCompleted = tracker.isComplete();
             }
         }
 
