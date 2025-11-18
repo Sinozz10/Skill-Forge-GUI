@@ -12,7 +12,7 @@ public class InstructorDashboard extends DashBoard{
         this.instructor = instructor;
 
         setTitle("Dashboard - " + instructor.getUsername());
-        navButtons.setLayout(new GridLayout(1,5, 10, 10));
+        navButtons.setLayout(new GridLayout(2,3, 10, 10));
 
         JButton addButton = new JButton();
         addButton.setBackground(Color.LIGHT_GRAY);
@@ -91,9 +91,21 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(viewStudentsButton);
 
+        JButton editCourseButton = new JButton();
+        editCourseButton.setBackground(Color.LIGHT_GRAY);
+        editCourseButton.setText("Edit Course");
+        editCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPanel(new CourseEdit(courseDB));
+            }
+        });
+        navButtons.add(editCourseButton);
+
+        // Row 2 - Chapter & Lesson Management
         JButton chapterButton = new JButton();
         chapterButton.setBackground(Color.LIGHT_GRAY);
-        chapterButton.setText("Chapters");
+        chapterButton.setText("Manage Chapter");
         chapterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,9 +114,10 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(chapterButton);
 
+
         JButton lessonButton = new JButton();
         lessonButton.setBackground(Color.LIGHT_GRAY);
-        lessonButton.setText("Lessons");
+        lessonButton.setText("Manage Lesson");
         lessonButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
