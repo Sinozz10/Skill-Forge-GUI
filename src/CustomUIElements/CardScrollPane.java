@@ -27,6 +27,7 @@ public class CardScrollPane extends JPanel {
         this.courseDB = courseDB;
         this.function = function;
         availableCourses = new ArrayList<>();
+        setBackground(Color.LIGHT_GRAY);
         for(Course course: courseDB.getRecords()){
             if (function.filter(course)){
                 availableCourses.add(course);

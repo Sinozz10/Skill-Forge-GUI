@@ -23,6 +23,8 @@ public class StudentDashboard extends DashBoard{
 
         setTitle("Dashboard - " + student.getUsername());
         navButtons.setLayout(new GridLayout(1,2, 10, 10));
+        setBackground(Color.LIGHT_GRAY);
+        setResizable(false);
 
         for (Progress prog: student.getAllProgressTrackers()){
             prog.updateTrackers(courseDB.getRecordByID(prog.getCourseID()));
@@ -31,6 +33,7 @@ public class StudentDashboard extends DashBoard{
 
         JButton viewButton = new JButton("My Courses");
         viewButton.setBackground(Color.LIGHT_GRAY);
+        viewButton.setForeground(Color.BLACK);
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,6 +58,7 @@ public class StudentDashboard extends DashBoard{
 
         JButton enrollButton = new JButton("Enroll");
         enrollButton.setBackground(Color.LIGHT_GRAY);
+        enrollButton.setForeground(Color.BLACK);
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

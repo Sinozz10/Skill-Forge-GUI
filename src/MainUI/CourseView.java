@@ -37,6 +37,8 @@ public class CourseView extends JPanel{
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
 
+        setBackground(Color.LIGHT_GRAY);
+
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
         lessonTitle.setVisible(false);

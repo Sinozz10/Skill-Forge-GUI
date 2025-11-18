@@ -7,6 +7,7 @@ import DataManagment.CourseDatabaseManager;
 import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -26,7 +27,8 @@ public class Login extends JFrame {
         this.auth= new AuthenticateManager(database);
         setTitle("Login");
         setContentPane(login);
-        setSize(300, 210);
+        setSize(350, 180);
+        setBackground(Color.GRAY);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -69,6 +71,11 @@ public class Login extends JFrame {
                 new SignUp();
             }
         });
+        loginButton.setSize(new Dimension(10,20));
+        signupButton.setSize(new Dimension(10,20));
+
+        loginButton.setBackground(Color.lightGray);
+        signupButton.setBackground(Color.lightGray);
     }
 
     private void handleLogin() {

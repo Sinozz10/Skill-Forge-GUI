@@ -4,6 +4,7 @@ import CustomDataTypes.User;
 import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -27,6 +28,7 @@ public class SignUp extends JFrame {
         setTitle("SignUp");
         setContentPane(SignUp);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBackground(Color.gray);
         setSize(450,250);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -85,6 +87,9 @@ public class SignUp extends JFrame {
                 }
             }
         });
+
+        signUpButton.setSize(new Dimension(10,20));
+        signUpButton.setBackground(Color.gray);
     }
 
     private void handleSignUp() {

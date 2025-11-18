@@ -32,6 +32,7 @@ public class CourseAdd extends JPanel {
         setLayout(new BorderLayout());
         add(add,BorderLayout.CENTER);
 
+        setBackground(Color.LIGHT_GRAY);
         ADDButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

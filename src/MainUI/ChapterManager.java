@@ -29,6 +29,7 @@ public class ChapterManager extends JPanel {
         this.idGenerator = new GenerationID(userDB, courseDB);
         setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
+        setBackground(Color.LIGHT_GRAY);
 
         // Add/Delete
         JPanel addDeletePanel = new JPanel();
@@ -37,7 +38,7 @@ public class ChapterManager extends JPanel {
         managerPanel = new JPanel();
         managerPanel.setLayout(new GridLayout(6, 2, 10, 10));
 
-        managerPanel.add(new JLabel("CustomDataTypes.Course ID:"));
+        managerPanel.add(new JLabel("Course ID:"));
         courseID = new JTextField();
         managerPanel.add(courseID);
 
@@ -45,16 +46,18 @@ public class ChapterManager extends JPanel {
         orderField = new JTextField();
         managerPanel.add(orderField);
 
-        managerPanel.add(new JLabel("CustomDataTypes.Chapter Title:"));
+        managerPanel.add(new JLabel("Chapter Title:"));
         chapterTitle = new JTextField();
         managerPanel.add(chapterTitle);
 
-        addChapterButton = new JButton("Add CustomDataTypes.Chapter");
+        addChapterButton = new JButton("Add Chapter");
         addChapterButton.setBackground(Color.LIGHT_GRAY);
+        addChapterButton.setForeground(Color.BLACK);
         managerPanel.add(addChapterButton);
 
-        deleteChapterButton = new JButton("Delete CustomDataTypes.Chapter");
+        deleteChapterButton = new JButton("Delete Chapter");
         deleteChapterButton.setBackground(Color.LIGHT_GRAY);
+        deleteChapterButton.setForeground(Color.BLACK);
         managerPanel.add(deleteChapterButton);
 
         addDeletePanel.add(managerPanel, BorderLayout.CENTER);
@@ -66,7 +69,7 @@ public class ChapterManager extends JPanel {
         JPanel editorPanel = new JPanel();
         editorPanel.setLayout(new GridLayout(5, 2, 10, 10));
 
-        editorPanel.add(new JLabel("CustomDataTypes.Chapter ID:"));
+        editorPanel.add(new JLabel("Chapter ID:"));
         JTextField chapterIDField = new JTextField();
         editorPanel.add(chapterIDField);
 
@@ -80,12 +83,14 @@ public class ChapterManager extends JPanel {
         editOrderField.setEnabled(false);
         editorPanel.add(editOrderField);
 
-        JButton loadButton = new JButton("Load CustomDataTypes.Chapter");
+        JButton loadButton = new JButton("Load Chapter");
         loadButton.setBackground(Color.LIGHT_GRAY);
+        loadButton.setForeground(Color.BLACK);
         editorPanel.add(loadButton);
 
-        JButton updateButton = new JButton("Update CustomDataTypes.Chapter");
+        JButton updateButton = new JButton("Update Chapter");
         updateButton.setBackground(Color.LIGHT_GRAY);
+        updateButton.setForeground(Color.BLACK);
         updateButton.setEnabled(false);
         editorPanel.add(updateButton);
 
@@ -183,7 +188,7 @@ public class ChapterManager extends JPanel {
             courseDB.updateRecord(course);
             courseDB.saveToFile();
 
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Chapter added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             clearFields();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Order must be a number!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -195,13 +200,13 @@ public class ChapterManager extends JPanel {
         String orderStr = orderField.getText().trim();
 
         if (cID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Course ID required!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course ID required!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Course course = courseDB.getRecordByID(cID);
         if (course == null) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -221,7 +226,7 @@ public class ChapterManager extends JPanel {
             }
 
             if (chapterToDelete == null) {
-                JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -230,7 +235,7 @@ public class ChapterManager extends JPanel {
                 course.deleteChapter(chapterToDelete);
                 courseDB.updateRecord(course);
                 courseDB.saveToFile();
-                JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter deleted!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Chapter deleted!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 clearFields();
             }
         } catch (NumberFormatException e) {
@@ -243,7 +248,7 @@ public class ChapterManager extends JPanel {
         String chapID = chapterIDField.getText().trim();
 
         if (chapID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter ID is required!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Chapter ID is required!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         for (Course course : courseDB.getRecords()) {
@@ -258,13 +263,13 @@ public class ChapterManager extends JPanel {
                     editOrderField.setEnabled(true);
                     updateButton.setEnabled(true);
 
-                    JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter loaded successfully!\nCustomDataTypes.Course: " + course.getTitle(),
+                    JOptionPane.showMessageDialog(this, "Chapter loaded successfully!\nCustomDataTypes.Course: " + course.getTitle(),
                             "Success", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
             }
         }
-        JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void handleUpdateChapter(JTextField chapterIDField, JTextField titleField, JTextField editOrderField, JButton updateButton,
@@ -298,7 +303,7 @@ public class ChapterManager extends JPanel {
             courseDB.updateRecord(currentCourse[0]);
             courseDB.saveToFile();
 
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Chapter updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
             chapterIDField.setText("");
             titleField.setText("");
