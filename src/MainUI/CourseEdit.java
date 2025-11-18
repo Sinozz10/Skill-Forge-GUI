@@ -29,6 +29,8 @@ public class CourseEdit extends JPanel {
         courseTitle.setText(course.getTitle());
         description.setText(course.getDescription());
 
+        setBackground(Color.LIGHT_GRAY);
+        updateButton.setBackground(Color.LIGHT_GRAY);
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +75,7 @@ public class CourseEdit extends JPanel {
 
         Course c = databaseManager.getRecordByID(courseID.getText());
         if (c == null){
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Course not found", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course not found", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -81,7 +83,7 @@ public class CourseEdit extends JPanel {
         c.setDescription(description.getText());
         databaseManager.updateRecord(c);
         databaseManager.saveToFile();
-        JOptionPane.showMessageDialog(CourseEdit.this, "CustomDataTypes.Course Edited Successfully!","Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(CourseEdit.this, "Course Edited Successfully!","Success", JOptionPane.INFORMATION_MESSAGE);
 
         courseID.setText("");
         courseTitle.setText("");

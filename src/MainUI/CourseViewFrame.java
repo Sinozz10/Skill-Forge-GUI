@@ -35,6 +35,8 @@ public class CourseViewFrame extends JPanel{
         setLayout(new BorderLayout());
         add(lvPanel, BorderLayout.CENTER);
 
+        setBackground(Color.LIGHT_GRAY);
+
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
         lessonTitle.setVisible(false);

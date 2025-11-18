@@ -44,7 +44,7 @@
             </constraints>
             <properties>
               <opaque value="true"/>
-              <text value="CustomDataTypes.Instructor"/>
+              <text value="Instructor"/>
             </properties>
           </component>
         </children>

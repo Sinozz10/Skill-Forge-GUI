@@ -27,9 +27,12 @@ public abstract class DashBoard extends JFrame{
         setContentPane(dashPanel);
         setSize(900, 550);
         setVisible(true);
+        setBackground(Color.gray);
 
         logoutButton.setBackground(Color.LIGHT_GRAY);
+        logoutButton.setForeground(Color.BLACK);
         homeButton.setBackground(Color.LIGHT_GRAY);
+        homeButton.setForeground(Color.BLACK);
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {

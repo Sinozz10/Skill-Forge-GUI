@@ -23,9 +23,12 @@ public class InstructorDashboard extends DashBoard{
         this.instructor = instructor;
 
         setTitle("Dashboard - " + instructor.getUsername());
+        setBackground(Color.LIGHT_GRAY);
         navButtons.setLayout(new GridLayout(1,5, 10, 10));
+        setResizable(false);
 
         JButton addButton = new JButton("Add Course");
+        addButton.setForeground(Color.BLACK);
         addButton.setBackground(Color.LIGHT_GRAY);
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -35,6 +38,7 @@ public class InstructorDashboard extends DashBoard{
         });
 
         JButton viewCoursesButton = new JButton("My Courses");
+        viewCoursesButton.setForeground(Color.BLACK);
         viewCoursesButton.setBackground(Color.LIGHT_GRAY);
         viewCoursesButton.addActionListener(new ActionListener() {
             @Override
@@ -99,6 +103,7 @@ public class InstructorDashboard extends DashBoard{
         navButtons.add(viewCoursesButton);
 
         JButton viewStudentsButton = new JButton("My Students");
+        viewStudentsButton.setForeground(Color.BLACK);
         viewStudentsButton.setBackground(Color.LIGHT_GRAY);
         viewStudentsButton.addActionListener(new ActionListener() {
             @Override
@@ -108,8 +113,9 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(viewStudentsButton);
 
-        // Row 2 - Chapter & Lesson Management
+        // Chapter & Lesson Management
         JButton chapterButton = new JButton("Manage Chapters");
+        chapterButton.setForeground(Color.BLACK);
         chapterButton.setBackground(Color.LIGHT_GRAY);
         chapterButton.addActionListener(new ActionListener() {
             @Override
@@ -121,6 +127,7 @@ public class InstructorDashboard extends DashBoard{
 
 
         JButton lessonButton = new JButton("Manage Lessons");
+        lessonButton.setForeground(Color.BLACK);
         lessonButton.setBackground(Color.LIGHT_GRAY);
         lessonButton.addActionListener(new ActionListener() {
             @Override
@@ -145,12 +152,12 @@ public class InstructorDashboard extends DashBoard{
         userDB.updateRecord(instructor);
         userDB.saveToFile();
 
-        JOptionPane.showMessageDialog(InstructorDashboard.this, "CustomDataTypes.Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(InstructorDashboard.this, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
     void handleHomeButton(){
-        JLabel userLabel = new JLabel("Welcome "+instructor.getUsername());
+        JLabel userLabel = new JLabel("Welcome " + instructor.getUsername());
         userLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
         userLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
         JPanel userPanel = new JPanel();

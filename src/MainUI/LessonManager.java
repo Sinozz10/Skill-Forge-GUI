@@ -29,6 +29,7 @@ public class LessonManager extends JPanel {
         setLayout(new BorderLayout());
 
         JTabbedPane tabbedPane = new JTabbedPane();
+        setBackground(Color.LIGHT_GRAY);
 
         // Add/Delete
         JPanel addDeletePanel = new JPanel();
@@ -37,11 +38,11 @@ public class LessonManager extends JPanel {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridLayout(7, 2, 10, 10));
 
-        formPanel.add(new JLabel("CustomDataTypes.Course ID:"));
+        formPanel.add(new JLabel("Course ID:"));
         courseID = new JTextField();
         formPanel.add(courseID);
 
-        formPanel.add(new JLabel("CustomDataTypes.Chapter ID:"));
+        formPanel.add(new JLabel("Chapter ID:"));
         chapterID = new JTextField();
         formPanel.add(chapterID);
 
@@ -58,12 +59,14 @@ public class LessonManager extends JPanel {
         JScrollPane scroll = new JScrollPane(content);
         formPanel.add(scroll);
 
-        addButton = new JButton("Add CustomDataTypes.Lesson");
+        addButton = new JButton("Add Lesson");
         addButton.setBackground(Color.LIGHT_GRAY);
+        addButton.setForeground(Color.BLACK);
         formPanel.add(addButton);
 
-        deleteButton = new JButton("Delete CustomDataTypes.Lesson");
+        deleteButton = new JButton("Delete Lesson");
         deleteButton.setBackground(Color.LIGHT_GRAY);
+        deleteButton.setForeground(Color.BLACK);
         formPanel.add(deleteButton);
 
         addDeletePanel.add(formPanel, BorderLayout.CENTER);
@@ -75,11 +78,11 @@ public class LessonManager extends JPanel {
         JPanel editorPanel = new JPanel();
         editorPanel.setLayout(new GridLayout(8, 2, 10, 10));
 
-        editorPanel.add(new JLabel("CustomDataTypes.Lesson ID:"));
+        editorPanel.add(new JLabel("Lesson ID:"));
         JTextField lessonIDField = new JTextField();
         editorPanel.add(lessonIDField);
 
-        editorPanel.add(new JLabel("Current CustomDataTypes.Chapter:"));
+        editorPanel.add(new JLabel("Current Chapter:"));
         JLabel currentChapterLabel = new JLabel("Not loaded");
         currentChapterLabel.setForeground(Color.GRAY);
         editorPanel.add(currentChapterLabel);
@@ -102,18 +105,20 @@ public class LessonManager extends JPanel {
         JScrollPane editContentScroll = new JScrollPane(editContentArea);
         editorPanel.add(editContentScroll);
 
-        editorPanel.add(new JLabel("Move to CustomDataTypes.Chapter ID:"));
+        editorPanel.add(new JLabel("Move to Chapter ID:"));
         JTextField newChapterIDField = new JTextField();
         newChapterIDField.setEnabled(false);
         newChapterIDField.setToolTipText("Leave empty to keep in current chapter");
         editorPanel.add(newChapterIDField);
 
-        JButton loadButton = new JButton("Load CustomDataTypes.Lesson");
+        JButton loadButton = new JButton("Load Lesson");
         loadButton.setBackground(Color.LIGHT_GRAY);
+        loadButton.setForeground(Color.BLACK);
         editorPanel.add(loadButton);
 
-        JButton updateButton = new JButton("Update CustomDataTypes.Lesson");
+        JButton updateButton = new JButton("Update Lesson");
         updateButton.setBackground(Color.LIGHT_GRAY);
+        updateButton.setForeground(Color.BLACK);
         updateButton.setEnabled(false);
         editorPanel.add(updateButton);
 
@@ -233,13 +238,13 @@ public class LessonManager extends JPanel {
 
         Course course = courseDB.getRecordByID(cID);
         if (course == null) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Chapter chapter = course.getChapterById(chapID);
         if (chapter == null) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -251,7 +256,7 @@ public class LessonManager extends JPanel {
             courseDB.updateRecord(course);
             courseDB.saveToFile();
 
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Lesson added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lesson added!", "Success", JOptionPane.INFORMATION_MESSAGE);
             clearFields();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Order must be number!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -270,13 +275,13 @@ public class LessonManager extends JPanel {
 
         Course course = courseDB.getRecordByID(cID);
         if (course == null) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Chapter chapter = course.getChapterById(chapID);
         if (chapter == null) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Chapter not found!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -291,7 +296,7 @@ public class LessonManager extends JPanel {
             }
 
             if (lessonToDelete == null) {
-                JOptionPane.showMessageDialog(this, "CustomDataTypes.Lesson not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Lesson not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -300,7 +305,7 @@ public class LessonManager extends JPanel {
                 chapter.removeLesson(lessonToDelete);
                 courseDB.updateRecord(course);
                 courseDB.saveToFile();
-                JOptionPane.showMessageDialog(this, "CustomDataTypes.Lesson deleted!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Lesson deleted!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 clearFields();
             }
 
@@ -314,7 +319,7 @@ public class LessonManager extends JPanel {
         String lessonID = lessonIDField.getText().trim();
 
         if (lessonID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "CustomDataTypes.Lesson ID is required!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lesson ID is required!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -338,7 +343,7 @@ public class LessonManager extends JPanel {
                         newChapterIDField.setEnabled(true);
                         updateButton.setEnabled(true);
 
-                        JOptionPane.showMessageDialog(this, "CustomDataTypes.Lesson loaded successfully!\nCustomDataTypes.Course: " + course.getTitle() +
+                        JOptionPane.showMessageDialog(this, "Lesson loaded successfully!\nCustomDataTypes.Course: " + course.getTitle() +
                                 "\nCustomDataTypes.Chapter: " + chapter.getTitle(), "Success", JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
@@ -346,7 +351,7 @@ public class LessonManager extends JPanel {
             }
         }
 
-        JOptionPane.showMessageDialog(this, "CustomDataTypes.Lesson not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Lesson not found!", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void handleUpdateLesson(JTextField lessonIDField, JLabel currentChapterLabel, JTextField editTitleField, JTextField editOrderField,
@@ -400,7 +405,7 @@ public class LessonManager extends JPanel {
             courseDB.updateRecord(currentCourse[0]);
             courseDB.saveToFile();
 
-            String message = "CustomDataTypes.Lesson updated successfully!";
+            String message = "Lesson updated successfully!";
             if (!targetChapter.getChapterID().equals(currentChapter[0].getChapterID())) {
                 message += "\nMoved from: " + currentChapter[0].getTitle() + "\nTo: " + targetChapter.getTitle();
             }

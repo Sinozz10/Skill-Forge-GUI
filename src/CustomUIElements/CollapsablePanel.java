@@ -18,6 +18,7 @@ public class CollapsablePanel extends JPanel{
         this.title = title;
         setLayout(new BorderLayout());
         add(cPanel, BorderLayout.CENTER);
+        setBackground(Color.LIGHT_GRAY);
 
         headerPanel.setBackground(new Color(230, 230, 230));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
