@@ -13,13 +13,13 @@ public class CourseAdd extends JPanel {
     private final String instructorId;
     private final CourseDatabaseManager courseDB;
     private final UserDatabaseManager userDB;
-    private final GenerationID idGenartor;
+    private final GenerationID idGenerator;
 
     public CourseAdd(CourseDatabaseManager courseDB, UserDatabaseManager userDB, Instructor instructor) {
         this.courseDB = courseDB;
         this.userDB = userDB;
         this.instructorId = instructor.getID();
-        this.idGenartor = new GenerationID(userDB,courseDB);
+        this.idGenerator = new GenerationID(userDB,courseDB);
 
         setLayout(new BorderLayout());
         add(add,BorderLayout.CENTER);
@@ -58,7 +58,7 @@ public class CourseAdd extends JPanel {
         }
 
         try{
-            String courseID = idGenartor.generateCourseID();
+            String courseID = idGenerator.generateCourseID();
             Course newCourse = new Course(courseID, courseName, courseDescription, instructorId);
             courseDB.addRecord(newCourse);
             courseDB.saveToFile();

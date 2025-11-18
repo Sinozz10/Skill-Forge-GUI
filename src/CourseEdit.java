@@ -29,7 +29,7 @@ public class CourseEdit extends JPanel {
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                handleEdit();
             }
         });
         courseID.addKeyListener(new KeyAdapter() {

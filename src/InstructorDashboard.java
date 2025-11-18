@@ -9,7 +9,7 @@ public class InstructorDashboard extends DashBoard{
     public InstructorDashboard(Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         super(courseDB, userDB);
         setTitle("Dashboard - " + instructor.getUsername());
-        navButtons.setLayout(new GridLayout(1,3, 10, 10));
+        navButtons.setLayout(new GridLayout(1,5, 10, 10));
 
         JButton addButton = new JButton();
         addButton.setBackground(Color.LIGHT_GRAY);
@@ -87,7 +87,30 @@ public class InstructorDashboard extends DashBoard{
             }
         });
         navButtons.add(viewStudentsButton);
+
+        JButton chapterButton = new JButton();
+        chapterButton.setBackground(Color.LIGHT_GRAY);
+        chapterButton.setText("Chapters");
+        chapterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPanel(new ChapterManager(courseDB,userDB));
+            }
+        });
+        navButtons.add(chapterButton);
+
+        JButton lessonButton = new JButton();
+        lessonButton.setBackground(Color.LIGHT_GRAY);
+        lessonButton.setText("Lessons");
+        lessonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPanel(new LessonManager(courseDB,userDB));
+            }
+        });
+        navButtons.add(lessonButton);
     }
+
 
     private void handleDelete(Instructor instructor, Course course) {
         String id = course.getID();

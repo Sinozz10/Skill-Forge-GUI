@@ -18,7 +18,7 @@ public class DashBoard extends JFrame{
         this.courseDB = courseDB;
         this.userDB = userDB;
         setContentPane(dashPanel);
-        setSize(750, 400);
+        setSize(900, 450);
         setVisible(true);
 
         logoutButton.setBackground(Color.LIGHT_GRAY);

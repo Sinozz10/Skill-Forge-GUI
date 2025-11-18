@@ -1,11 +1,11 @@
 
 public class AuthenticateManager {
     protected final UserDatabaseManager database;
-    private final GenerationID idGenartor;
+    private final GenerationID idGenerator;
 
     public AuthenticateManager(UserDatabaseManager database) {
         this.database = database;
-        this.idGenartor = new GenerationID(database,null);
+        this.idGenerator = new GenerationID(database,null);
     }
 
     public User signup(String username, String email, String password, String role) {
@@ -23,7 +23,7 @@ public class AuthenticateManager {
         String hashedPassword = PasswordHashing.hashPassword(password);
 
         // Generate unique ID
-        String userId = idGenartor.generateUserID(role);
+        String userId = idGenerator.generateUserID(role);
 
         User newUser;
         if (role.equalsIgnoreCase("student")) {

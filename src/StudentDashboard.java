@@ -12,11 +12,24 @@ public class StudentDashboard extends DashBoard{
 
         JButton viewButton = new JButton();
         viewButton.setBackground(Color.LIGHT_GRAY);
-        viewButton.setText("View");
+        viewButton.setText("My Courses ");
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(courseDB, course->student.courseIDs.contains(course.getID())));
+                changeContentPanel(new CardScrollPane(courseDB, course -> student.getCourseIDs().contains(course.getID())){
+                    @Override
+                    public void leftClickHandler(MouseEvent e){
+                        Component comp = e.getComponent();
+                        while (!(comp instanceof Card) && comp != null){
+                            comp = comp.getParent();
+                        }
+                        final Card clickedCard = (Card) comp;
+                        if (e.getClickCount() == 2){
+                            Course selectedCourse = clickedCard.getCourse();
+                            changeContentPanel(new CourseViewer(selectedCourse, student, courseDB, userDB, StudentDashboard.this));
+                        }
+                    }
+                });
             }
         });
         navButtons.add(viewButton);
@@ -27,7 +40,7 @@ public class StudentDashboard extends DashBoard{
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(courseDB, course->!student.courseIDs.contains(course.getID())){
+                changeContentPanel(new CardScrollPane(courseDB, course->!student.getCourseIDs().contains(course.getID())){
                     @Override
                     public void leftClickHandler(MouseEvent e){
                         Component comp = e.getComponent();

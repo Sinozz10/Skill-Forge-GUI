@@ -116,7 +116,7 @@ public class CardScrollPane extends JPanel {
         }else {
             ArrayList<Course> searched = new ArrayList<>();
             for (Course course : availableCourses) {
-                if (course.getTitle().contains(key)){
+                if (course.getTitle().toLowerCase().contains(key)){
                     searched.add(course);
                 }
             }

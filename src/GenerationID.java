@@ -73,4 +73,58 @@ public class GenerationID {
         }
         return highest;
     }
+
+    // Generate Chapter ID
+    public String generateChapterID() {
+        int highest = getHighestChapterID();
+        return String.format("CH%04d", highest + 1);
+    }
+
+    // Generate Lesson ID
+    public String generateLessonID() {
+        int highest = getHighestLessonID();
+        return String.format("L%04d", highest + 1);
+    }
+
+    // Get highest chapter ID
+    private int getHighestChapterID() {
+        int highest = 0;
+        for (Course course : courseDatabase.getRecords()) {
+            for (Chapter chapter : course.getChapters()) {
+                String chapterId = chapter.getChapterID();
+                try {
+                    String numberPart = chapterId.replaceAll("[^0-9]", "");
+                    int idNumber = Integer.parseInt(numberPart);
+                    if (idNumber > highest) {
+                        highest = idNumber;
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error parsing chapter ID: " + e.getMessage());
+                }
+            }
+        }
+        return highest;
+    }
+
+    // Get highest lesson ID
+    private int getHighestLessonID() {
+        int highest = 0;
+        for (Course course : courseDatabase.getRecords()) {
+            for (Chapter chapter : course.getChapters()) {
+                for (Lesson lesson : chapter.getLessons()) {
+                    String lessonId = lesson.getLessonID();
+                    try {
+                        String numberPart = lessonId.replaceAll("[^0-9]", "");
+                        int idNumber = Integer.parseInt(numberPart);
+                        if (idNumber > highest) {
+                            highest = idNumber;
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error parsing lesson ID: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        return highest;
+    }
 }
