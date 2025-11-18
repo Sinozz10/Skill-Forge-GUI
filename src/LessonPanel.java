@@ -16,7 +16,7 @@ public class LessonPanel extends JPanel{
         setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         titleLabel.setText(lesson.getTitle());
-
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 10));
         MouseAdapter clickListener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
