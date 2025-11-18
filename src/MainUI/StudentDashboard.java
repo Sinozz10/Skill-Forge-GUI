@@ -11,8 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import CustomDataTypes.*;
-import CustomUIElements.*;
+
 import DataManagment.*;
 
 public class StudentDashboard extends DashBoard{
@@ -44,8 +43,9 @@ public class StudentDashboard extends DashBoard{
                         }
                         final Card clickedCard = (Card) comp;
                         if (e.getClickCount() == 2){
+                            assert clickedCard != null;
                             Course selectedCourse = clickedCard.getCourse();
-                            changeContentPanel(new CourseViewFrame(selectedCourse, student, courseDB, userDB, StudentDashboard.this));
+                            changeContentPanel(new CourseView(selectedCourse, student, courseDB, userDB));
                         }
                     }
                 });
@@ -72,6 +72,7 @@ public class StudentDashboard extends DashBoard{
                                     "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
                             if (confirm == JOptionPane.YES_OPTION) {
+                                assert clickedCard != null;
                                 Course selected = clickedCard.getCourse();
                                 student.addCourse(selected);
                                 selected.enrollStudent(student);

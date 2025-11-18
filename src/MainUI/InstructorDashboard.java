@@ -57,6 +57,7 @@ public class InstructorDashboard extends DashBoard{
                         editItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                assert clickedCard != null;
                                 changeContentPanel(new CourseEdit(courseDB, clickedCard.getCourse()));
                             }
                         });

@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class CourseViewFrame extends JPanel{
+public class CourseView extends JPanel{
     private JLabel courseTitle;
     private JPanel lessonView;
     private JScrollPane scrollPane;
@@ -21,19 +21,21 @@ public class CourseViewFrame extends JPanel{
     private JPanel descriptionPanel;
     private JPanel resourcesPanel;
     private JLabel lessonTitle;
-    private JPanel lvPanel;
+    private JPanel cvPanel;
     private JPanel listPanel;
-    private JTextPane descriptionTestPane;
+    private JTextPane descriptionTextPane;
     private JScrollPane resourcesScrollPane;
+    private JPanel editPanel;
     private CourseDatabaseManager courseDB;
     private UserDatabaseManager userDB;
 
-    public CourseViewFrame(Course course, Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB, DashBoard dashboard) {
+    public CourseView(Course course, Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         this.userDB = userDB;
         this.courseDB = courseDB;
 
         setLayout(new BorderLayout());
-        add(lvPanel, BorderLayout.CENTER);
+        add(cvPanel, BorderLayout.CENTER);
+        listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
 
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
@@ -53,19 +55,7 @@ public class CourseViewFrame extends JPanel{
                 LessonPanel lp = new LessonPanel(lesson){
                     @Override
                     public void leftClickHandler(MouseEvent e){
-                        JPanel tempPanel = new JPanel();
-                        tempPanel.setLayout(new BorderLayout());
-                        JTextPane content = new JTextPane();
-                        content.setText(lesson.getContent());
-                        content.setEditable(false);
-                        tempPanel.add(content, BorderLayout.CENTER);
-
-                        setComplete();
-                        progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
-
-                        lessonTitle.setVisible(true);
-                        lessonTitle.setText(lesson.getTitle());
-                        changeContentPanel(tempPanel);
+                        CourseView.this.leftClickHandler(e, this, lesson, progress);
                     }
                 };
                 if (progress.getTrackerByID(lesson.getLessonID()).isComplete()){
@@ -85,8 +75,23 @@ public class CourseViewFrame extends JPanel{
         listPanel.add(scrollPane, BorderLayout.CENTER);
 
         courseTitle.setText(course.getTitle());
-        descriptionTestPane.setText(course.getDescription());
+        descriptionTextPane.setText(course.getDescription());
+    }
 
+    public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson, Progress progress){
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(new BorderLayout());
+        JTextPane content = new JTextPane();
+        content.setText(lesson.getContent());
+        content.setEditable(false);
+        tempPanel.add(content, BorderLayout.CENTER);
+
+        Lp.setComplete();
+        progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+
+        lessonTitle.setVisible(true);
+        lessonTitle.setText(lesson.getTitle());
+        changeContentPanel(tempPanel);
     }
 
     public void changeContentPanel(JPanel panel){
