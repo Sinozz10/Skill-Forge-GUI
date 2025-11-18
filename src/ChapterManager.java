@@ -20,7 +20,7 @@ public class ChapterManager extends JPanel {
         setLayout(new BorderLayout());
 
         managerPanel = new JPanel();
-        managerPanel.setLayout(new GridLayout(5, 2, 10, 10));
+        managerPanel.setLayout(new GridLayout(6, 2, 10, 10));
 
         managerPanel.add(new JLabel("Course ID:"));
         courseID = new JTextField();
@@ -31,7 +31,7 @@ public class ChapterManager extends JPanel {
         managerPanel.add(orderField);
 
         managerPanel.add(new JLabel("Chapter Title:"));
-        courseID = new JTextField();
+        chapterTitle = new JTextField();
         managerPanel.add(chapterTitle);
 
         addChapterButton = new JButton("Add Chapter");
@@ -172,6 +172,7 @@ public class ChapterManager extends JPanel {
     private void clearFields() {
         courseID.setText("");
         orderField.setText("");
+        chapterTitle.setText("");
         courseID.requestFocus();
     }
 }
