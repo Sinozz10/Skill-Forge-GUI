@@ -5,8 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 public class StudentDashboard extends DashBoard{
+    private Student student;
+
     public StudentDashboard(Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         super(courseDB, userDB);
+        this.student = student;
+
         setTitle("Dashboard - " + student.getUsername());
         navButtons.setLayout(new GridLayout(1,2, 10, 10));
 
@@ -31,7 +35,7 @@ public class StudentDashboard extends DashBoard{
                         final Card clickedCard = (Card) comp;
                         if (e.getClickCount() == 2){
                             Course selectedCourse = clickedCard.getCourse();
-                            changeContentPanel(new CourseViewer(selectedCourse, student, courseDB, userDB, StudentDashboard.this));
+                            changeContentPanel(new CourseViewFrame(selectedCourse, student, courseDB, userDB, StudentDashboard.this));
                         }
                     }
                 });
@@ -79,6 +83,18 @@ public class StudentDashboard extends DashBoard{
             }
         });
         navButtons.add(enrollButton);
+
+        handleHomeButton();
+    }
+
+    @Override
+    void handleHomeButton(){
+        JLabel userLabel = new JLabel("Welcome "+student.getUsername());
+        userLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
+        userLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
+        JPanel userPanel = new JPanel();
+        userPanel.add(userLabel);
+        changeContentPanel(userPanel);
     }
 
     static void main() {

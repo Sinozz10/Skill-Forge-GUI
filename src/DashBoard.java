@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class DashBoard extends JFrame{
+public abstract class DashBoard extends JFrame{
     private JButton logoutButton;
     private JPanel navBar;
     private JPanel contentPanel;
@@ -60,7 +60,7 @@ public class DashBoard extends JFrame{
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                handleHomeButton();
             }
         });
     }
@@ -80,4 +80,6 @@ public class DashBoard extends JFrame{
             new Login();
         }
     }
+
+    abstract void handleHomeButton();
 }

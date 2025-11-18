@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 public class InstructorDashboard extends DashBoard{
+    private Instructor instructor;
 
     public InstructorDashboard(Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
         super(courseDB, userDB);
+        this.instructor = instructor;
+
         setTitle("Dashboard - " + instructor.getUsername());
         navButtons.setLayout(new GridLayout(1,5, 10, 10));
 
@@ -109,6 +112,8 @@ public class InstructorDashboard extends DashBoard{
             }
         });
         navButtons.add(lessonButton);
+
+        handleHomeButton();
     }
 
 
@@ -124,6 +129,16 @@ public class InstructorDashboard extends DashBoard{
         userDB.saveToFile();
 
         JOptionPane.showMessageDialog(InstructorDashboard.this, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
+    }
+
+    @Override
+    void handleHomeButton(){
+        JLabel userLabel = new JLabel("Welcome "+instructor.getUsername());
+        userLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
+        userLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
+        JPanel userPanel = new JPanel();
+        userPanel.add(userLabel);
+        changeContentPanel(userPanel);
     }
 
     static void main() {

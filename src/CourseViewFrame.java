@@ -19,10 +19,17 @@ public class CourseViewFrame extends JPanel{
     private JPanel listPanel;
     private JTextPane descriptionTestPane;
     private JScrollPane resourcesScrollPane;
+    private CourseDatabaseManager courseDB;
+    private UserDatabaseManager userDB;
 
-    public CourseViewFrame(Course course, Progress progress) {
+    public CourseViewFrame(Course course, Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB, DashBoard dashboard) {
+        this.userDB = userDB;
+        this.courseDB = courseDB;
+
         setLayout(new BorderLayout());
         add(lvPanel, BorderLayout.CENTER);
+
+        Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
         lessonTitle.setVisible(false);
 
@@ -82,51 +89,5 @@ public class CourseViewFrame extends JPanel{
         contentPanel.add(panel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
-    }
-
-    public static void main(String[] args)  {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Course View Demo");
-            frame.setSize(700, 500);
-
-            JPanel mainPanel = new JPanel();
-            mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-            mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-            CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
-            UserDatabaseManager userDB = new UserDatabaseManager("users.json");
-
-            Course course = courseDB.getRecordByID("C0001");
-            Student student = (Student) userDB.getRecordByID("S0001");
-            for (Progress prog: student.getAllProgressTrackers()){
-                prog.updateTrackers(courseDB.getRecordByID(prog.getCourseID()));
-            }
-            userDB.saveToFile();
-
-            Progress progress = student.getProgressTrackerByCourseID("C0001");
-            CourseViewFrame panel1 = new CourseViewFrame(course, progress);
-
-            frame.add(panel1);
-            frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    int option = JOptionPane.showConfirmDialog(
-                            frame,
-                            "Are you sure you want to close the application?",
-                            "Close Confirmation",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE
-                    );
-                    if (option == JOptionPane.YES_OPTION) {
-                        userDB.saveToFile();
-                        courseDB.saveToFile();
-                        System.exit(0);
-                    }
-                }
-            });
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
     }
 }
