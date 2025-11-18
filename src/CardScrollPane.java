@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class CardScrollPane extends JPanel {
     private final CourseDatabaseManager courseDB;
@@ -103,7 +102,7 @@ public class CardScrollPane extends JPanel {
                     }
                 };
                 card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                card.setMaximumSize(new Dimension(card.getPreferredSize().width*2, card.getPreferredSize().height));
+                card.setMaximumSize(new Dimension(Integer.MAX_VALUE, card.getPreferredSize().height));
                 cardPanel.add(card);
                 cardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }

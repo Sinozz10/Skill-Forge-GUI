@@ -4,11 +4,17 @@ public class Chapter {
     private ArrayList<Lesson> lessons = new ArrayList<>();
     private final String chapterID, courseID;
     private int order;
+    private String title;
 
-    public Chapter(String chapterID, String courseID, int order) {
+    public Chapter(String chapterID, String courseID,String title, int order) {
         this.chapterID = chapterID;
         this.courseID = courseID;
         this.order = order;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public int getOrder() {
@@ -41,5 +47,9 @@ public class Chapter {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

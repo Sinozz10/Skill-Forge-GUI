@@ -8,30 +8,23 @@ public class Card extends JPanel{
     private JLabel instructor;
     private JLabel title;
     private JTextPane description;
+    private JPanel headerPanel;
     private final Course course;
 
     public Card(Course course) {
         this.course = course;
         setLayout(new BorderLayout());
         add(cardPanel, BorderLayout.CENTER);
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         title.setText(course.getTitle());
         instructor.setText("Instructor #: " + course.getInstructorID());
         description.setText(course.getDescription());
         description.setEditable(false);
 
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    leftClickHandler(e);
-                } else if (SwingUtilities.isRightMouseButton(e)) {
-                    rightClickHandler(e);
-                }
-            }
-        });
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 2, 5));
 
-        description.addMouseListener(new MouseAdapter() {
+        MouseAdapter clickListener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -40,7 +33,10 @@ public class Card extends JPanel{
                     rightClickHandler(e);
                 }
             }
-        });
+        };
+
+        addMouseListener(clickListener);
+        description.addMouseListener(clickListener);
 
         description.setEnabled(false);
         description.setDisabledTextColor(Color.BLACK);

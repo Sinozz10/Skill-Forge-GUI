@@ -42,6 +42,7 @@ public class InstructorDashboard extends DashBoard{
 
                             // edit item
                             JMenuItem editItem = new JMenuItem("Edit");
+                            editItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             editItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -52,6 +53,7 @@ public class InstructorDashboard extends DashBoard{
 
                             //delete item
                             JMenuItem deleteItem = new JMenuItem("Delete");
+                            deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             deleteItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
