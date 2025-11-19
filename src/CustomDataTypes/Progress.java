@@ -29,18 +29,17 @@ public class Progress {
     }
 
     public Double getCompletionPercentage(){
-        int total = 0;
-        int complete = 0;
-        for(Tracker tracker: trackers){
-            if (tracker.isComplete()){
-                complete++;
-            }
-            total++;
-        }
-        if(total == 0){
+        if(trackers.isEmpty()){
             return 0.0;
         }
-        return ((double)((int)((double) (complete/total))*10000)/100);
+
+        long complete = trackers.stream()
+                .filter(Tracker::isComplete)
+                .count();
+        if (trackers.isEmpty()){
+            return 0.0;
+        }
+        return (complete * 100.0) / trackers.size();
     }
 
     public void completeLesson(String lessonID) {
@@ -48,7 +47,7 @@ public class Progress {
         if (tracker != null){
             tracker.setComplete(true);
         }else {
-            throw new IllegalArgumentException("CustomDataTypes.Lesson not found in tracker");
+            throw new IllegalArgumentException("Lesson not found in tracker");
         }
     }
 
@@ -67,7 +66,7 @@ public class Progress {
 
     public void updateTrackers(Course course){
         if (!courseID.equals(course.getID())){
-            throw new IllegalArgumentException("Incorrect CustomDataTypes.Course");
+            throw new IllegalArgumentException("Incorrect Course");
         }
 
         ArrayList<String> completed = new ArrayList<>();

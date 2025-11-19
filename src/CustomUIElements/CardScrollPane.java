@@ -104,11 +104,11 @@ public class CardScrollPane extends JPanel {
                 String flavour = null;
                 if (student != null){
                     Progress prog = student.getProgressTrackerByCourseID(course.getID());
-                    Double completion = prog.getCompletionPercentage();
-                    if (completion.isNaN() || completion == 0){
-                        flavour = null;
-                    }else {
-                        flavour = completion.toString();
+                    if (prog != null){
+                        Double completion = prog.getCompletionPercentage();
+                        if (!completion.isNaN() && completion != 0){
+                            flavour = completion.toString();
+                        }
                     }
                 }
 

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import CustomDataTypes.*;
 import CustomUIElements.*;
@@ -133,6 +134,12 @@ public class InstructorDashboard extends DashBoard{
 
         instructor.removeCourse(courseToDelete);
         userDB.updateRecord(instructor);
+        for (String studentID: courseToDelete.getStudentIDs()){
+            System.out.println(studentID);
+            Student student = (Student) userDB.getRecordByID(studentID);
+            student.removeCourse(courseToDelete);
+            userDB.updateRecord(student);
+        }
         userDB.saveToFile();
 
         JOptionPane.showMessageDialog(InstructorDashboard.this, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);

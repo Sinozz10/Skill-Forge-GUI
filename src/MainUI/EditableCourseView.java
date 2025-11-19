@@ -113,6 +113,15 @@ public class EditableCourseView extends JPanel {
                         }
                     });
 
+                    JMenuItem changeTitle = new JMenuItem("Change Title");
+                    changeTitle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    changeTitle.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            changeChapterTitle(e);
+                        }
+                    });
+
                     JMenuItem deleteChapter = new JMenuItem("Delete Chapter");
                     deleteChapter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     deleteChapter.addActionListener(new ActionListener() {
@@ -123,6 +132,7 @@ public class EditableCourseView extends JPanel {
                     });
 
                     popupMenu.add(changeOrder);
+                    popupMenu.add(changeTitle);
                     popupMenu.add(deleteChapter);
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
@@ -182,6 +192,43 @@ public class EditableCourseView extends JPanel {
                 cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
             }
             coursesPanel.add(cur);
+        }
+    }
+
+    private void changeChapterTitle(ActionEvent e) {
+        Component source = (Component) e.getSource();
+        JPopupMenu popupMenu = (JPopupMenu) source.getParent();
+        Component invoker = popupMenu.getInvoker();
+
+        Container parent = invoker.getParent();
+        while (parent != null && !(parent instanceof CollapsablePanel)) {
+            parent = parent.getParent();
+        }
+
+        if (parent instanceof CollapsablePanel) {
+            CollapsablePanel panel = (CollapsablePanel) parent;
+            Chapter chapter = course.getChapterById(panel.getId());
+
+            if (chapter != null) {
+                String input = (String) JOptionPane.showInputDialog(
+                        this, "Enter new Title for:", "Change Title",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        chapter.getTitle()
+                );
+
+                if (input != null && !input.trim().isEmpty()) {
+                    try {
+                        String title = input.trim();
+                        chapter.setTitle(title);
+                        courseDB.saveToFile();
+                        generateSideBar();
+                    } catch (NumberFormatException nfe) {
+                        JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
         }
     }
 

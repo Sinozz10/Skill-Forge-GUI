@@ -24,7 +24,7 @@ public class User implements Record {
     //Getters and Setters + toString
     @Override
     public String toString() {
-        return "CustomDataTypes.User{" +
+        return "User{" +
                 "userId='" + userID + '\'' +
                 ",role='" + role + '\'' +
                 ",username='" + username + '\'' +

@@ -7,7 +7,7 @@ public class Instructor extends User{
 
     @Override
     public String toString() {
-        return "CustomDataTypes.Instructor{" +
+        return "Instructor{" +
                 "username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 ", userID='" + userID + '\'' +
