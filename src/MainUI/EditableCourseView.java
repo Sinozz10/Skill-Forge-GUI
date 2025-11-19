@@ -201,9 +201,7 @@ public class EditableCourseView extends JPanel {
 
             if (chapter != null) {
                 String input = (String) JOptionPane.showInputDialog(
-                        this,
-                        "Enter new order for '" + chapter.getTitle() + "':",
-                        "Change Order",
+                        this, "Enter new order for '" + chapter.getTitle() + "':", "Change Order",
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         null,
@@ -213,15 +211,29 @@ public class EditableCourseView extends JPanel {
                 if (input != null && !input.trim().isEmpty()) {
                     try {
                         int newOrder = Integer.parseInt(input.trim());
-                        for (Chapter ch : course.getChapters()) {
-                            if (ch.getOrder() == newOrder && !ch.getChapterID().equals(chapter.getChapterID())) {
-                                JOptionPane.showMessageDialog(this, "A chapter with order " + newOrder + " already exists!", "Error", JOptionPane.ERROR_MESSAGE);
-                                return;
+                        int oldOrder = chapter.getOrder();
+                        if (newOrder != oldOrder) {
+                            if (newOrder < oldOrder) {
+                                for (Chapter ch : course.getChapters()) {
+                                    if (!ch.getChapterID().equals(chapter.getChapterID())) {
+                                        if (ch.getOrder() >= newOrder && ch.getOrder() < oldOrder) {
+                                            ch.setOrder(ch.getOrder() + 1);
+                                        }
+                                    }
+                                }
+                            } else {
+                                for (Chapter ch : course.getChapters()) {
+                                    if (!ch.getChapterID().equals(chapter.getChapterID())) {
+                                        if (ch.getOrder() > oldOrder && ch.getOrder() <= newOrder) {
+                                            ch.setOrder(ch.getOrder() - 1);
+                                        }
+                                    }
+                                }
                             }
+                            chapter.setOrder(newOrder);
+                            courseDB.saveToFile();
+                            generateSideBar();
                         }
-                        chapter.setOrder(newOrder);
-                        courseDB.saveToFile();
-                        generateSideBar();
                     } catch (NumberFormatException nfe) {
                         JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -245,10 +257,7 @@ public class EditableCourseView extends JPanel {
             Lesson lesson = lessonPanel.getLesson();
 
             if (lesson != null) {
-                String input = (String) JOptionPane.showInputDialog(
-                        this,
-                        "Enter new order for '" + lesson.getTitle() + "':",
-                        "Change Order",
+                String input = (String) JOptionPane.showInputDialog(this, "Enter new order for '" + lesson.getTitle() + "':", "Change Order",
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         null,
@@ -258,9 +267,34 @@ public class EditableCourseView extends JPanel {
                 if (input != null && !input.trim().isEmpty()) {
                     try {
                         int newOrder = Integer.parseInt(input.trim());
-                        lesson.setOrder(newOrder);
-                        courseDB.saveToFile();
-                        generateSideBar();
+                        int oldOrder = lesson.getOrder();
+
+                        Chapter parentChapter = course.getChapterById(lesson.getChapterID());
+                        if (parentChapter != null && newOrder != oldOrder) {
+                            // Shift all lessons between old and new order
+                            if (newOrder < oldOrder) {
+                                // shift down kol lessons from newOrder to oldOrder-1
+                                for (Lesson l : parentChapter.getLessons()) {
+                                    if (!l.getLessonID().equals(lesson.getLessonID())) {
+                                        if (l.getOrder() >= newOrder && l.getOrder() < oldOrder) {
+                                            l.setOrder(l.getOrder() + 1);
+                                        }
+                                    }
+                                }
+                            } else {
+                                // shift up
+                                for (Lesson l : parentChapter.getLessons()) {
+                                    if (!l.getLessonID().equals(lesson.getLessonID())) {
+                                        if (l.getOrder() > oldOrder && l.getOrder() <= newOrder) {
+                                            l.setOrder(l.getOrder() - 1);
+                                        }
+                                    }
+                                }
+                            }
+                            lesson.setOrder(newOrder);
+                            courseDB.saveToFile();
+                            generateSideBar();
+                        }
                     } catch (NumberFormatException nfe) {
                         JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
                     }
