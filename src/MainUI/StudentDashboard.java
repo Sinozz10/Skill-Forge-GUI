@@ -37,7 +37,7 @@ public class StudentDashboard extends DashBoard{
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(courseDB, course -> student.getCourseIDs().contains(course.getID())){
+                changeContentPanel(new CardScrollPane(courseDB, student, course -> student.getCourseIDs().contains(course.getID())){
                     @Override
                     public void leftClickHandler(MouseEvent e){
                         Component comp = e.getComponent();
@@ -62,7 +62,7 @@ public class StudentDashboard extends DashBoard{
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(courseDB, course->!student.getCourseIDs().contains(course.getID())){
+                changeContentPanel(new CardScrollPane(courseDB, student, course->!student.getCourseIDs().contains(course.getID())){
                     @Override
                     public void leftClickHandler(MouseEvent e){
                         Component comp = e.getComponent();

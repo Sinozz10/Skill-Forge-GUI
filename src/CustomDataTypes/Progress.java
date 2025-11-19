@@ -29,8 +29,8 @@ public class Progress {
     }
 
     public Double getCompletionPercentage(){
-        Double total = 0.0;
-        Double complete = 0.0;
+        int total = 0;
+        int complete = 0;
         for(Tracker tracker: trackers){
             if (tracker.isComplete()){
                 complete++;
@@ -38,7 +38,7 @@ public class Progress {
             total++;
         }
 
-        return complete/total;
+        return ((double) (complete/total))*100;
     }
 
     public void completeLesson(String lessonID) {

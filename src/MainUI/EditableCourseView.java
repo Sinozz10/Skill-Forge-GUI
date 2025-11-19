@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class EditableCourseView extends JPanel{
+public class EditableCourseView extends JPanel {
     private JTextField courseTitle;
     private JPanel lessonView;
     private JScrollPane scrollPane;
@@ -77,7 +77,7 @@ public class EditableCourseView extends JPanel{
         descriptionTextPane.setText(course.getDescription());
     }
 
-    public void generateSideBar(){
+    public void generateSideBar() {
         coursesPanel.removeAll();
         coursesPanel.repaint();
         coursesPanel.revalidate();
@@ -98,10 +98,10 @@ public class EditableCourseView extends JPanel{
 
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
-        for (Chapter chapter: sortedChapters){
-            CollapsablePanel cur = new CollapsablePanel(chapter.getChapterID(), chapter.getTitle()){
+        for (Chapter chapter : sortedChapters) {
+            CollapsablePanel cur = new CollapsablePanel(chapter.getChapterID(), chapter.getTitle()) {
                 @Override
-                public void rightClickHandler(MouseEvent e){
+                public void rightClickHandler(MouseEvent e) {
                     final JPopupMenu popupMenu = new JPopupMenu();
 
                     JMenuItem changeOrder = new JMenuItem("Change Order");
@@ -144,15 +144,15 @@ public class EditableCourseView extends JPanel{
 
             ArrayList<Lesson> sortedLessons = chapter.getLessons();
             sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
-            for (Lesson lesson: sortedLessons){
-                LessonPanel lp = new LessonPanel(lesson){
+            for (Lesson lesson : sortedLessons) {
+                LessonPanel lp = new LessonPanel(lesson) {
                     @Override
-                    public void leftClickHandler(MouseEvent e){
+                    public void leftClickHandler(MouseEvent e) {
                         EditableCourseView.this.leftClickHandler(e, this, lesson);
                     }
 
                     @Override
-                    public void rightClickHandler(MouseEvent e){
+                    public void rightClickHandler(MouseEvent e) {
                         final JPopupMenu popupMenu = new JPopupMenu();
 
                         JMenuItem changeOrder = new JMenuItem("Change Order");
@@ -185,45 +185,85 @@ public class EditableCourseView extends JPanel{
         }
     }
 
-    private void changeChapterOrder(ActionEvent e){
+    private void changeChapterOrder(ActionEvent e) {
         Component source = (Component) e.getSource();
         JPopupMenu popupMenu = (JPopupMenu) source.getParent();
-        CollapsablePanel panel =  (CollapsablePanel) popupMenu.getParent();
+        Component invoker = popupMenu.getInvoker();
 
-        Chapter chapter = course.getChapterById(panel.getId());
+        Container parent = invoker.getParent();
+        while (parent != null && !(parent instanceof CollapsablePanel)) {
+            parent = parent.getParent();
+        }
 
-        if (chapter != null){
-            String input = JOptionPane.showInputDialog(this, "Enter new Order for" + chapter.getTitle() + ":" + chapter.getOrder());
+        if (parent instanceof CollapsablePanel) {
+            CollapsablePanel panel = (CollapsablePanel) parent;
+            Chapter chapter = course.getChapterById(panel.getId());
 
-            if (input != null && !input.trim().isEmpty()){
-                try{
-                    int newOrder = Integer.parseInt(input.trim());
-                    chapter.setOrder(newOrder);
-                    courseDB.saveToFile();
-                    generateSideBar();
-                }catch(NumberFormatException nfe){
-                    JOptionPane.showMessageDialog(this, "Order Must be an integer","Error",JOptionPane.ERROR_MESSAGE);
+            if (chapter != null) {
+                String input = (String) JOptionPane.showInputDialog(
+                        this,
+                        "Enter new order for '" + chapter.getTitle() + "':",
+                        "Change Order",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        chapter.getOrder()
+                );
+
+                if (input != null && !input.trim().isEmpty()) {
+                    try {
+                        int newOrder = Integer.parseInt(input.trim());
+                        for (Chapter ch : course.getChapters()) {
+                            if (ch.getOrder() == newOrder && !ch.getChapterID().equals(chapter.getChapterID())) {
+                                JOptionPane.showMessageDialog(this, "A chapter with order " + newOrder + " already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                        chapter.setOrder(newOrder);
+                        courseDB.saveToFile();
+                        generateSideBar();
+                    } catch (NumberFormatException nfe) {
+                        JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         }
     }
 
-    private void changeLessonOrder(ActionEvent e){
+    private void changeLessonOrder(ActionEvent e) {
         Component source = (Component) e.getSource();
         JPopupMenu popupMenu = (JPopupMenu) source.getParent();
-        LessonPanel panel =  (LessonPanel) popupMenu.getParent();
-        Lesson lesson = panel.getLesson();
+        Component invoker = popupMenu.getInvoker();
 
-        if (lesson != null){
-            String input = JOptionPane.showInputDialog(this, "Enter new Order for" + lesson.getTitle() + ":" + lesson.getOrder());
-            if (input != null && !input.trim().isEmpty()){
-                try{
-                    int newOrder = Integer.parseInt(input.trim());
-                    lesson.setOrder(newOrder);
-                    courseDB.saveToFile();
-                    generateSideBar();
-                }catch(NumberFormatException nfe){
-                    JOptionPane.showMessageDialog(this, "Order Must be an integer","Error",JOptionPane.ERROR_MESSAGE);
+        Container parent = invoker instanceof LessonPanel ? (LessonPanel) invoker : invoker.getParent();
+        while (parent != null && !(parent instanceof LessonPanel)) {
+            parent = parent.getParent();
+        }
+
+        if (parent instanceof LessonPanel) {
+            LessonPanel lessonPanel = (LessonPanel) parent;
+            Lesson lesson = lessonPanel.getLesson();
+
+            if (lesson != null) {
+                String input = (String) JOptionPane.showInputDialog(
+                        this,
+                        "Enter new order for '" + lesson.getTitle() + "':",
+                        "Change Order",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        lesson.getOrder()
+                );
+
+                if (input != null && !input.trim().isEmpty()) {
+                    try {
+                        int newOrder = Integer.parseInt(input.trim());
+                        lesson.setOrder(newOrder);
+                        courseDB.saveToFile();
+                        generateSideBar();
+                    } catch (NumberFormatException nfe) {
+                        JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         }
@@ -257,48 +297,65 @@ public class EditableCourseView extends JPanel{
         }
     }
 
-    private void deleteChapter(ActionEvent e){
+    private void deleteChapter(ActionEvent e) {
         Component source = (Component) e.getSource();
         JPopupMenu popupMenu = (JPopupMenu) source.getParent();
-        CollapsablePanel panel =  (CollapsablePanel) popupMenu.getInvoker().getParent();
+        Component invoker = popupMenu.getInvoker();
 
-        Chapter chapter = course.getChapterById(panel.getId());
+        Container parent = invoker.getParent();
+        while (parent != null && !(parent instanceof CollapsablePanel)) {
+            parent = parent.getParent();
+        }
 
-        if (chapter != null){
-            int confirm = JOptionPane.showConfirmDialog(this, "Delete Chapter " + chapter.getTitle() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION){
-                if (activeLesson != null && activeLesson.getChapterID().equals(chapter.getChapterID())) {
-                    activeLesson = null;
-                    lessonTitle.setVisible(false);
-                    changeContentPanel(new JPanel());
+        if (parent instanceof CollapsablePanel) {
+            CollapsablePanel panel = (CollapsablePanel) parent;
+            Chapter chapter = course.getChapterById(panel.getId());
+
+            if (chapter != null) {
+                int confirm = JOptionPane.showConfirmDialog(this, "Delete Chapter '" + chapter.getTitle() + "'?", "Confirm", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    if (activeLesson != null && activeLesson.getChapterID().equals(chapter.getChapterID())) {
+                        activeLesson = null;
+                        lessonTitle.setVisible(false);
+                        changeContentPanel(new JPanel());
+                    }
+                    course.deleteChapter(chapter);
+                    courseDB.saveToFile();
+                    generateSideBar();
                 }
-                course.deleteChapter(chapter);
-                courseDB.saveToFile();
-                generateSideBar();
             }
         }
     }
 
-    private void deleteLesson(ActionEvent e){
+    private void deleteLesson(ActionEvent e) {
         Component source = (Component) e.getSource();
         JPopupMenu popup = (JPopupMenu) source.getParent();
-        LessonPanel lessonPanel = (LessonPanel) popup.getInvoker();
-        Lesson lesson = lessonPanel.getLesson();
+        Component invoker = popup.getInvoker();
 
-        if (lesson != null) {
-            int confirm = JOptionPane.showConfirmDialog(this, "Delete lesson '" + lesson.getTitle() + "'?", "Confirm", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                if (activeLesson != null && activeLesson.getLessonID().equals(lesson.getLessonID())) {
-                    activeLesson = null;
-                    lessonTitle.setVisible(false);
-                    changeContentPanel(new JPanel());
+        Container parent = invoker instanceof LessonPanel ? (LessonPanel) invoker : invoker.getParent();
+        while (parent != null && !(parent instanceof LessonPanel)) {
+            parent = parent.getParent();
+        }
+
+        if (parent instanceof LessonPanel) {
+            LessonPanel lessonPanel = (LessonPanel) parent;
+            Lesson lesson = lessonPanel.getLesson();
+
+            if (lesson != null) {
+                int confirm = JOptionPane.showConfirmDialog(this, "Delete lesson '" + lesson.getTitle() + "'?", "Confirm", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    if (activeLesson != null && activeLesson.getLessonID().equals(lesson.getLessonID())) {
+                        activeLesson = null;
+                        lessonTitle.setVisible(false);
+                        changeContentPanel(new JPanel());
+                    }
+                    Chapter parentChapter = course.getChapterById(lesson.getChapterID());
+                    if (parentChapter != null) {
+                        parentChapter.removeLesson(lesson);
+                    }
+                    courseDB.saveToFile();
+                    generateSideBar();
                 }
-                Chapter parentChapter = course.getChapterById(lesson.getChapterID());
-                if (parentChapter != null) {
-                    parentChapter.removeLesson(lesson);
-                }
-                courseDB.saveToFile();
-                generateSideBar();
             }
         }
     }

@@ -15,14 +15,14 @@ public class Card extends JPanel{
     private JPanel headerPanel;
     private final Course course;
 
-    public Card(Course course) {
+    public Card(Course course, String flavour) {
         this.course = course;
         setLayout(new BorderLayout());
         add(cardPanel, BorderLayout.CENTER);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setBackground(Color.LIGHT_GRAY);
 
-        title.setText(course.getTitle());
+        title.setText(flavour != null ? course.getTitle()+flavour: course.getTitle());
         id.setText("CourseID #: " + course.getID());
         description.setText(course.getDescription());
         description.setEditable(false);

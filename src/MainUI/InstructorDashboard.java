@@ -64,7 +64,7 @@ public class InstructorDashboard extends DashBoard{
             }
         });
 
-        CardScrollPane pane = new CardScrollPane(courseDB, course -> instructor.getID().equals(course.getInstructorID())) {
+        CardScrollPane pane = new CardScrollPane(courseDB, null, course -> instructor.getID().equals(course.getInstructorID())) {
             @Override
             public void rightClickHandler(MouseEvent e){
                 Component comp = e.getComponent();
