@@ -22,7 +22,7 @@ public class Card extends JPanel{
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setBackground(Color.LIGHT_GRAY);
 
-        title.setText(flavour != null ? course.getTitle()+flavour: course.getTitle());
+        title.setText(flavour != null ? course.getTitle()+"  --  Completion: "+flavour: course.getTitle());
         id.setText("CourseID #: " + course.getID());
         description.setText(course.getDescription());
         description.setEditable(false);

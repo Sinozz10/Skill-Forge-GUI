@@ -37,8 +37,10 @@ public class Progress {
             }
             total++;
         }
-
-        return ((double) (complete/total))*100;
+        if(total == 0){
+            return 0.0;
+        }
+        return ((double)((int)((double) (complete/total))*10000)/100);
     }
 
     public void completeLesson(String lessonID) {
