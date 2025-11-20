@@ -17,7 +17,7 @@ public class Course implements Record {
 
     @Override
     public String toString() {
-        return "CustomDataTypes.Course{" +
+        return "Course{" +
                 "courseId='" + courseID + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

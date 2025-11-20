@@ -44,7 +44,7 @@ public class ValidationResult{
     }
 
     public static String getEmailError() {
-        return "Please enter a valid email address (e.g., user@example.com).";
+        return "Please enter a valid email address (example: user@example.com).";
     }
 
     public static String getPasswordError() {

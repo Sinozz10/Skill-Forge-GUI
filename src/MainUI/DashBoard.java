@@ -38,9 +38,7 @@ public abstract class DashBoard extends JFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int option = JOptionPane.showConfirmDialog(
-                        DashBoard.this,
-                        "Are you sure you want to close the application?",
+                int option = JOptionPane.showConfirmDialog(DashBoard.this, "Are you sure you want to close the application?",
                         "Close Confirmation",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE
@@ -84,6 +82,8 @@ public abstract class DashBoard extends JFrame{
     private void handleLogout() {
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
+            userDB.saveToFile();
+            courseDB.saveToFile();
             this.dispose();
             new Login();
         }

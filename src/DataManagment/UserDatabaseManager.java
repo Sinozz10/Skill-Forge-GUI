@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class UserDatabaseManager extends JsonDatabaseManager<User>{
@@ -83,6 +84,26 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
             }
         }
         return null;
+    }
+
+    public ArrayList<Student> getStudents(){
+        ArrayList<Student> students = new ArrayList<>();
+        for (User record: records){
+            if (record.getRole().equals("student")){
+                students.add((Student) record);
+            }
+        }
+        return students;
+    }
+
+    public ArrayList<Instructor> getInstructors(){
+        ArrayList<Instructor> instructors = new ArrayList<>();
+        for (User record: records){
+            if (record.getRole().equals("instructor")){
+                instructors.add((Instructor) record);
+            }
+        }
+        return instructors;
     }
 
     public User getRecordByUsername(String name) {

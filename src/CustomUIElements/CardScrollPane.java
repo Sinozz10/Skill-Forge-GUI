@@ -1,6 +1,8 @@
 package CustomUIElements;
 
 import CustomDataTypes.Course;
+import CustomDataTypes.Progress;
+import CustomDataTypes.Student;
 import DataManagment.CourseDatabaseManager;
 
 import javax.swing.*;
@@ -22,10 +24,12 @@ public class CardScrollPane extends JPanel {
     private ArrayList<Course> loadedCourses;
     private ArrayList<Course> availableCourses;
     private CardScrollPaneFilter function;
+    private Student student;
 
-    public CardScrollPane(CourseDatabaseManager courseDB, CardScrollPaneFilter function) {
+    public CardScrollPane(CourseDatabaseManager courseDB, Student student, CardScrollPaneFilter function) {
         this.courseDB = courseDB;
         this.function = function;
+        this.student = student;
         availableCourses = new ArrayList<>();
         setBackground(Color.LIGHT_GRAY);
         for(Course course: courseDB.getRecords()){
@@ -97,7 +101,18 @@ public class CardScrollPane extends JPanel {
             cardPanel.repaint();
 
             for (Course course : loadedCourses) {
-                Card card = new Card(course) {
+                String flavour = null;
+                if (student != null){
+                    Progress prog = student.getProgressTrackerByCourseID(course.getID());
+                    if (prog != null){
+                        Double completion = prog.getCompletionPercentage();
+                        if (!completion.isNaN() && completion != 0){
+                            flavour = completion.toString();
+                        }
+                    }
+                }
+
+                Card card = new Card(course, flavour) {
                     @Override
                     public void rightClickHandler(MouseEvent e){
                         CardScrollPane.this.rightClickHandler(e);
