@@ -28,11 +28,12 @@ public class SignUp extends JFrame {
         setTitle("SignUp");
         setContentPane(SignUp);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(Color.gray);
+        setBackground(Color.LIGHT_GRAY);
         setSize(450,250);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+        backButton.setBackground(Color.GRAY);
 
         backButton.addActionListener(new ActionListener() {
             @Override
