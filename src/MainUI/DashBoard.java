@@ -26,7 +26,6 @@ public abstract class DashBoard extends JFrame{
         this.userDB = userDB;
         setContentPane(dashPanel);
         setSize(900, 550);
-        setVisible(true);
         setBackground(Color.gray);
 
         logoutButton.setBackground(Color.LIGHT_GRAY);
@@ -85,7 +84,7 @@ public abstract class DashBoard extends JFrame{
             userDB.saveToFile();
             courseDB.saveToFile();
             this.dispose();
-            new Login();
+            new LoginDashboard(userDB);
         }
     }
 

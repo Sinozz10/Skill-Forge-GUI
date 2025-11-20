@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class SignUp extends JFrame {
+public class SignUp extends JPanel {
     private JPanel SignUp;
     private JPasswordField ConfirmedPass;
     private JTextField userName;
@@ -19,27 +19,22 @@ public class SignUp extends JFrame {
     private JComboBox<String> role;
     private JButton backButton;
     private JButton signUpButton;
+    private LoginDashboard ld;
 
     private final AuthenticateManager authManager;
 
-    public SignUp() {
+    public SignUp(LoginDashboard ld) {
+        this.ld = ld;
         UserDatabaseManager database = new UserDatabaseManager("users.json");
         this.authManager = new AuthenticateManager(database);
-        setTitle("SignUp");
-        setContentPane(SignUp);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(Color.LIGHT_GRAY);
-        setSize(450,250);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setResizable(false);
-        backButton.setBackground(Color.GRAY);
+        setLayout(new BorderLayout());
+        add(SignUp,BorderLayout.CENTER);
+        backButton.setBackground(Color.lightGray);
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new Login();
+                ld.changeContentPanel(new Login(ld));
             }
         });
         signUpButton.addActionListener(new ActionListener() {
@@ -90,7 +85,7 @@ public class SignUp extends JFrame {
         });
 
         signUpButton.setSize(new Dimension(10,20));
-        signUpButton.setBackground(Color.gray);
+        signUpButton.setBackground(Color.lightGray);
     }
 
     private void handleSignUp() {
@@ -130,8 +125,7 @@ public class SignUp extends JFrame {
         try {
             User newUser = authManager.signup(username, email, password, userRole);
             JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + " You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-            new Login();
+            ld.changeContentPanel(new Login(ld));
         } catch (IllegalArgumentException e){
             System.out.println("Status: FAILED - " + e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage(), "Signup Failed", JOptionPane.ERROR_MESSAGE);

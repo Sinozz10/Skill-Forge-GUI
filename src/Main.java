@@ -1,5 +1,7 @@
-import MainUI.Login;
+import DataManagment.UserDatabaseManager;
+import MainUI.LoginDashboard;
 
 void main() {
-    new Login();
+    UserDatabaseManager userDB = new UserDatabaseManager("users.json");
+    new LoginDashboard(userDB);
 }
