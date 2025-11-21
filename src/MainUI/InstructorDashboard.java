@@ -24,7 +24,7 @@ public class InstructorDashboard extends DashBoard{
         this.instructor = instructor;
 
         setTitle("Dashboard - " + instructor.getUsername());
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(Color.GRAY);
         navButtons.setLayout(new GridLayout(1,5, 10, 10));
         setResizable(false);
 

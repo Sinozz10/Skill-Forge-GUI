@@ -30,7 +30,7 @@ public class CardScrollPane extends JPanel {
         this.function = function;
         this.student = student;
         availableCourses = new ArrayList<>();
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(Color.GRAY);
         for(Course course: courseDB.getRecords()){
             if (function.filter(course)){
                 availableCourses.add(course);
@@ -38,7 +38,7 @@ public class CardScrollPane extends JPanel {
         }
 
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
-        cardPanel.setBackground(Color.LIGHT_GRAY);
+        cardPanel.setBackground(Color.GRAY);
 
         scrollPane = new JScrollPane(cardPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
@@ -50,6 +50,7 @@ public class CardScrollPane extends JPanel {
         loadCoursesFromDatabase();
 
         searchButton.setBackground(Color.LIGHT_GRAY);
+        searchButton.setForeground(Color.BLACK);
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

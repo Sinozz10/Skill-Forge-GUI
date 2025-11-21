@@ -17,9 +17,12 @@ public class ViewStudents extends JPanel {
 
     public ViewStudents(Instructor instructor) {
         setLayout(new BorderLayout());
+        setForeground(Color.BLACK);
         setBackground(Color.LIGHT_GRAY);
 
         JLabel title = new JLabel("Enrolled Students", SwingConstants.CENTER);
+        title.setForeground(Color.BLACK);
+        title.setBackground(Color.LIGHT_GRAY);
         add(title, BorderLayout.NORTH);
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -30,9 +33,12 @@ public class ViewStudents extends JPanel {
             Course crs = courseDB.getRecordByID(courseID);
             if (crs != null) {
                 CollapsablePanel courseDropdown = new CollapsablePanel(crs.getID(), crs.getTitle());
+                courseDropdown.setBackground(Color.GRAY);
+                courseDropdown.setForeground(Color.BLACK);
                 for (String studentID : crs.getStudentIDs()){
                     Student stu = (Student) userDB.getRecordByID(studentID);
                     JLabel stuLabel = new JLabel(stu.getID());
+                    stuLabel.setForeground(Color.BLACK);
                     courseDropdown.addContent(stuLabel);
                 }
                 studentList.add(courseDropdown);
