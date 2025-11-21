@@ -25,6 +25,7 @@ public class CourseView extends JPanel{
     private JPanel listPanel;
     private JTextPane descriptionTextPane;
     private JScrollPane resourcesScrollPane;
+    private JPanel mainPanel;
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
@@ -33,6 +34,7 @@ public class CourseView extends JPanel{
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         setBackground(Color.LIGHT_GRAY);
 
