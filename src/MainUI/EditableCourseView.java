@@ -33,6 +33,7 @@ public class EditableCourseView extends JPanel {
     private JButton saveExitButton;
     private JPanel mainPanel;
     private JScrollPane mainScrollPane;
+    private JButton refreshButton;
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
@@ -58,6 +59,14 @@ public class EditableCourseView extends JPanel {
 
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
         generateSideBar();
+
+        refreshButton.setBackground(Color.LIGHT_GRAY);
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateSideBar();
+            }
+        });
 
         saveExitButton.setBackground(Color.LIGHT_GRAY);
         saveExitButton.addActionListener(new ActionListener() {
