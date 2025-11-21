@@ -6,12 +6,10 @@ import CustomDataTypes.Lesson;
 import CustomDataTypes.User;
 
 public class GenerationID {
-    private UserDatabaseManager userDatabase;
-    private CourseDatabaseManager courseDatabase;
+    private UserDatabaseManager userDatabase = UserDatabaseManager.getDatabaseInstance();
+    private CourseDatabaseManager courseDatabase = CourseDatabaseManager.getDatabaseInstance();
 
-    public GenerationID(UserDatabaseManager userDatabase, CourseDatabaseManager courseDatabase) {
-        this.userDatabase = userDatabase;
-        this.courseDatabase = courseDatabase;
+    public GenerationID() {
     }
 
     public CourseDatabaseManager getCourseDatabase() {

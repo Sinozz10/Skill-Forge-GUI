@@ -25,8 +25,7 @@ public class Login extends JPanel {
 
     public Login(LoginDashboard ld) {
         this.ld = ld;
-        UserDatabaseManager database = new UserDatabaseManager("users.json");
-        this.auth= new AuthenticateManager(database);
+        this.auth= new AuthenticateManager();
         setLayout(new BorderLayout());
         add(login,BorderLayout.CENTER);
 
@@ -90,9 +89,9 @@ public class Login extends JPanel {
                 UserDatabaseManager userDB = auth.database;
 
                 if (user.getRole().equalsIgnoreCase("student")) {
-                    new StudentDashboard((Student) userDB.getRecordByID(user.getID()), courseDB, userDB);
+                    new StudentDashboard((Student) userDB.getRecordByID(user.getID()));
                 } else if (user.getRole().equalsIgnoreCase("instructor")) {
-                    new InstructorDashboard((Instructor) userDB.getRecordByID(user.getID()), courseDB, userDB);
+                    new InstructorDashboard((Instructor) userDB.getRecordByID(user.getID()));
                 }
                 ld.dispose();
 

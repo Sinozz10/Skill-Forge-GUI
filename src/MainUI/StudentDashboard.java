@@ -15,10 +15,10 @@ import java.awt.event.MouseEvent;
 import DataManagment.*;
 
 public class StudentDashboard extends DashBoard{
-    private Student student;
+    private final Student student;
 
-    public StudentDashboard(Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
-        super(courseDB, userDB);
+    public StudentDashboard(Student student) {
+        super();
         this.student = student;
 
         setTitle("Dashboard - " + student.getUsername());
@@ -37,7 +37,7 @@ public class StudentDashboard extends DashBoard{
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(courseDB, student, course -> student.getCourseIDs().contains(course.getID())){
+                changeContentPanel(new CardScrollPane(student, course -> student.getCourseIDs().contains(course.getID())){
                     @Override
                     public void leftClickHandler(MouseEvent e){
                         Component comp = e.getComponent();
@@ -48,7 +48,7 @@ public class StudentDashboard extends DashBoard{
                         if (e.getClickCount() == 2){
                             assert clickedCard != null;
                             Course selectedCourse = clickedCard.getCourse();
-                            changeContentPanel(new CourseView(selectedCourse, student, courseDB, userDB));
+                            changeContentPanel(new CourseView(selectedCourse, student));
                         }
                     }
                 });
@@ -62,7 +62,7 @@ public class StudentDashboard extends DashBoard{
         enrollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(courseDB, student, course->!student.getCourseIDs().contains(course.getID())){
+                changeContentPanel(new CardScrollPane(student, course->!student.getCourseIDs().contains(course.getID())){
                     @Override
                     public void leftClickHandler(MouseEvent e){
                         Component comp = e.getComponent();
@@ -112,7 +112,7 @@ public class StudentDashboard extends DashBoard{
     }
 
     static void main() {
-        UserDatabaseManager userDB = new UserDatabaseManager("users.json");
-        new StudentDashboard((Student) userDB.getRecordByID("S0001"), new CourseDatabaseManager("courses.json"), userDB);
+        UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+        new StudentDashboard((Student) userDB.getRecordByID("S0001"));
     }
 }

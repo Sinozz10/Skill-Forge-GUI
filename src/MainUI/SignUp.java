@@ -25,8 +25,7 @@ public class SignUp extends JPanel {
 
     public SignUp(LoginDashboard ld) {
         this.ld = ld;
-        UserDatabaseManager database = new UserDatabaseManager("users.json");
-        this.authManager = new AuthenticateManager(database);
+        this.authManager = new AuthenticateManager();
         setLayout(new BorderLayout());
         add(SignUp,BorderLayout.CENTER);
         backButton.setBackground(Color.lightGray);

@@ -18,14 +18,13 @@ public class ChapterDialog extends JDialog{
     private JPanel managerPanel;
     private JButton addButton;
     private JButton cancelButton;
-    private CourseDatabaseManager courseDB;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private Chapter chapter = null;
     private Course course;
 
-    public ChapterDialog(Frame parent, Course course, CourseDatabaseManager courseDB) {
+    public ChapterDialog(Frame parent, Course course) {
         super(parent, "Add new chapter", true);
         this.course = course;
-        this.courseDB = courseDB;
 
         initComponents();
         addListeners();
@@ -84,7 +83,7 @@ public class ChapterDialog extends JDialog{
     }
 
     private void createLesson(){
-        GenerationID generator = new GenerationID(null, courseDB);
+        GenerationID generator = new GenerationID();
 
         String courID = course.getID();
         String chapID = generator.generateChapterID();

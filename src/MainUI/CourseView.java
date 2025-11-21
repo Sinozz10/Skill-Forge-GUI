@@ -29,9 +29,9 @@ public class CourseView extends JPanel{
     private CourseDatabaseManager courseDB;
     private UserDatabaseManager userDB;
 
-    public CourseView(Course course, Student student, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
-        this.userDB = userDB;
-        this.courseDB = courseDB;
+    public CourseView(Course course, Student student) {
+        this.userDB = UserDatabaseManager.getDatabaseInstance();
+        this.courseDB = CourseDatabaseManager.getDatabaseInstance();
 
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);

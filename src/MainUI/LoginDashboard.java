@@ -10,11 +10,9 @@ import java.awt.event.WindowEvent;
 public class LoginDashboard extends JFrame{
     private JPanel mainFramePanel;
     private JPanel contentPanel;
-    private UserDatabaseManager userDB;
+    private UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
-    public LoginDashboard(UserDatabaseManager userDB){
-        this.userDB = userDB;
-
+    public LoginDashboard(){
         changeContentPanel(new Login(LoginDashboard.this));
 
         setContentPane(mainFramePanel);

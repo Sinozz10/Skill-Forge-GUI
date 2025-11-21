@@ -18,12 +18,10 @@ public abstract class DashBoard extends JFrame{
     private JPanel dashPanel;
     protected JPanel navButtons;
     private JButton homeButton;
-    protected final CourseDatabaseManager courseDB;
-    protected final UserDatabaseManager userDB;
+    protected final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    protected final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
-    public DashBoard(CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
-        this.courseDB = courseDB;
-        this.userDB = userDB;
+    public DashBoard() {
         setContentPane(dashPanel);
         setSize(900, 550);
         setBackground(Color.gray);
@@ -84,7 +82,7 @@ public abstract class DashBoard extends JFrame{
             userDB.saveToFile();
             courseDB.saveToFile();
             this.dispose();
-            new LoginDashboard(userDB);
+            new LoginDashboard();
         }
     }
 
