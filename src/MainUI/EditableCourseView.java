@@ -1,7 +1,6 @@
 package MainUI;
 
 import CustomDataTypes.*;
-import CustomUIElements.Card;
 import CustomUIElements.CollapsablePanel;
 import CustomUIElements.LessonPanel;
 import DataManagment.CourseDatabaseManager;
@@ -10,6 +9,7 @@ import Dialogs.ChapterDialog;
 import Dialogs.LessonDialog;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +31,8 @@ public class EditableCourseView extends JPanel {
     private JTextPane descriptionTextPane;
     private JScrollPane resourcesScrollPane;
     private JButton saveExitButton;
+    private JPanel mainPanel;
+    private JScrollPane mainScrollPane;
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
@@ -47,6 +49,10 @@ public class EditableCourseView extends JPanel {
         setLayout(new BorderLayout());
         add(ecvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
+        mainScrollPane.getVerticalScrollBar().setUnitIncrement(32);
+
+        content.setPreferredSize(new Dimension(350, content.getPreferredSize().height));
+        content.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         lessonTitle.setVisible(false);
 
@@ -66,7 +72,6 @@ public class EditableCourseView extends JPanel {
 
         scrollPane = new JScrollPane(coursesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         listPanel.setLayout(new BorderLayout());
         listPanel.add(scrollPane, BorderLayout.CENTER);

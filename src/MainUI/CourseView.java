@@ -7,6 +7,7 @@ import DataManagment.CourseDatabaseManager;
 import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -26,21 +27,28 @@ public class CourseView extends JPanel{
     private JTextPane descriptionTextPane;
     private JScrollPane resourcesScrollPane;
     private JPanel mainPanel;
+    private JScrollPane mainScrollPane;
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+    private final JTextPane content = new JTextPane();
 
     public CourseView(Course course, Student student) {
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainScrollPane.getVerticalScrollBar().setUnitIncrement(32);
+
+        content.setPreferredSize(new Dimension(350, content.getPreferredSize().height));
+        content.setBorder(new EmptyBorder(10, 10, 10, 10));
+        content.setEditable(false);
 
         setBackground(Color.LIGHT_GRAY);
 
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
         lessonTitle.setVisible(false);
+        lessonTitle.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JPanel coursesPanel = new JPanel();
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
@@ -70,7 +78,6 @@ public class CourseView extends JPanel{
 
         scrollPane = new JScrollPane(coursesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         listPanel.setLayout(new BorderLayout());
         listPanel.add(scrollPane, BorderLayout.CENTER);
@@ -82,9 +89,8 @@ public class CourseView extends JPanel{
     public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson, Progress progress){
         JPanel tempPanel = new JPanel();
         tempPanel.setLayout(new BorderLayout());
-        JTextPane content = new JTextPane();
+
         content.setText(lesson.getContent());
-        content.setEditable(false);
         tempPanel.add(content, BorderLayout.CENTER);
 
         Lp.setComplete();

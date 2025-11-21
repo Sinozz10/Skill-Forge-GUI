@@ -14,17 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardScrollPane extends JPanel {
-    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private JPanel contentPanel;
-    private final JScrollPane scrollPane;
     private JTextField searchBar;
     private JButton searchButton;
     private JPanel cardPanel;
     private JPanel listPanel;
     private ArrayList<Course> loadedCourses;
     private ArrayList<Course> availableCourses;
-    private CardScrollPaneFilter function;
-    private Student student;
+    private final CardScrollPaneFilter function;
+    private final Student student;
 
     public CardScrollPane( Student student, CardScrollPaneFilter function) {
         this.function = function;
@@ -40,7 +39,7 @@ public class CardScrollPane extends JPanel {
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.LIGHT_GRAY);
 
-        scrollPane = new JScrollPane(cardPanel);
+        JScrollPane scrollPane = new JScrollPane(cardPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 //        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
