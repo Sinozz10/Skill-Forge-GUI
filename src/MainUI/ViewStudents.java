@@ -12,8 +12,10 @@ import CustomUIElements.*;
 import DataManagment.*;
 
 public class ViewStudents extends JPanel {
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
-    public ViewStudents(CourseDatabaseManager courseDb, UserDatabaseManager userDb, Instructor instructor) {
+    public ViewStudents(Instructor instructor) {
         setLayout(new BorderLayout());
         setBackground(Color.LIGHT_GRAY);
 
@@ -25,11 +27,11 @@ public class ViewStudents extends JPanel {
         studentList.setLayout(new BoxLayout(studentList, BoxLayout.Y_AXIS));
 
         for (String courseID : instructor.getCourseIDs()) {
-            Course crs = courseDb.getRecordByID(courseID);
+            Course crs = courseDB.getRecordByID(courseID);
             if (crs != null) {
                 CollapsablePanel courseDropdown = new CollapsablePanel(crs.getID(), crs.getTitle());
                 for (String studentID : crs.getStudentIDs()){
-                    Student stu = (Student) userDb.getRecordByID(studentID);
+                    Student stu = (Student) userDB.getRecordByID(studentID);
                     JLabel stuLabel = new JLabel(stu.getID());
                     courseDropdown.addContent(stuLabel);
                 }

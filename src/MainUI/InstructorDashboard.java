@@ -17,10 +17,10 @@ import CustomUIElements.*;
 import DataManagment.*;
 
 public class InstructorDashboard extends DashBoard{
-    private Instructor instructor;
+    private final Instructor instructor;
 
-    public InstructorDashboard(Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB) {
-        super(courseDB, userDB);
+    public InstructorDashboard(Instructor instructor) {
+        super();
         this.instructor = instructor;
 
         setTitle("Dashboard - " + instructor.getUsername());
@@ -45,7 +45,7 @@ public class InstructorDashboard extends DashBoard{
         viewStudentsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new ViewStudents(courseDB, userDB, instructor));
+                changeContentPanel(new ViewStudents(instructor));
             }
         });
         navButtons.add(viewStudentsButton);
@@ -61,11 +61,11 @@ public class InstructorDashboard extends DashBoard{
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseAdd(courseDB, userDB, instructor));
+                changeContentPanel(new CourseAdd(instructor));
             }
         });
 
-        CardScrollPane pane = new CardScrollPane(courseDB, null, course -> instructor.getID().equals(course.getInstructorID())) {
+        CardScrollPane pane = new CardScrollPane( null, course -> instructor.getID().equals(course.getInstructorID())) {
             @Override
             public void rightClickHandler(MouseEvent e){
                 Component comp = e.getComponent();
@@ -88,6 +88,7 @@ public class InstructorDashboard extends DashBoard{
                                 "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
                         if (confirm == JOptionPane.YES_OPTION) {
+                            assert clickedCard != null;
                             handleDelete(instructor, clickedCard.getCourse());
                             loadCoursesFromDatabase();
                         }
@@ -109,7 +110,7 @@ public class InstructorDashboard extends DashBoard{
                 if (e.getClickCount() == 2){
                     assert clickedCard != null;
                     Course selectedCourse = clickedCard.getCourse();
-                    changeContentPanel(new EditableCourseView(selectedCourse, instructor, courseDB, userDB, InstructorDashboard.this));
+                    changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
                 }
             }
         };
@@ -156,7 +157,7 @@ public class InstructorDashboard extends DashBoard{
     }
 
     static void main() {
-        UserDatabaseManager userDB = new UserDatabaseManager("users.json");
-        new InstructorDashboard((Instructor) userDB.getRecordByID("I0001"), new CourseDatabaseManager("courses.json"), userDB);
+        UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+        new InstructorDashboard((Instructor) userDB.getRecordByID("I0001"));
     }
 }

@@ -13,26 +13,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Login extends JFrame {
+public class Login extends JPanel {
     private JPanel login;
     private JPasswordField passWord;
     private JTextField userName;
     private JButton loginButton;
     private JButton signupButton;
+    private LoginDashboard ld;
 
     private final AuthenticateManager auth;
 
-    public Login() {
-        UserDatabaseManager database = new UserDatabaseManager("users.json");
-        this.auth= new AuthenticateManager(database);
-        setTitle("Login");
-        setContentPane(login);
-        setSize(350, 180);
-        setBackground(Color.GRAY);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setResizable(false);
+    public Login(LoginDashboard ld) {
+        this.ld = ld;
+        this.auth= new AuthenticateManager();
+        setLayout(new BorderLayout());
+        add(login,BorderLayout.CENTER);
 
         passWord.addActionListener(new ActionListener() {
             @Override
@@ -67,8 +62,7 @@ public class Login extends JFrame {
         signupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new SignUp();
+                ld.changeContentPanel(new SignUp(ld));
             }
         });
         loginButton.setSize(new Dimension(10,20));
@@ -90,17 +84,16 @@ public class Login extends JFrame {
             User user = auth.login(userName, password);
             if (user != null) {
                 JOptionPane.showMessageDialog(this, "Login successful!\nWelcome, " + user.getUsername(), "Success", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
 
                 CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
                 UserDatabaseManager userDB = auth.database;
 
                 if (user.getRole().equalsIgnoreCase("student")) {
-                    new StudentDashboard((Student) userDB.getRecordByID(user.getID()), courseDB, userDB);
+                    new StudentDashboard((Student) userDB.getRecordByID(user.getID()));
                 } else if (user.getRole().equalsIgnoreCase("instructor")) {
-
-                    new InstructorDashboard((Instructor) userDB.getRecordByID(user.getID()), courseDB, userDB);
+                    new InstructorDashboard((Instructor) userDB.getRecordByID(user.getID()));
                 }
+                ld.dispose();
 
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid userName or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);

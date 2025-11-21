@@ -17,11 +17,9 @@ public class CourseEdit extends JPanel {
     private JTextField description;
     private JTextField courseID;
     private JPanel edit;
-    private final CourseDatabaseManager databaseManager;
+    private final CourseDatabaseManager databaseManager = CourseDatabaseManager.getDatabaseInstance();
 
-    public CourseEdit(CourseDatabaseManager databaseManager, Course course){
-        this.databaseManager = databaseManager;
-
+    public CourseEdit(Course course){
         setLayout(new BorderLayout());
         add(edit, BorderLayout.CENTER);
 

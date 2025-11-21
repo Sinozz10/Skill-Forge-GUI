@@ -19,15 +19,13 @@ public class CourseAdd extends JPanel {
     private JPanel add;
     private JTextField CourseName;
     private final String instructorId;
-    private final CourseDatabaseManager courseDB;
-    private final UserDatabaseManager userDB;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
     private final GenerationID idGenerator;
 
-    public CourseAdd(CourseDatabaseManager courseDB, UserDatabaseManager userDB, Instructor instructor) {
-        this.courseDB = courseDB;
-        this.userDB = userDB;
+    public CourseAdd(Instructor instructor) {
         this.instructorId = instructor.getID();
-        this.idGenerator = new GenerationID(userDB,courseDB);
+        this.idGenerator = new GenerationID();
 
         setLayout(new BorderLayout());
         add(add,BorderLayout.CENTER);
