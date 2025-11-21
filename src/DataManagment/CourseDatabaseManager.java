@@ -12,8 +12,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
+    private static final CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
+
     public CourseDatabaseManager(String filename) {
         super(filename);
+    }
+
+    public static CourseDatabaseManager getDatabaseInstance(){
+        return courseDB;
     }
 
     public void readFromFile() {

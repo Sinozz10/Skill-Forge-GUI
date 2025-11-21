@@ -32,17 +32,15 @@ public class EditableCourseView extends JPanel {
     private JScrollPane resourcesScrollPane;
     private JButton saveExitButton;
     private JPanel editPanel;
-    private CourseDatabaseManager courseDB;
-    private UserDatabaseManager userDB;
-    private Course course;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+    private final Course course;
     private Lesson activeLesson = null;
     private JTextPane content = new JTextPane();
     private JPanel coursesPanel = new JPanel();
     private InstructorDashboard dashboard;
 
-    public EditableCourseView(Course course, Instructor instructor, CourseDatabaseManager courseDB, UserDatabaseManager userDB, InstructorDashboard dashboard) {
-        this.userDB = userDB;
-        this.courseDB = courseDB;
+    public EditableCourseView(Course course, Instructor instructor, InstructorDashboard dashboard) {
         this.course = course;
         this.dashboard = dashboard;
 
@@ -351,7 +349,7 @@ public class EditableCourseView extends JPanel {
     }
 
     private void addChapter(ActionEvent e){
-        Chapter chapter = new ChapterDialog(dashboard, course, courseDB).getResult();
+        Chapter chapter = new ChapterDialog(dashboard, course).getResult();
 
         if (chapter != null){
             course.addChapter(chapter);
@@ -369,7 +367,7 @@ public class EditableCourseView extends JPanel {
         assert clickedPanel != null;
         Chapter chapter = course.getChapterById(clickedPanel.getId());
 
-        Lesson lesson = new LessonDialog(dashboard, chapter, courseDB).getResult();
+        Lesson lesson = new LessonDialog(dashboard, chapter).getResult();
 
         if (lesson != null){
             chapter.addLesson(lesson);

@@ -16,8 +16,14 @@ import java.util.ArrayList;
 
 
 public class UserDatabaseManager extends JsonDatabaseManager<User>{
-    public UserDatabaseManager(String filename) {
+    private static final UserDatabaseManager userDB = new UserDatabaseManager("users.json");
+
+    private UserDatabaseManager(String filename) {
         super(filename);
+    }
+
+    public static UserDatabaseManager getDatabaseInstance(){
+        return userDB;
     }
 
     @Override

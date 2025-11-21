@@ -7,12 +7,11 @@ import CustomDataTypes.Student;
 import CustomDataTypes.User;
 
 public class AuthenticateManager {
-    protected final UserDatabaseManager database;
+    protected final UserDatabaseManager database = UserDatabaseManager.getDatabaseInstance();
     private final GenerationID idGenerator;
 
-    public AuthenticateManager(UserDatabaseManager database) {
-        this.database = database;
-        this.idGenerator = new GenerationID(database,null);
+    public AuthenticateManager() {
+        this.idGenerator = new GenerationID();
     }
 
     public User signup(String username, String email, String password, String role) {

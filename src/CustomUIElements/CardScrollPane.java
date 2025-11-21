@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardScrollPane extends JPanel {
-    private final CourseDatabaseManager courseDB;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();;
     private JPanel contentPanel;
     private final JScrollPane scrollPane;
     private JTextField searchBar;
@@ -26,8 +26,7 @@ public class CardScrollPane extends JPanel {
     private CardScrollPaneFilter function;
     private Student student;
 
-    public CardScrollPane(CourseDatabaseManager courseDB, Student student, CardScrollPaneFilter function) {
-        this.courseDB = courseDB;
+    public CardScrollPane( Student student, CardScrollPaneFilter function) {
         this.function = function;
         this.student = student;
         availableCourses = new ArrayList<>();
