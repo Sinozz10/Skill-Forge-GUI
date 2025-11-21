@@ -29,10 +29,6 @@ public class Progress {
     }
 
     public Double getCompletionPercentage(){
-        if(trackers.isEmpty()){
-            return 0.0;
-        }
-
         long complete = trackers.stream()
                 .filter(Tracker::isComplete)
                 .count();
