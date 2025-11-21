@@ -26,13 +26,10 @@ public class CourseView extends JPanel{
     private JTextPane descriptionTextPane;
     private JScrollPane resourcesScrollPane;
     private JPanel editPanel;
-    private CourseDatabaseManager courseDB;
-    private UserDatabaseManager userDB;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
     public CourseView(Course course, Student student) {
-        this.userDB = UserDatabaseManager.getDatabaseInstance();
-        this.courseDB = CourseDatabaseManager.getDatabaseInstance();
-
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
