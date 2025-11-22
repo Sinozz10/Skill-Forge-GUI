@@ -28,9 +28,18 @@ public class GenerationID {
         this.userDatabase = userDatabase;
     }
 
-    // Generate User ID (Student or Instructor)
+    // Generate User ID (Student or Instructor)(Added admin hena) //Rest of code zy ma hwa
     public String generateUserID(String role) {
-        String prefix = role.equalsIgnoreCase("student") ? "S" : "I";
+        String prefix;
+        if (role.equalsIgnoreCase("student")) {
+            prefix = "S";
+        } else if (role.equalsIgnoreCase("instructor")) {
+            prefix = "I";
+        } else if (role.equalsIgnoreCase("admin")) {
+            prefix = "A";
+        } else {
+            throw new IllegalArgumentException("Invalid role: " + role);
+        }
         int highest = getHighestUserID(role);
         return String.format("%s%04d", prefix, highest + 1);
     }

@@ -1,5 +1,6 @@
 package MainUI;
 
+import CustomDataTypes.Admin;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.Student;
 import CustomDataTypes.User;
@@ -158,6 +159,8 @@ public class Login extends JPanel {
                     new StudentDashboard((Student) userDB.getRecordByID(user.getID()));
                 } else if (user.getRole().equalsIgnoreCase("instructor")) {
                     new InstructorDashboard((Instructor) userDB.getRecordByID(user.getID()));
+                } else if (user.getRole().equalsIgnoreCase("admin")) {
+                    new AdminDashboard((Admin) userDB.getRecordByID(user.getID()));
                 }
                 ld.dispose();
 
