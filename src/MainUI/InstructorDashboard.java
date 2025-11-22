@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import CustomDataTypes.*;
 import CustomUIElements.*;
 import DataManagment.*;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class InstructorDashboard extends DashBoard{
     private final Instructor instructor;
@@ -157,6 +158,7 @@ public class InstructorDashboard extends DashBoard{
     }
 
     static void main() {
+        FlatDarculaLaf.setup();
         UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
         new InstructorDashboard((Instructor) userDB.getRecordByID("I0001"));
     }

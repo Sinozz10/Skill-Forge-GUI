@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 import DataManagment.*;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class StudentDashboard extends DashBoard{
     private final Student student;
@@ -112,6 +113,7 @@ public class StudentDashboard extends DashBoard{
     }
 
     static void main() {
+        FlatDarculaLaf.setup();
         UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
         new StudentDashboard((Student) userDB.getRecordByID("S0001"));
     }

@@ -23,7 +23,7 @@ public class CollapsablePanel extends JPanel{
         setForeground(Color.BLACK);
         setBackground(Color.GRAY);
 
-        headerPanel.setBackground(new Color(230, 230, 230));
+        headerPanel.setBackground(Color.lightGray);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         headerPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -47,12 +47,12 @@ public class CollapsablePanel extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                headerPanel.setBackground(new Color(210, 210, 210));
+                headerPanel.setBackground(Color.GRAY);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                headerPanel.setBackground(new Color(230, 230, 230));
+                headerPanel.setBackground(Color.lightGray);
             }
         };
 
