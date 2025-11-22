@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class EditableQuizPanel extends JPanel {
     private final Lesson lesson;
@@ -29,7 +31,9 @@ public class EditableQuizPanel extends JPanel {
         revalidate();
 
         if(lesson.hasQuiz()){
-            for (Question question:lesson.getQuiz().getQuestions()){
+            ArrayList<Question> sortedQuestions = lesson.getQuiz().getQuestions();
+            sortedQuestions.sort(Comparator.comparingInt(Question::getOrder));
+            for (Question question:sortedQuestions){
                 generateQuestionPanel(question);
                 add(Box.createRigidArea(new Dimension(0, 10)));
             }
@@ -135,12 +139,95 @@ public class EditableQuizPanel extends JPanel {
         });
         answerPanel.add(correctAns);
         questionPanel.add(answerPanel);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setBackground(Color.LIGHT_GRAY);
+        deleteButton.setForeground(Color.BLACK);
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Question ?", "Confirm", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    lesson.getQuiz().removeQuestion(question);
+                    if (lesson.getQuiz().getQuestions().isEmpty()){
+                        lesson.setQuiz(null);
+                        lesson.setHasQuiz(false);
+                    }
+                    generatePanel();
+                }
+            }
+        });
+        buttonPanel.add(deleteButton);
+
+        JButton orderButton = new JButton("Change Order");
+        orderButton.setBackground(Color.LIGHT_GRAY);
+        orderButton.setForeground(Color.BLACK);
+        orderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                orderChangePopup(question);
+            }
+        });
+        buttonPanel.add(orderButton);
+
+
+        questionPanel.add(buttonPanel);
         container.add(questionPanel);
         add(container);
     }
 
     public void generateChoiceQuestion(ChoiceQuestion question){
 
+    }
+
+    private void orderChangePopup(Question question){
+        String input = (String) JOptionPane.showInputDialog(this, "Enter new order:", "Change Order",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                question.getOrder()
+        );
+
+        if (input != null && !input.trim().isEmpty()) {
+            try {
+                int newOrder = Integer.parseInt(input.trim());
+                int oldOrder = question.getOrder();
+
+                changeQuestionOrder(question, newOrder, oldOrder);
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void changeQuestionOrder(Question question, int newOrder, int oldOrder){
+        if (newOrder != oldOrder) {
+            // Shift all lessons between old and new order
+            if (newOrder < oldOrder) {
+                // shift down kol lessons from newOrder to oldOrder-1
+                for (Question q : lesson.getQuiz().getQuestions()) {
+                    if (!q.getTitle().equals(question.getTitle())) {
+                        if (q.getOrder() >= newOrder && q.getOrder() < oldOrder) {
+                            q.setOrder(q.getOrder() + 1);
+                        }
+                    }
+                }
+            } else {
+                // shift up
+                for (Question q : lesson.getQuiz().getQuestions()) {
+                    if (!q.getTitle().equals(question.getTitle())) {
+                        if (q.getOrder() > oldOrder && q.getOrder() <= newOrder) {
+                            q.setOrder(q.getOrder() - 1);
+                        }
+                    }
+                }
+            }
+            question.setOrder(newOrder);
+            courseDB.saveToFile();
+            generatePanel();
+        }
     }
 
     public void handleAdd(){
@@ -150,15 +237,30 @@ public class EditableQuizPanel extends JPanel {
                 lesson.setQuiz(new Quiz());
                 lesson.setHasQuiz(true);
             }
-            lesson.getQuiz().addQuestion(question);
-            courseDB.saveToFile();
-            generatePanel();
+            boolean flag = true;
+            for(Question q: lesson.getQuiz().getQuestions()){
+                if (question.getTitle().equals(q.getTitle())){
+                    flag = false;
+                    JOptionPane.showMessageDialog(this, "Question must be unique", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            if (flag){
+                int order = question.getOrder();
+                question.setOrder(Integer.MAX_VALUE);
+                lesson.getQuiz().addQuestion(question);
+                changeQuestionOrder(question, order, Integer.MAX_VALUE);
+                courseDB.saveToFile();
+                generatePanel();
+            }
         }
     }
 
     public void handleDelete(){
-        lesson.setQuiz(null);
-        lesson.setHasQuiz(false);
-        generatePanel();
+        int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Quiz?", "Confirm", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            lesson.setQuiz(null);
+            lesson.setHasQuiz(false);
+            generatePanel();
+        }
     }
 }
