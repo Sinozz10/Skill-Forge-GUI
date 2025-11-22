@@ -12,7 +12,7 @@ public class CollapsablePanel extends JPanel{
     private JLabel arrowLabel;
     private JPanel contentPanel;
     private String title;
-    private String id;
+    private final String id;
     private boolean expanded = true;
 
     public CollapsablePanel(String id, String title) {
@@ -107,6 +107,8 @@ public class CollapsablePanel extends JPanel{
     public String getId() {
         return id;
     }
+
+    public boolean getExpanded(){return expanded;}
 
     public void setTitle(String title) {
         this.title = title;

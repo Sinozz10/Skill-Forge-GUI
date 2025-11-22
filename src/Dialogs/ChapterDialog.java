@@ -48,7 +48,7 @@ public class ChapterDialog extends JDialog{
         orderField = new JTextField();
         formPanel.add(orderField);
 
-        addButton = new JButton("Add Lesson");
+        addButton = new JButton("Add Chapter");
         addButton.setBackground(Color.LIGHT_GRAY);
         addButton.setForeground(Color.BLACK);
         formPanel.add(addButton);

@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 
 public class EditableCourseView extends JPanel {
     private JTextField courseTitle;
@@ -39,9 +40,10 @@ public class EditableCourseView extends JPanel {
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
     private final Course course;
     private Lesson activeLesson = null;
-    private JTextPane content = new JTextPane();
-    private JPanel coursesPanel = new JPanel();
-    private InstructorDashboard dashboard;
+    private final JTextPane content = new JTextPane();
+    private final JPanel coursesPanel = new JPanel();
+    private final InstructorDashboard dashboard;
+    private final ArrayList<GeneralTracker> trackers = new ArrayList<>();
 
     public EditableCourseView(Course course, Instructor instructor, InstructorDashboard dashboard) {
         this.course = course;
@@ -61,6 +63,7 @@ public class EditableCourseView extends JPanel {
         generateSideBar();
 
         refreshButton.setBackground(Color.LIGHT_GRAY);
+        refreshButton.setForeground(Color.black);
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,6 +96,12 @@ public class EditableCourseView extends JPanel {
     }
 
     public void generateSideBar() {
+        for (Component comp: coursesPanel.getComponents()){
+            if (comp instanceof CollapsablePanel panel){
+                trackers.add(new GeneralTracker(panel.getId(), panel.getExpanded()));
+            }
+        }
+
         coursesPanel.removeAll();
         coursesPanel.repaint();
         coursesPanel.revalidate();
@@ -111,7 +120,10 @@ public class EditableCourseView extends JPanel {
         buttonPanel1.add(addChapterButton);
         coursesPanel.add(buttonPanel1);
         coursesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        generateChapters();
+    }
 
+    public void generateChapters(){
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
         for (Chapter chapter : sortedChapters) {
@@ -169,46 +181,59 @@ public class EditableCourseView extends JPanel {
             cur.addContent(buttonPanel2);
             cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
 
-            ArrayList<Lesson> sortedLessons = chapter.getLessons();
-            sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
-            for (Lesson lesson : sortedLessons) {
-                LessonPanel lp = new LessonPanel(lesson) {
-                    @Override
-                    public void leftClickHandler(MouseEvent e) {
-                        EditableCourseView.this.leftClickHandler(e, this, lesson);
-                    }
-
-                    @Override
-                    public void rightClickHandler(MouseEvent e) {
-                        final JPopupMenu popupMenu = new JPopupMenu();
-
-                        JMenuItem changeOrder = new JMenuItem("Change Order");
-                        changeOrder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        changeOrder.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                changeLessonOrder(e);
-                            }
-                        });
-
-                        JMenuItem deleteLesson = new JMenuItem("Delete Lesson");
-                        deleteLesson.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        deleteLesson.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                deleteLesson(e);
-                            }
-                        });
-
-                        popupMenu.add(changeOrder);
-                        popupMenu.add(deleteLesson);
-                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                    }
-                };
-                cur.addContent(lp);
-                cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
-            }
+            generateLessons(cur, chapter);
             coursesPanel.add(cur);
+
+            Optional<GeneralTracker> result = trackers.stream().filter(tracker -> cur.getId().equals(tracker.getID())).findFirst();
+            if (result.isPresent()){
+                if (result.get().isTrue()){
+                    cur.toggleExpanded();
+                }
+                trackers.remove(result.get());
+            }
+        }
+    }
+
+    public void generateLessons(CollapsablePanel cur, Chapter chapter){
+        ArrayList<Lesson> sortedLessons = chapter.getLessons();
+        sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
+
+        for (Lesson lesson : sortedLessons) {
+            LessonPanel lp = new LessonPanel(lesson) {
+                @Override
+                public void leftClickHandler(MouseEvent e) {
+                    EditableCourseView.this.leftClickHandler(e, this, lesson);
+                }
+
+                @Override
+                public void rightClickHandler(MouseEvent e) {
+                    final JPopupMenu popupMenu = new JPopupMenu();
+
+                    JMenuItem changeOrder = new JMenuItem("Change Order");
+                    changeOrder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    changeOrder.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            changeLessonOrder(e);
+                        }
+                    });
+
+                    JMenuItem deleteLesson = new JMenuItem("Delete Lesson");
+                    deleteLesson.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    deleteLesson.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            deleteLesson(e);
+                        }
+                    });
+
+                    popupMenu.add(changeOrder);
+                    popupMenu.add(deleteLesson);
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            };
+            cur.addContent(lp);
+            cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
         }
     }
 
@@ -472,6 +497,7 @@ public class EditableCourseView extends JPanel {
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
         changeContentPanel(tempPanel);
+        generateSideBar();
     }
 
     public void saveActiveLesson(){

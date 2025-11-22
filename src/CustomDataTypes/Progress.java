@@ -7,20 +7,20 @@ public class Progress {
     private final String courseID;
     private final String studentID;
     private Date completionDate;
-    private final ArrayList<Tracker> trackers = new ArrayList<>();
+    private final ArrayList<LessonTracker> trackers = new ArrayList<>();
 
     public Progress(Course course, String studentID) {
         this.courseID = course.getID();
         this.studentID = studentID;
         for (Chapter chapter: course.getChapters()){
             for (Lesson lesson: chapter.getLessons()){
-                trackers.add(new Tracker(lesson));
+                trackers.add(new LessonTracker(lesson));
             }
         }
     }
 
-    public Tracker getTrackerByID(String lessonID){
-        for(Tracker tracker: trackers){
+    public LessonTracker getTrackerByID(String lessonID){
+        for(LessonTracker tracker: trackers){
             if (tracker.getLessonID().equals(lessonID)){
                 return tracker;
             }
@@ -30,7 +30,7 @@ public class Progress {
 
     public Double getCompletionPercentage(){
         long complete = trackers.stream()
-                .filter(Tracker::isComplete)
+                .filter(LessonTracker::isComplete)
                 .count();
         if (trackers.isEmpty()){
             return 0.0;
@@ -39,7 +39,7 @@ public class Progress {
     }
 
     public void completeLesson(String lessonID) {
-        Tracker tracker = getTrackerByID(lessonID);
+        LessonTracker tracker = getTrackerByID(lessonID);
         if (tracker != null){
             tracker.setComplete(true);
         }else {
@@ -48,7 +48,7 @@ public class Progress {
     }
 
     public void unCompleteLesson(String lessonID) {
-        Tracker tracker = getTrackerByID(lessonID);
+        LessonTracker tracker = getTrackerByID(lessonID);
         if (tracker != null){
             tracker.setComplete(false);
         }else {
@@ -56,7 +56,7 @@ public class Progress {
         }
     }
 
-    public ArrayList<Tracker> getTrackers(){
+    public ArrayList<LessonTracker> getTrackers(){
         return trackers;
     }
 
@@ -66,7 +66,7 @@ public class Progress {
         }
 
         ArrayList<String> completed = new ArrayList<>();
-        for (Tracker tracker: trackers){
+        for (LessonTracker tracker: trackers){
             if (tracker.isComplete()){
                 completed.add(tracker.getLessonID());
             }
@@ -76,9 +76,9 @@ public class Progress {
         for (Chapter chapter: course.getChapters()){
             for (Lesson lesson: chapter.getLessons()){
                 if (completed.contains(lesson.getLessonID())){
-                    trackers.add(new Tracker(lesson, true));
+                    trackers.add(new LessonTracker(lesson, true));
                 }else {
-                    trackers.add(new Tracker(lesson));
+                    trackers.add(new LessonTracker(lesson));
                 }
             }
         }

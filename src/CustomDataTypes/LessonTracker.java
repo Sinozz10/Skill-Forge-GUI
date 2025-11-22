@@ -1,15 +1,15 @@
 package CustomDataTypes;
 
-public class Tracker {
+public class LessonTracker {
     private final String lessonID;
     private boolean state;
 
-    public Tracker(Lesson lesson) {
+    public LessonTracker(Lesson lesson) {
         this.lessonID = lesson.getLessonID();
         this.state = false;
     }
 
-    public Tracker(Lesson lesson, boolean state) {
+    public LessonTracker(Lesson lesson, boolean state) {
         this.lessonID = lesson.getLessonID();
         this.state = state;
     }
