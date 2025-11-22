@@ -1,6 +1,7 @@
 package MainUI;
 
 import CustomDataTypes.*;
+import CustomUIElements.CollapsablePanel;
 import DataManagment.CourseDatabaseManager;
 import Dialogs.QuestionDialog;
 
@@ -82,11 +83,40 @@ public class EditableQuizPanel extends JPanel {
         questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
         questionPanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
 
+        questionPanel.add(generateTitlePanel(question));
+        questionPanel.add(generateAnswerPanel(question));
+        questionPanel.add(generateButtonPanel(question));
+
+        container.add(questionPanel);
+        add(container);
+    }
+
+    public void generateChoiceQuestion(ChoiceQuestion question){
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+
+        JPanel questionPanel = new JPanel();
+        questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
+        questionPanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
+
+        questionPanel.add(generateTitlePanel(question));
+        questionPanel.add(generateAnswerPanel(question));
+        questionPanel.add(generateChoicesPanel(question));
+        questionPanel.add(generateButtonPanel(question));
+
+        container.add(questionPanel);
+        add(container);
+    }
+
+    private JPanel generateTitlePanel(Question question){
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
         JLabel titleLabel = new JLabel("Question:");
         titleLabel.setPreferredSize(new Dimension(70, (int) titleLabel.getPreferredSize().getHeight()));
         titlePanel.add(titleLabel);
+
         JTextField title = new JTextField();
         title.setText(question.getTitle());
         title.addKeyListener(new KeyAdapter() {
@@ -109,13 +139,17 @@ public class EditableQuizPanel extends JPanel {
             }
         });
         titlePanel.add(title);
-        questionPanel.add(titlePanel);
 
+        return titlePanel;
+    }
+
+    private JPanel generateAnswerPanel(Question question){
         JPanel answerPanel = new JPanel();
         answerPanel.setLayout(new BoxLayout(answerPanel, BoxLayout.X_AXIS));
         JLabel answerLabel = new JLabel("Answer:");
         answerLabel.setPreferredSize(new Dimension(70, (int) answerLabel.getPreferredSize().getHeight()));
         answerPanel.add(answerLabel);
+
         JTextField correctAns = new JTextField();
         correctAns.setText(question.getCorrectAnswer());
         correctAns.addKeyListener(new KeyAdapter() {
@@ -138,8 +172,108 @@ public class EditableQuizPanel extends JPanel {
             }
         });
         answerPanel.add(correctAns);
-        questionPanel.add(answerPanel);
+        return answerPanel;
+    }
 
+    private JPanel generateChoicesPanel(Question question){
+        JPanel choicesPanel = new JPanel();
+        choicesPanel.setLayout(new BoxLayout(choicesPanel, BoxLayout.X_AXIS));
+
+        CollapsablePanel otherChoices = new CollapsablePanel(null, "Other Choices");
+        fillMenu(otherChoices, (ChoiceQuestion) question);
+
+        choicesPanel.add(otherChoices, question);
+        return choicesPanel;
+    }
+
+    private void fillMenu(CollapsablePanel menu, ChoiceQuestion question){
+        menu.clearContent();
+        JButton addChoiceButton = new JButton("Add Choice");
+        addChoiceButton.setBackground(Color.LIGHT_GRAY);
+        addChoiceButton.setForeground(Color.BLACK);
+        addChoiceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addChoice(question);
+                fillMenu(menu, question);
+            }
+        });
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.add(addChoiceButton);
+        menu.addContent(buttonPanel);
+        menu.addContent(Box.createRigidArea(new Dimension(0, 5)));
+        for (String choice:question.getChoices()){
+            JPanel c = new JPanel();
+            c.add(new JLabel(choice));
+            c.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        final JPopupMenu popupMenu = new JPopupMenu();
+
+                        JMenuItem delete = new JMenuItem("Delete");
+                        delete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        delete.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if (question.getChoices().size() > 1){
+                                    question.getChoices().remove(choice);
+                                    fillMenu(menu, question);
+                                }else {
+                                    JOptionPane.showMessageDialog(dashboard,
+                                            "Must have at least one choice!",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        });
+                        popupMenu.add(delete);
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    c.setBackground(Color.gray);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    c.setBackground(new Color(60, 63, 64));
+                }
+            });
+            menu.addContent(c);
+            menu.addContent(Box.createRigidArea(new Dimension(0, 5)));
+        }
+
+        menu.toggleExpanded();
+        menu.toggleExpanded();
+    }
+
+    private void addChoice(ChoiceQuestion question){
+        String input = (String) JOptionPane.showInputDialog(dashboard,
+                "Enter Choice:",
+                "Add Choice",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                null
+        );
+
+        if (input != null && !input.trim().isEmpty()) {
+            if (!question.getChoices().contains(input)){
+                question.addChoice(input);
+            }else {
+                JOptionPane.showMessageDialog(dashboard,
+                        "Choice must be unique!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private JPanel generateButtonPanel(Question question){
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         JButton deleteButton = new JButton("Delete");
@@ -172,18 +306,11 @@ public class EditableQuizPanel extends JPanel {
         });
         buttonPanel.add(orderButton);
 
-
-        questionPanel.add(buttonPanel);
-        container.add(questionPanel);
-        add(container);
-    }
-
-    public void generateChoiceQuestion(ChoiceQuestion question){
-
+        return buttonPanel;
     }
 
     private void orderChangePopup(Question question){
-        String input = (String) JOptionPane.showInputDialog(this, "Enter new order:", "Change Order",
+        String input = (String) JOptionPane.showInputDialog(dashboard, "Enter new order:", "Change Order",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
@@ -197,7 +324,7 @@ public class EditableQuizPanel extends JPanel {
 
                 changeQuestionOrder(question, newOrder, oldOrder);
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dashboard, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -241,7 +368,10 @@ public class EditableQuizPanel extends JPanel {
             for(Question q: lesson.getQuiz().getQuestions()){
                 if (question.getTitle().equals(q.getTitle())){
                     flag = false;
-                    JOptionPane.showMessageDialog(this, "Question must be unique", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dashboard,
+                            "Question must be unique",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
             if (flag){
@@ -256,7 +386,10 @@ public class EditableQuizPanel extends JPanel {
     }
 
     public void handleDelete(){
-        int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Quiz?", "Confirm", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(dashboard,
+                "Delete Quiz?",
+                "Confirm",
+                JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             lesson.setQuiz(null);
             lesson.setHasQuiz(false);

@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class CollapsablePanel extends JPanel{
+public class CollapsablePanel extends JPanel {
     private JPanel cPanel;
     private JPanel headerPanel;
     private JLabel titleLabel;
@@ -94,7 +94,7 @@ public class CollapsablePanel extends JPanel{
         contentPanel.add(comp);
     }
 
-    public void clearContent(){
+    public void clearContent() {
         contentPanel.removeAll();
         contentPanel.revalidate();
         contentPanel.repaint();
@@ -108,15 +108,18 @@ public class CollapsablePanel extends JPanel{
         return id;
     }
 
-    public boolean getExpanded(){return expanded;}
+    public boolean getExpanded() {
+        return expanded;
+    }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void leftClickHandler(MouseEvent e){
+    public void leftClickHandler(MouseEvent e) {
         toggleExpanded();
     }
 
-    public void rightClickHandler(MouseEvent e){}
+    public void rightClickHandler(MouseEvent e) {
+    }
 }

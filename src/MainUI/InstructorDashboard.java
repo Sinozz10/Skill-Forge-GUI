@@ -144,7 +144,10 @@ public class InstructorDashboard extends DashBoard{
         }
         userDB.saveToFile();
 
-        JOptionPane.showMessageDialog(InstructorDashboard.this, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(InstructorDashboard.this,
+                "Course deleted",
+                "Success",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
