@@ -20,16 +20,20 @@ public class CollapsablePanel extends JPanel{
         this.id = id;
         setLayout(new BorderLayout());
         add(cPanel, BorderLayout.CENTER);
-        setBackground(Color.LIGHT_GRAY);
+        setForeground(Color.BLACK);
+        setBackground(Color.GRAY);
 
         headerPanel.setBackground(new Color(230, 230, 230));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         headerPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         titleLabel.setText(title);
+        titleLabel.setBackground(Color.GRAY);
+        titleLabel.setForeground(Color.BLACK);
 
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 
         MouseAdapter clickListener = new MouseAdapter() {
             @Override
@@ -63,6 +67,7 @@ public class CollapsablePanel extends JPanel{
         expanded = !expanded;
         contentPanel.setVisible(expanded);
         arrowLabel.setText(expanded ? "v" : ">");
+        arrowLabel.setForeground(Color.BLACK);
 
         setMaximumSize(new Dimension(Integer.MAX_VALUE, getPreferredSize().height));
         revalidate();

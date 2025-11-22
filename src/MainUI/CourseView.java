@@ -37,6 +37,7 @@ public class CourseView extends JPanel{
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         setBackground(Color.LIGHT_GRAY);
+        setForeground(Color.BLACK);
 
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 

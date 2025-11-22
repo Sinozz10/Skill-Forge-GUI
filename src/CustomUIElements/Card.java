@@ -20,7 +20,7 @@ public class Card extends JPanel{
         setLayout(new BorderLayout());
         add(cardPanel, BorderLayout.CENTER);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(Color.GRAY);
 
         title.setText(flavour != null ? course.getTitle()+"  --  Completion: "+flavour: course.getTitle());
         id.setText("CourseID #: " + course.getID());
