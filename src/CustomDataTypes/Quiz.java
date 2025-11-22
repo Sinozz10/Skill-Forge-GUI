@@ -3,11 +3,9 @@ package CustomDataTypes;
 import java.util.ArrayList;
 
 public class Quiz {
-    private String title;
-    private ArrayList<Question> questions;
+    private ArrayList<Question> questions = new ArrayList<>();
 
-    public Quiz(String title) {
-        this.title = title;
+    public Quiz() {
     }
 
     public double getGrade(){
@@ -20,21 +18,13 @@ public class Quiz {
         return (complete * 100.0) / questions.size();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void addChoice(Question question){
+    public void addQuestion(Question question){
         if (!questions.contains(question)){
             questions.add(question);
         }
     }
 
-    public void removeChoice(Question question){
+    public void removeQuestion(Question question){
         questions.remove(question);
     }
 

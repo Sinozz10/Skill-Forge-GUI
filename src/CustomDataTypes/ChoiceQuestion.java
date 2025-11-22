@@ -1,12 +1,16 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class ChoiceQuestion extends Question{
+    @Expose
     private ArrayList<String> choices;
 
-    public ChoiceQuestion(String title, String answer) {
-        super(title, answer);
+    public ChoiceQuestion(String title, String answer, int order) {
+        super(title, answer, order);
+        type = QuestionType.CHOICE_QUESTION;
     }
 
     public void addChoice(String choice){

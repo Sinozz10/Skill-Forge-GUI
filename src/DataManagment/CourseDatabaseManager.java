@@ -1,6 +1,6 @@
 package DataManagment;
 
-import CustomDataTypes.Course;
+import CustomDataTypes.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -22,6 +22,7 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
         return courseDB;
     }
 
+    @Override
     public void readFromFile() {
         records.clear();
         File file = new File(filename);
@@ -33,9 +34,57 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
             JsonArray jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
 
             for (JsonElement element : jsonArray) {
-                JsonObject obj = element.getAsJsonObject();
+                JsonObject courseObj = element.getAsJsonObject();
 
-                Course course = gson.fromJson(obj, Course.class);
+                Course course = gson.fromJson(courseObj, Course.class);
+
+                if (course.getChapters() != null && courseObj.has("chapters")) {
+                    JsonArray chaptersArray = courseObj.getAsJsonArray("chapters");
+
+                    for (int chapterIndex = 0; chapterIndex < course.getChapters().size(); chapterIndex++) {
+                        Chapter chapter = course.getChapters().get(chapterIndex);
+                        JsonObject chapterObj = chaptersArray.get(chapterIndex).getAsJsonObject();
+
+                        if (chapter.getLessons() != null && chapterObj.has("lessons")) {
+                            JsonArray lessonsArray = chapterObj.getAsJsonArray("lessons");
+
+                            for (int lessonIndex = 0; lessonIndex < chapter.getLessons().size(); lessonIndex++) {
+                                Lesson lesson = chapter.getLessons().get(lessonIndex);
+                                JsonObject lessonObj = lessonsArray.get(lessonIndex).getAsJsonObject();
+
+                                if (lesson.hasQuiz() && lesson.getQuiz() != null &&
+                                        lesson.getQuiz().getQuestions() != null &&
+                                        lessonObj.has("quiz")) {
+
+                                    JsonObject quizObj = lessonObj.getAsJsonObject("quiz");
+
+                                    if (quizObj.has("questions")) {
+                                        JsonArray questionsArray = quizObj.getAsJsonArray("questions");
+
+                                        for (int questionIndex = 0; questionIndex < lesson.getQuiz().getQuestions().size(); questionIndex++) {
+                                            if (questionIndex < questionsArray.size()) {
+                                                JsonObject questionObj = questionsArray.get(questionIndex).getAsJsonObject();
+                                                String type = questionObj.get("type").getAsString();
+
+                                                Question correctQuestion;
+                                                if ("TEXT_QUESTION".equals(type)) {
+                                                    correctQuestion = gson.fromJson(questionObj, TextQuestion.class);
+                                                } else if ("CHOICE_QUESTION".equals(type)) {
+                                                    correctQuestion = gson.fromJson(questionObj, ChoiceQuestion.class);
+                                                } else {
+                                                    continue;
+                                                }
+
+                                                lesson.getQuiz().getQuestions().set(questionIndex, correctQuestion);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 records.add(course);
             }
         } catch (IOException e) {

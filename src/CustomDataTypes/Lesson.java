@@ -63,7 +63,7 @@ public class Lesson {
         this.chapterID = chapterID;
     }
 
-    public boolean isHasQuiz() {
+    public boolean hasQuiz() {
         return hasQuiz;
     }
 

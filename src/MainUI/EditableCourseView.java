@@ -35,6 +35,7 @@ public class EditableCourseView extends JPanel {
     private JPanel mainPanel;
     private JScrollPane mainScrollPane;
     private JButton refreshButton;
+    private JButton quizButton;
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
@@ -44,6 +45,7 @@ public class EditableCourseView extends JPanel {
     private final JPanel coursesPanel = new JPanel();
     private final InstructorDashboard dashboard;
     private final ArrayList<GeneralTracker> trackers = new ArrayList<>();
+    private boolean quizViewState;
 
     public EditableCourseView(Course course, Instructor instructor, InstructorDashboard dashboard) {
         this.course = course;
@@ -58,6 +60,7 @@ public class EditableCourseView extends JPanel {
         content.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         lessonTitle.setVisible(false);
+        quizButton.setVisible(false);
 
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
         generateSideBar();
@@ -484,15 +487,38 @@ public class EditableCourseView extends JPanel {
     }
 
     public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson){
-        JPanel tempPanel = new JPanel();
-        tempPanel.setLayout(new BorderLayout());
-
         saveActiveLesson();
         activeLesson = lesson;
 
-        content.setText(lesson.getContent());
-
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(new BorderLayout());
+        content.setText(activeLesson.getContent());
         tempPanel.add(content, BorderLayout.CENTER);
+
+        quizViewState = false;
+        quizButton.setVisible(true);
+        quizButton.setText(lesson.hasQuiz()?"Edit Quiz":"Add Quiz");
+
+        for (ActionListener al : quizButton.getActionListeners()) {
+            quizButton.removeActionListener(al);
+        }
+
+        quizButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (quizViewState){
+                    content.setText(activeLesson.getContent());
+                    tempPanel.add(content, BorderLayout.CENTER);
+                    quizButton.setText(lesson.hasQuiz()?"Edit Quiz":"Add Quiz");
+                    quizViewState = false;
+                    changeContentPanel(tempPanel);
+                }else {
+                    quizButton.setText("Back");
+                    quizViewState = true;
+                    changeContentPanel(new EditableQuizPanel(dashboard, lesson));
+                }
+            }
+        });
 
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
