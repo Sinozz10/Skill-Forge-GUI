@@ -9,6 +9,8 @@ import DataManagment.UserDatabaseManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,12 +30,17 @@ public class CourseView extends JPanel{
     private JScrollPane resourcesScrollPane;
     private JPanel mainPanel;
     private JScrollPane mainScrollPane;
+    private JButton quizButton;
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
     private final JTextPane content = new JTextPane();
+    private boolean quizViewState;
+    private final StudentDashboard dashboard;
 
-    public CourseView(Course course, Student student) {
+    public CourseView(Course course, Student student, StudentDashboard dashboard) {
+        this.dashboard = dashboard;
+
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
@@ -91,11 +98,37 @@ public class CourseView extends JPanel{
         JPanel tempPanel = new JPanel();
         tempPanel.setLayout(new BorderLayout());
 
+        quizButton.setVisible(false);
         content.setText(lesson.getContent());
         tempPanel.add(content, BorderLayout.CENTER);
 
-        Lp.setComplete();
-        progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+        if (lesson.hasQuiz()){
+            quizButton.setVisible(true);
+            for (ActionListener al : quizButton.getActionListeners()) {
+                quizButton.removeActionListener(al);
+            }
+
+            quizViewState = false;
+            quizButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (quizViewState){
+                        content.setText(lesson.getContent());
+                        tempPanel.add(content, BorderLayout.CENTER);
+                        quizButton.setText("Take Quiz");
+                        quizViewState = false;
+                        changeContentPanel(tempPanel);
+                    }else {
+                        quizButton.setText("Back");
+                        quizViewState = true;
+                        changeContentPanel(new QuizPanel(dashboard, lesson, Lp));
+                    }
+                }
+            });
+        }else {
+            Lp.setComplete();
+            progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+        }
 
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());

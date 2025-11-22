@@ -49,7 +49,7 @@ public class StudentDashboard extends DashBoard{
                         if (e.getClickCount() == 2){
                             assert clickedCard != null;
                             Course selectedCourse = clickedCard.getCourse();
-                            changeContentPanel(new CourseView(selectedCourse, student));
+                            changeContentPanel(new CourseView(selectedCourse, student, StudentDashboard.this));
                         }
                     }
                 });
@@ -110,6 +110,10 @@ public class StudentDashboard extends DashBoard{
         JPanel userPanel = new JPanel();
         userPanel.add(userLabel);
         changeContentPanel(userPanel);
+    }
+
+    public Student getStudent(){
+        return student;
     }
 
     static void main() {

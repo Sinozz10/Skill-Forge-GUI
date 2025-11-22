@@ -5,7 +5,6 @@ public class Question {
     protected String correctAnswer;
     protected int order;
     protected QuestionType type;
-    protected transient String userAnswer = "";
 
     public Question(String title, String answer, int order) {
         this.title = title;
@@ -13,8 +12,8 @@ public class Question {
         this.order = order;
     }
 
-    public boolean checkAnswer(){
-        return correctAnswer.equals(userAnswer);
+    public boolean checkAnswer(String ans){
+        return correctAnswer.equals(ans);
     }
 
     public QuestionType getType() {
@@ -27,14 +26,6 @@ public class Question {
 
     public void setOrder(int order) {
         this.order = order;
-    }
-
-    public String getUserAnswer() {
-        return userAnswer;
-    }
-
-    public void setUserAnswer(String userAnswer) {
-        this.userAnswer = userAnswer;
     }
 
     public String getTitle() {
