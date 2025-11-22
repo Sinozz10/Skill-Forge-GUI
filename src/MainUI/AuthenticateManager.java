@@ -1,5 +1,6 @@
 package MainUI;
 
+import CustomDataTypes.Admin;
 import DataManagment.*;
 
 import CustomDataTypes.Instructor;
@@ -34,8 +35,10 @@ public class AuthenticateManager {
         User newUser;
         if (role.equalsIgnoreCase("student")) {
             newUser = new Student(userId, role, username, email, hashedPassword);
-        } else {
+        } else  if (role.equalsIgnoreCase("instructor")) {
             newUser = new Instructor(userId, role, username, email, hashedPassword);
+        }else {
+            newUser = new Admin(userId, role, username, email, hashedPassword);
         }
 
         database.addRecord(newUser);
@@ -44,18 +47,18 @@ public class AuthenticateManager {
     }
 
     public User login(String username, String password) {
-        // 1. Check if fields are empty
+        // Check if fields are empty
         if (username.isEmpty() || password.isEmpty()) {
             return null;
         }
 
-        // 2. Get user from database
+        // Get user from database
         User user = database.getRecordByUsername(username);
         if (user == null) {
             return null; // CustomDataTypes.User not found
         }
 
-        // 3. Check if password matches
+        // Check if password matches
         if (PasswordHashing.verifyPassword(password, user.getHashedPassword())) {
             return user;
         }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import CustomDataTypes.*;
 import CustomUIElements.*;
 import DataManagment.*;
+import Statistics.*;
 
 public class InstructorDashboard extends DashBoard{
     private final Instructor instructor;
@@ -25,7 +26,7 @@ public class InstructorDashboard extends DashBoard{
 
         setTitle("Dashboard - " + instructor.getUsername());
         setBackground(Color.GRAY);
-        navButtons.setLayout(new GridLayout(1,5, 10, 10));
+        navButtons.setLayout(new GridLayout(1,3, 10, 10));
         setResizable(false);
 
         JButton viewCoursesButton = new JButton("My Courses");
@@ -50,7 +51,63 @@ public class InstructorDashboard extends DashBoard{
         });
         navButtons.add(viewStudentsButton);
 
+        JButton insightsButton = new JButton("Insights");
+        insightsButton.setForeground(Color.BLACK);
+        insightsButton.setBackground(Color.LIGHT_GRAY);
+        insightsButton.addActionListener(e -> handleInsights());
+        navButtons.add(insightsButton);
+
         handleHomeButton();
+    }
+
+    private void handleInsights() {
+        JComboBox<String> courseSelector = new JComboBox<>();
+        courseSelector.setForeground(Color.BLACK);
+        courseSelector.setBackground(Color.GRAY);
+        for (String id : instructor.getCourseIDs()) {
+            Course c = courseDB.getRecordByID(id);
+            if (c != null && c.getStatus() == StatusCourse.APPROVED) {
+                courseSelector.addItem(c.getTitle() + " [" + id + "]");
+            }
+        }
+
+        JButton studentChartBtn = new JButton("Student Completion");
+        studentChartBtn.setForeground(Color.BLACK);
+        studentChartBtn.setBackground(Color.LIGHT_GRAY);
+        JButton lessonChartBtn = new JButton("Lesson Completion");
+        lessonChartBtn.setForeground(Color.BLACK);
+        lessonChartBtn.setBackground(Color.LIGHT_GRAY);
+
+        studentChartBtn.addActionListener(e -> {
+            String sel = (String) courseSelector.getSelectedItem();
+            if (sel != null) {
+                String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
+                Course c = courseDB.getRecordByID(id);
+                if (c != null) {
+                    org.jfree.chart.JFreeChart chart = ChartStatistics.createCompletionChart(c, userDB);
+                    new ChartStatistics("Student Completion", chart).setVisible(true);
+                }
+            }
+        });
+
+        lessonChartBtn.addActionListener(e -> {
+            String sel = (String) courseSelector.getSelectedItem();
+            if (sel != null) {
+                String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
+                Course c = courseDB.getRecordByID(id);
+                if (c != null) {
+                    org.jfree.chart.JFreeChart chart = ChartStatistics.createLessonChart(c, userDB);
+                    new ChartStatistics("Lesson Completion", chart).setVisible(true);
+                }
+            }
+        });
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Course:"));
+        panel.add(courseSelector);
+        panel.add(studentChartBtn);
+        panel.add(lessonChartBtn);
+        changeContentPanel(panel);
     }
 
 
@@ -110,7 +167,19 @@ public class InstructorDashboard extends DashBoard{
                 if (e.getClickCount() == 2){
                     assert clickedCard != null;
                     Course selectedCourse = clickedCard.getCourse();
-                    changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
+                    if (selectedCourse.getStatus().equals(StatusCourse.APPROVED)){
+                        changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
+                    }else if( selectedCourse.getStatus().equals(StatusCourse.PENDING) ) {
+                        JOptionPane.showMessageDialog(InstructorDashboard.this,
+                                "This course is pending admin approval.\nYou cannot edit it until it's approved.",
+                                "Pending Approval",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else if (selectedCourse.getStatus().equals(StatusCourse.REJECTED)) {
+                        JOptionPane.showMessageDialog(InstructorDashboard.this,
+                                "This course was rejected by admin.\nPlease contact administration for details.",
+                                "Course Rejected",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         };

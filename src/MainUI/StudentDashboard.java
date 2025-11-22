@@ -2,6 +2,7 @@ package MainUI;
 
 import CustomDataTypes.Course;
 import CustomDataTypes.Progress;
+import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
 import CustomUIElements.Card;
 import CustomUIElements.CardScrollPane;
@@ -37,7 +38,9 @@ public class StudentDashboard extends DashBoard{
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CardScrollPane(student, course -> student.getCourseIDs().contains(course.getID())){
+                changeContentPanel(new CardScrollPane(student, course ->
+                        student.getCourseIDs().contains(course.getID()) &&
+                                course.getStatus() == StatusCourse.APPROVED){
                     @Override
                     public void leftClickHandler(MouseEvent e){
                         Component comp = e.getComponent();

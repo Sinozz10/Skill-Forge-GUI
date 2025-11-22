@@ -12,8 +12,7 @@ public class Admin extends User {
                 ", role='" + role + '\'' +
                 ", userID='" + userID + '\'' +
                 ", email='" + email + '\'' +
-                ", hashedPassword='" + hashedPassword + '\'' +
-                ", courseIDs=" + courseIDs +
+                ", hashedPassword='" + hashedPassword +
                 '}';
     }
 }
