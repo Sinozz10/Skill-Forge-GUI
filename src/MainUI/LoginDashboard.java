@@ -3,6 +3,7 @@ package MainUI;
 import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,13 +15,15 @@ public class LoginDashboard extends JFrame{
 
     public LoginDashboard(){
         changeContentPanel(new Login(LoginDashboard.this));
-
         setContentPane(mainFramePanel);
-        setSize(450, 600);
+        setSize(500, 375);
         setBackground(Color.gray);
         setLocationRelativeTo(null);
         setVisible(true);
+        setResizable(false);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

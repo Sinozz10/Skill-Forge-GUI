@@ -28,7 +28,9 @@ public class SignUp extends JPanel {
         this.authManager = new AuthenticateManager();
         setLayout(new BorderLayout());
         add(SignUp,BorderLayout.CENTER);
-        backButton.setBackground(Color.lightGray);
+        backButton.setFont(new Font("Arial", Font.BOLD, 14));
+        backButton.setForeground(Color.BLACK);
+        backButton.setBackground(Color.LIGHT_GRAY);
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -83,8 +85,11 @@ public class SignUp extends JPanel {
             }
         });
 
-        signUpButton.setSize(new Dimension(10,20));
-        signUpButton.setBackground(Color.lightGray);
+        signUpButton.setPreferredSize(new Dimension(10,20));
+        signUpButton.setMargin(new Insets(3, 10, 3, 10));
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 14));
+        signUpButton.setBackground(Color.LIGHT_GRAY);
+        signUpButton.setForeground(Color.BLACK);
     }
 
     private void handleSignUp() {
