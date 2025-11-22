@@ -69,6 +69,7 @@ public class EditableCourseView extends JPanel {
         });
 
         saveExitButton.setBackground(Color.LIGHT_GRAY);
+        saveExitButton.setForeground(Color.BLACK);
         saveExitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -83,6 +84,8 @@ public class EditableCourseView extends JPanel {
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 
         listPanel.setLayout(new BorderLayout());
+        listPanel.setBackground(Color.LIGHT_GRAY);
+        listPanel.setForeground(Color.BLACK);
         listPanel.add(scrollPane, BorderLayout.CENTER);
 
         courseTitle.setText(course.getTitle());
@@ -96,6 +99,7 @@ public class EditableCourseView extends JPanel {
 
         JButton addChapterButton = new JButton("Add Chapter");
         addChapterButton.setBackground(Color.LIGHT_GRAY);
+        addChapterButton.setForeground(Color.BLACK);
         addChapterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,6 +156,7 @@ public class EditableCourseView extends JPanel {
 
             JButton addLessonButton = new JButton("Add Lesson");
             addLessonButton.setBackground(Color.LIGHT_GRAY);
+            addLessonButton.setForeground(Color.BLACK);
             addLessonButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

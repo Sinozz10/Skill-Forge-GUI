@@ -44,6 +44,7 @@ public class CourseView extends JPanel{
         content.setEditable(false);
 
         setBackground(Color.LIGHT_GRAY);
+        setForeground(Color.BLACK);
 
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
