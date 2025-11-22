@@ -121,7 +121,7 @@ public class CourseView extends JPanel{
                     }else {
                         quizButton.setText("Back");
                         quizViewState = true;
-                        changeContentPanel(new QuizPanel(dashboard, lesson, Lp));
+                        changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
                     }
                 }
             });

@@ -18,11 +18,13 @@ public class QuizPanel extends JPanel {
     private final StudentDashboard dashboard;
     private final LessonPanel Lp;
     private final ArrayList<QuestionTracker> trackers = new ArrayList<>();
+    private final Progress progress;
 
-    public QuizPanel(StudentDashboard dashboard, Lesson lesson, LessonPanel Lp) {
+    public QuizPanel(StudentDashboard dashboard, Lesson lesson, LessonPanel Lp, Progress progress) {
         this.lesson = lesson;
         this.dashboard = dashboard;
         this.Lp = Lp;
+        this.progress = progress;
         setLayout(new BoxLayout(QuizPanel.this, BoxLayout.Y_AXIS));
 
         generatePanel();
@@ -217,7 +219,26 @@ public class QuizPanel extends JPanel {
             }
         }
         if (flag){
-            System.out.println((complete * 100.0) / lesson.getQuiz().getQuestions().size());
+            double total = (complete * 100.0) / lesson.getQuiz().getQuestions().size();
+            if (total >= 70.0){
+                Lp.setComplete();
+                progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+                JOptionPane.showMessageDialog(
+                        dashboard,
+                        "You Passed!",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        UIManager.getIcon("OptionPane.informationIcon")
+                );
+            }else {
+                JOptionPane.showMessageDialog(
+                        dashboard,
+                        "You Failed, Try Again Later",
+                        "Fail",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        UIManager.getIcon("OptionPane.informationIcon")
+                );
+            }
         }
     }
 }
