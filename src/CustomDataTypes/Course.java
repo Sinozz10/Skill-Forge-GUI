@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Course implements Record {
     private final String courseID, instructorID;
     private String title , description;
+    private StatusCourse status;
     private ArrayList<Chapter> chapters = new ArrayList<>();
     private ArrayList<String> studentIDs = new ArrayList<>();
 
@@ -13,6 +14,7 @@ public class Course implements Record {
         this.title = title;
         this.description = description;
         this.instructorID = instructorID;
+        this.status= StatusCourse.PENDING; // bybd2 dayman as Pending w hyt8yar b3daha.
     }
 
     @Override
@@ -22,6 +24,7 @@ public class Course implements Record {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", instructorId='" + instructorID + '\'' +
+                ", approvalStatus=" + status +
                 ", chapters=" + chapters +
                 ", studentIDs=" + studentIDs +
                 '}';
@@ -43,6 +46,14 @@ public class Course implements Record {
     public String getInstructorID() {
         return instructorID;
     }
+
+    public StatusCourse getStatus() {
+        return status;
+    } //getter lel approval
+
+    public void setStatus(StatusCourse status) {
+        this.status = status;
+    } //Setters lel approval
 
     public ArrayList<Chapter> getChapters() {
         return chapters;
