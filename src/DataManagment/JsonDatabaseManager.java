@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public abstract class JsonDatabaseManager<T extends Record> {
     protected final String filename;
-    protected final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    protected final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
     protected ArrayList<T> records = new ArrayList<>();
 
     public JsonDatabaseManager(String filename){

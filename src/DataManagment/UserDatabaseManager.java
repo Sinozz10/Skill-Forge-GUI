@@ -1,5 +1,6 @@
 package DataManagment;
 
+import CustomDataTypes.Admin;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.Student;
 import CustomDataTypes.User;
@@ -46,6 +47,8 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
                     user = gson.fromJson(obj, Student.class);
                 } else if ("instructor".equalsIgnoreCase(role)) {
                     user = gson.fromJson(obj, Instructor.class);
+                } else if ("admin".equalsIgnoreCase(role)) {
+                    user = gson.fromJson(obj, Admin.class);
                 } else {
                     throw new RuntimeException("Invalid role");
                 }
@@ -69,6 +72,8 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
                     element = gson.toJsonTree(user, Student.class);
                 } else if (user instanceof Instructor) {
                     element = gson.toJsonTree(user, Instructor.class);
+                } else if (user instanceof Admin) {
+                    element = gson.toJsonTree(user, Admin.class);
                 } else {
                     element = gson.toJsonTree(user, User.class);
                 }
@@ -110,6 +115,16 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
             }
         }
         return instructors;
+    }
+
+    public ArrayList<Admin> getAdmins(){
+        ArrayList<Admin> admins = new ArrayList<>();
+        for (User record: records){
+            if (record.getRole().equals("admin")){
+                admins.add((Admin) record);
+            }
+        }
+        return admins;
     }
 
     public User getRecordByUsername(String name) {

@@ -1,11 +1,19 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Course implements Record {
+    @Expose
     private final String courseID, instructorID;
+    @Expose
     private String title , description;
+    @Expose
+    private StatusCourse status;
+    @Expose
     private ArrayList<Chapter> chapters = new ArrayList<>();
+    @Expose
     private ArrayList<String> studentIDs = new ArrayList<>();
 
     public Course(String courseID, String title, String description, String instructorID) {
@@ -13,6 +21,7 @@ public class Course implements Record {
         this.title = title;
         this.description = description;
         this.instructorID = instructorID;
+        this.status= StatusCourse.PENDING; // bybd2 dayman as Pending w hyt8yar b3daha.
     }
 
     @Override
@@ -22,6 +31,7 @@ public class Course implements Record {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", instructorId='" + instructorID + '\'' +
+                ", approvalStatus=" + status +
                 ", chapters=" + chapters +
                 ", studentIDs=" + studentIDs +
                 '}';
@@ -43,6 +53,14 @@ public class Course implements Record {
     public String getInstructorID() {
         return instructorID;
     }
+
+    public StatusCourse getStatus() {
+        return status;
+    } //getter lel approval
+
+    public void setStatus(StatusCourse status) {
+        this.status = status;
+    } //Setters lel approval
 
     public ArrayList<Chapter> getChapters() {
         return chapters;

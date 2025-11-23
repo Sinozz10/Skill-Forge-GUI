@@ -1,7 +1,12 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.*;
+
+
 public class LessonTracker {
+    @Expose
     private final String lessonID;
+    @Expose
     private boolean state;
 
     public LessonTracker(Lesson lesson) {
