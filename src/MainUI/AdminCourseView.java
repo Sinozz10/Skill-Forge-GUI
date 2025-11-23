@@ -1,105 +1,52 @@
 package MainUI;
 
 import CustomDataTypes.*;
-import CustomUIElements.CollapsablePanel;
 import CustomUIElements.LessonPanel;
-import DataManagment.CourseDatabaseManager;
 import DataManagment.GenerationID;
-import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
 
-public class AdminCourseView extends JPanel{
-    private JLabel courseTitle;
-    private JPanel listPanel;
-    private JScrollPane mainScrollPane;
-    private JPanel mainPanel;
-    private JPanel lessonView;
-    private JPanel contentPanel;
-    private JLabel lessonTitle;
-    private JButton quizButton;
-    private JTabbedPane extrasPane;
-    private JPanel descriptionPanel;
-    private JTextPane descriptionTextPane;
-    private JPanel resourcesPanel;
-    private JScrollPane resourcesScrollPane;
-    private JPanel acvPanel;
-    private JPanel adminButtonPanel;
-    private JButton rejectButton;
-    private JButton approveButton;
-
-    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
-    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+public class AdminCourseView extends CourseView{
     private final JTextPane content = new JTextPane();
     private boolean quizViewState;
     private final AdminDashboard dashboard;
     private final GenerationID idGenerator;
     private final Admin admin;
-    private final Course course;
 
     public AdminCourseView(Course course, Admin admin, AdminDashboard dashboard) {
-        this.dashboard = dashboard;
+        super(course);
         this.admin = admin;
-        this.course = course;
+        this.dashboard = dashboard;
         this.idGenerator = new GenerationID();
 
-        setLayout(new BorderLayout());
-        add(acvPanel, BorderLayout.CENTER);
-        listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
-        mainScrollPane.getVerticalScrollBar().setUnitIncrement(32);
+        addButtons();
+    }
 
-        content.setPreferredSize(new Dimension(350, content.getPreferredSize().height));
-        content.setBorder(new EmptyBorder(10, 10, 10, 10));
-        content.setEditable(false);
+    private void addButtons(){
+        JPanel wrapper = new JPanel();
+        wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
 
-        setBackground(Color.LIGHT_GRAY);
-        setForeground(Color.BLACK);
-
-        lessonTitle.setVisible(false);
-        lessonTitle.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        JPanel coursesPanel = new JPanel();
-        coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
-
-        ArrayList<Chapter> sortedChapters = course.getChapters();
-        sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
-        for (Chapter chapter: sortedChapters){
-            CollapsablePanel cur = new CollapsablePanel(chapter.getChapterID(), chapter.getTitle());
-
-            ArrayList<Lesson> sortedLessons = chapter.getLessons();
-            sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
-            for (Lesson lesson: sortedLessons){
-                LessonPanel lp = new LessonPanel(lesson){
-                    @Override
-                    public void leftClickHandler(MouseEvent e){
-                        AdminCourseView.this.leftClickHandler(this, lesson);
-                    }
-                };
-                cur.addContent(lp);
-                cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
-            }
-            coursesPanel.add(cur);
-        }
-
-        JScrollPane scrollPane = new JScrollPane(coursesPanel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-
-        listPanel.setLayout(new BorderLayout());
-        listPanel.add(scrollPane, BorderLayout.CENTER);
-
-        courseTitle.setText(course.getTitle());
-        descriptionTextPane.setText(course.getDescription());
-
+        JButton rejectButton = new JButton("Reject");
         rejectButton.addActionListener(e->handleReject());
         rejectButton.setBackground(new Color(120, 7, 5));
+        wrapper.add(rejectButton);
+
+        wrapper.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        JButton approveButton = new JButton("Approve");
         approveButton.addActionListener(e->handleApprove());
         approveButton.setBackground(new Color(7, 120, 5));
+        wrapper.add(approveButton);
+
+        adminPanel.setVisible(true);
+        adminPanel.removeAll();
+        adminPanel.setLayout(new BoxLayout(adminPanel, BoxLayout.Y_AXIS));
+        adminPanel.add(wrapper);
+        adminPanel.revalidate();
+        adminPanel.repaint();
     }
 
     private void handleApprove() {
@@ -148,7 +95,18 @@ public class AdminCourseView extends JPanel{
         }
     }
 
-    public void leftClickHandler(LessonPanel Lp, Lesson lesson){
+    @Override
+    protected LessonPanel generateLessonPanel(Lesson lesson) {
+        return new LessonPanel(lesson){
+            @Override
+            public void leftClickHandler(MouseEvent e){
+                lessonPanelClickHandler(this, lesson, null);
+            }
+        };
+    }
+
+    @Override
+    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson, Progress progress) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -184,13 +142,5 @@ public class AdminCourseView extends JPanel{
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
         changeContentPanel(panel);
-    }
-
-    public void changeContentPanel(JPanel panel){
-        contentPanel.removeAll();
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.add(panel, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
     }
 }
