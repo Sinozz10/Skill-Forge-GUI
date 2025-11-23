@@ -1,8 +1,6 @@
 package CustomUIElements;
 
 import CustomDataTypes.Course;
-import CustomDataTypes.Progress;
-import CustomDataTypes.Student;
 import DataManagment.CourseDatabaseManager;
 
 import javax.swing.*;
@@ -20,16 +18,16 @@ public class CardScrollPane extends JPanel {
     private JPanel listPanel;
     private ArrayList<Course> loadedCourses;
     private ArrayList<Course> availableCourses;
-    private final CardScrollPaneFilter function;
-    private final Student student;
+    private final CardScrollPaneFilter filterFunction;
+    private final FlavourTextFunction flavourFunction;
 
-    public CardScrollPane( Student student, CardScrollPaneFilter function) {
-        this.function = function;
-        this.student = student;
+    public CardScrollPane( FlavourTextFunction flavourFunction, CardScrollPaneFilter filterFunction) {
+        this.filterFunction = filterFunction;
+        this.flavourFunction = flavourFunction;
         availableCourses = new ArrayList<>();
         setBackground(Color.GRAY);
         for(Course course: courseDB.getRecords()){
-            if (function.filter(course)){
+            if (filterFunction.filter(course)){
                 availableCourses.add(course);
             }
         }
@@ -39,7 +37,6 @@ public class CardScrollPane extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(cardPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         listPanel.setLayout(new BorderLayout());
         listPanel.add(scrollPane, BorderLayout.CENTER);
@@ -71,7 +68,7 @@ public class CardScrollPane extends JPanel {
     public void loadCoursesFromDatabase(){
         availableCourses = new ArrayList<>();
         for(Course course: courseDB.getRecords()){
-            if (function.filter(course)){
+            if (filterFunction.filter(course)){
                 availableCourses.add(course);
             }
         }
@@ -89,14 +86,8 @@ public class CardScrollPane extends JPanel {
 
             for (Course course : loadedCourses) {
                 String flavour = null;
-                if (student != null){
-                    Progress prog = student.getProgressTrackerByCourseID(course.getID());
-                    if (prog != null){
-                        Double completion = prog.getCompletionPercentage();
-                        if (!completion.isNaN() && completion != 0){
-                            flavour = completion.toString();
-                        }
-                    }
+                if (flavourFunction != null){
+                    flavour = flavourFunction.getFlavour(course);
                 }
 
                 Card card = getCourseCard(course, flavour);

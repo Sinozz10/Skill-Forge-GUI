@@ -6,6 +6,7 @@ import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
 import CustomUIElements.Card;
 import CustomUIElements.CardScrollPane;
+import CustomUIElements.FlavourTextFunction;
 import DataManagment.UserDatabaseManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
@@ -39,9 +40,7 @@ public class StudentDashboard extends DashBoard{
         JButton certificatesButton = new JButton("My Certificates");
         certificatesButton.setBackground(Color.LIGHT_GRAY);
         certificatesButton.setForeground(Color.BLACK);
-        certificatesButton.addActionListener(e -> {
-            changeContentPanel(new CertificateViewer(student));
-        });
+        certificatesButton.addActionListener(_ -> changeContentPanel(new CertificateViewer(student)));
         navButtons.add(certificatesButton);
 
         handleHomeButton();
@@ -51,7 +50,8 @@ public class StudentDashboard extends DashBoard{
         JButton viewButton = new JButton("My Courses");
         viewButton.setBackground(Color.LIGHT_GRAY);
         viewButton.setForeground(Color.BLACK);
-        viewButton.addActionListener(e -> changeContentPanel(new CardScrollPane(student, course ->
+        FlavourTextFunction f = course -> "Completion: "+this.student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString();
+        viewButton.addActionListener(_ -> changeContentPanel(new CardScrollPane(f, course ->
                 student.getCourseIDs().contains(course.getID()) &&
                         course.getStatus() == StatusCourse.APPROVED){
             @Override
@@ -76,7 +76,8 @@ public class StudentDashboard extends DashBoard{
         JButton enrollButton = new JButton("Enroll");
         enrollButton.setBackground(Color.LIGHT_GRAY);
         enrollButton.setForeground(Color.BLACK);
-        enrollButton.addActionListener(e -> changeContentPanel(new CardScrollPane(student, course->!student.getCourseIDs().contains(course.getID())){
+        FlavourTextFunction f = course -> "Completion: "+this.student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString();
+        enrollButton.addActionListener(_ -> changeContentPanel(new CardScrollPane(f, course->!student.getCourseIDs().contains(course.getID())){
             @Override
             public void leftClickHandler(MouseEvent e){
                 Component comp = e.getComponent();

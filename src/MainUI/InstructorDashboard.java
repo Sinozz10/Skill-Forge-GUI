@@ -6,6 +6,7 @@ import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
 import CustomUIElements.Card;
 import CustomUIElements.CardScrollPane;
+import CustomUIElements.FlavourTextFunction;
 import DataManagment.UserDatabaseManager;
 import Statistics.ChartStatistics;
 import com.formdev.flatlaf.FlatDarculaLaf;
@@ -13,12 +14,6 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import CustomDataTypes.*;
-import CustomUIElements.*;
-import DataManagment.*;
-import Statistics.*;
 
 public class InstructorDashboard extends DashBoard{
     private final Instructor instructor;
@@ -109,8 +104,8 @@ public class InstructorDashboard extends DashBoard{
         addButton.setForeground(Color.BLACK);
         addButton.setBackground(Color.LIGHT_GRAY);
         addButton.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
-
-        CardScrollPane pane = new CardScrollPane( null, course -> instructor.getID().equals(course.getInstructorID())) {
+        FlavourTextFunction f = course -> "Status: "+course.getStatus().toString();
+        CardScrollPane pane = new CardScrollPane( f, course -> instructor.getID().equals(course.getInstructorID())) {
             @Override
             public void rightClickHandler(MouseEvent e){
                 Component comp = e.getComponent();
@@ -152,19 +147,7 @@ public class InstructorDashboard extends DashBoard{
                 if (e.getClickCount() == 2){
                     assert clickedCard != null;
                     Course selectedCourse = clickedCard.getCourse();
-                    if (selectedCourse.getStatus().equals(StatusCourse.APPROVED)){
-                        changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
-                    }else if( selectedCourse.getStatus().equals(StatusCourse.PENDING) ) {
-                        JOptionPane.showMessageDialog(InstructorDashboard.this,
-                                "This course is pending admin approval.\nYou cannot edit it until it's approved.",
-                                "Pending Approval",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } else if (selectedCourse.getStatus().equals(StatusCourse.REJECTED)) {
-                        JOptionPane.showMessageDialog(InstructorDashboard.this,
-                                "This course was rejected by admin.\nPlease contact administration for details.",
-                                "Course Rejected",
-                                JOptionPane.WARNING_MESSAGE);
-                    }
+                    changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
                 }
             }
         };

@@ -21,7 +21,7 @@ public class Card extends JPanel{
         add(cardPanel, BorderLayout.CENTER);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        title.setText(flavour != null ? course.getTitle()+"  --  Completion: "+flavour: course.getTitle());
+        title.setText(flavour != null ? course.getTitle()+"  --  "+flavour: course.getTitle());
         id.setText("CourseID #" + course.getID());
 
         description.setText(course.getDescription());
