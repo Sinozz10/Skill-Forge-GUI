@@ -1,6 +1,7 @@
 package CustomUIElements;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -87,9 +88,14 @@ public class CardScrollPane<T> extends JPanel {
             }
         } else {
             cardPanel.removeAll();
+            JPanel wrapper = new JPanel();
+            wrapper.setBackground(Color.gray);
+            wrapper.setBorder(new EmptyBorder(10, 10,10,10));
+            wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
             JLabel noResults = new JLabel("No items found");
-            noResults.setHorizontalAlignment(SwingConstants.CENTER);
-            cardPanel.add(noResults);
+            noResults.setFont(new Font(null, Font.PLAIN, 20));
+            wrapper.add(noResults);
+            cardPanel.add(wrapper);
             cardPanel.revalidate();
             cardPanel.repaint();
         }
