@@ -69,7 +69,8 @@ public class CourseView extends JPanel{
                         CourseView.this.leftClickHandler(e, this, lesson, progress);
                     }
                 };
-                if (progress.getTrackerByID(lesson.getLessonID()).isComplete()){
+                Tracker tracker = progress.getTrackerByID(lesson.getLessonID());
+                if (tracker != null && tracker.isComplete()){
                     lp.setComplete();
                 }
                 cur.addContent(lp);
@@ -97,8 +98,12 @@ public class CourseView extends JPanel{
         content.setEditable(false);
         panel.add(content, BorderLayout.CENTER);
 
-        // Mark complete
+        // Mark completed
         Lp.setComplete();
+        Tracker tracker = progress.getTrackerByID(lesson.getLessonID());
+        if (tracker != null) {
+            tracker.setComplete(true);
+        }
         progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
         userDB.updateRecord(student);
         userDB.saveToFile();

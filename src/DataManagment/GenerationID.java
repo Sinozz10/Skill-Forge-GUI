@@ -150,16 +150,18 @@ public class GenerationID {
         for (User user : userDatabase.getRecords()) {
             if (user instanceof Student) {
                 Student student = (Student) user;
-                for (Certificate cert : student.getCertificates()) {
-                    String certId = cert.getCertificateID();
-                    try {
-                        String numberPart = certId.replaceAll("[^0-9]", "");
-                        int idNumber = Integer.parseInt(numberPart);
-                        if (idNumber > highest) {
-                            highest = idNumber;
+                if (student.getCertificates() != null) {
+                    for (Certificate cert : student.getCertificates()) {
+                        String certId = cert.getCertificateID();
+                        try {
+                            String numberPart = certId.replaceAll("[^0-9]", "");
+                            int idNumber = Integer.parseInt(numberPart);
+                            if (idNumber > highest) {
+                                highest = idNumber;
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error parsing cert ID: " + e.getMessage());
                         }
-                    } catch (Exception e) {
-                        System.err.println("Error parsing cert ID: " + e.getMessage());
                     }
                 }
             }
