@@ -4,8 +4,6 @@ import CustomDataTypes.Course;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class CourseCard extends GenericCard<Course> {
     private JPanel cardPanel;
@@ -30,20 +28,6 @@ public class CourseCard extends GenericCard<Course> {
         description.setDisabledTextColor(Color.BLACK);
 
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 2, 5));
-
-        MouseAdapter clickListener = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    leftClickHandler(e);
-                } else if (SwingUtilities.isRightMouseButton(e)) {
-                    rightClickHandler(e);
-                }
-            }
-        };
-
-        addMouseListener(clickListener);
-        description.addMouseListener(clickListener);
     }
 
     @Override

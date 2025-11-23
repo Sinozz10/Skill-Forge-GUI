@@ -3,6 +3,7 @@ package CustomUIElements;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -108,22 +109,37 @@ public class CardScrollPane<T> extends JPanel {
     private GenericCard<T> createCard(T item, String flavour) {
         GenericCard<T> card = cardFactory.createCard(item, flavour);
 
-        card.addMouseListener(new java.awt.event.MouseAdapter() {
+        MouseAdapter clickListener = new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    card.leftClickHandler(e);
                     CardScrollPane.this.leftClickHandler(e, card);
                 } else if (SwingUtilities.isRightMouseButton(e)) {
-                    card.rightClickHandler(e);
                     CardScrollPane.this.rightClickHandler(e, card);
                 }
             }
-        });
+        };
+        addClickListenerRecursively(card, clickListener);
 
-//        card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, card.getPreferredSize().height));
         return card;
+    }
+
+    private void addClickListenerRecursively(Component comp, MouseAdapter listener) {
+        if (!(comp instanceof AbstractButton)) {
+            comp.addMouseListener(listener);
+            comp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            if (comp instanceof JTextPane) {
+                comp.setFocusable(false);
+            }
+        }
+
+        if (comp instanceof Container container) {
+            for (Component child : container.getComponents()) {
+                addClickListenerRecursively(child, listener);
+            }
+        }
     }
 
     public void search() {

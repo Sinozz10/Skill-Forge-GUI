@@ -2,7 +2,6 @@ package CustomUIElements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public abstract class GenericCard<T> extends JPanel {
     protected final T data;
@@ -14,14 +13,6 @@ public abstract class GenericCard<T> extends JPanel {
 
     public T getData() {
         return data;
-    }
-
-    public void leftClickHandler(MouseEvent e) {
-
-    }
-
-    public void rightClickHandler(MouseEvent e) {
-
     }
 
     public abstract String getSearchableText();

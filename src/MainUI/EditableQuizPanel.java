@@ -245,9 +245,17 @@ public class EditableQuizPanel extends JPanel {
                 null
         );
 
-        if (input != null && !input.trim().isEmpty()) {
+        input = input.trim();
+        if (!input.isEmpty()) {
             if (!question.getChoices().contains(input)){
-                question.addChoice(input);
+                if (!input.equals(question.getCorrectAnswer())){
+                    question.addChoice(input);
+                }else {
+                    JOptionPane.showMessageDialog(dashboard,
+                            "Choice must be different from correct answer!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }else {
                 JOptionPane.showMessageDialog(dashboard,
                         "Choice must be unique!",
