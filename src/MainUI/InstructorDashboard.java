@@ -8,7 +8,8 @@ import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
 import DataManagment.UserDatabaseManager;
-import Statistics.ChartStatistics;
+import Statistics.*;
+import Statistics.CompletionChartCreation;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
@@ -62,9 +63,14 @@ public class InstructorDashboard extends DashBoard{
         JButton studentChartBtn = new JButton("Student Completion");
         studentChartBtn.setForeground(Color.BLACK);
         studentChartBtn.setBackground(Color.LIGHT_GRAY);
+
         JButton lessonChartBtn = new JButton("Lesson Completion");
         lessonChartBtn.setForeground(Color.BLACK);
         lessonChartBtn.setBackground(Color.LIGHT_GRAY);
+
+        JButton quizzesBtn = new JButton("Quizzes Completion");
+        quizzesBtn.setForeground(Color.BLACK);
+        quizzesBtn.setBackground(Color.LIGHT_GRAY);
 
         studentChartBtn.addActionListener(e -> {
             String sel = (String) courseSelector.getSelectedItem();
@@ -72,8 +78,10 @@ public class InstructorDashboard extends DashBoard{
                 String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
                 Course c = courseDB.getRecordByID(id);
                 if (c != null) {
-                    org.jfree.chart.JFreeChart chart = ChartStatistics.createCompletionChart(c, userDB);
-                    new ChartStatistics("Student Completion", chart).setVisible(true);
+                    CompletionChartCreation chartCreator = new CompletionChartCreation("Student Completed", null);
+                    org.jfree.chart.JFreeChart chart = chartCreator.createChart(c, userDB,
+                            "Student Completed Rates", "Students", "% Complete");
+                    new CompletionChartCreation("Student Completed", chart).setVisible(true);
                 }
             }
         });
@@ -84,8 +92,24 @@ public class InstructorDashboard extends DashBoard{
                 String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
                 Course c = courseDB.getRecordByID(id);
                 if (c != null) {
-                    org.jfree.chart.JFreeChart chart = ChartStatistics.createLessonChart(c, userDB);
-                    new ChartStatistics("Lesson Completion", chart).setVisible(true);
+                    LessonChartCreation chartCreator = new LessonChartCreation("Lesson Completed", null);
+                    org.jfree.chart.JFreeChart chart = chartCreator.createChart(c, userDB,
+                            "Lesson Completed Rates", "Lessons", "%");
+                    new LessonChartCreation("Lesson Completed", chart).setVisible(true);
+                }
+            }
+        });
+
+        quizzesBtn.addActionListener(e -> {
+            String sel = (String) courseSelector.getSelectedItem();
+            if (sel != null) {
+                String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
+                Course c = courseDB.getRecordByID(id);
+                if (c != null) {
+                    LessonChartCreation chartCreator = new LessonChartCreation("Quiz Completed", null);
+                    org.jfree.chart.JFreeChart chart = chartCreator.createChart(c, userDB,
+                            "Quiz Completed Rates", "Lessons", "%");
+                    new LessonChartCreation("Quiz Completed", chart).setVisible(true);
                 }
             }
         });
@@ -95,6 +119,7 @@ public class InstructorDashboard extends DashBoard{
         panel.add(courseSelector);
         panel.add(studentChartBtn);
         panel.add(lessonChartBtn);
+        panel.add(quizzesBtn);
         changeContentPanel(panel);
     }
 
