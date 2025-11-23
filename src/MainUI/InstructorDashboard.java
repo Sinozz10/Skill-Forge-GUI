@@ -28,25 +28,35 @@ public class InstructorDashboard extends DashBoard{
         navButtons.setLayout(new GridLayout(1,3, 10, 10));
         setResizable(false);
 
+
+        navButtons.add(getCoursesButton());
+        navButtons.add(getStudentsButton());
+        navButtons.add(getInsightButton());
+
+        handleHomeButton();
+    }
+    private JButton getCoursesButton(){
         JButton viewCoursesButton = new JButton("My Courses");
         viewCoursesButton.setForeground(Color.BLACK);
         viewCoursesButton.setBackground(Color.LIGHT_GRAY);
         viewCoursesButton.addActionListener(_ -> handleViewCourses());
-        navButtons.add(viewCoursesButton);
+        return viewCoursesButton;
+    }
 
+    private JButton getStudentsButton(){
         JButton viewStudentsButton = new JButton("My Students");
         viewStudentsButton.setForeground(Color.BLACK);
         viewStudentsButton.setBackground(Color.LIGHT_GRAY);
         viewStudentsButton.addActionListener(_ -> changeContentPanel(new ViewStudents(instructor)));
-        navButtons.add(viewStudentsButton);
+        return viewStudentsButton;
+    }
 
+    private JButton getInsightButton(){
         JButton insightsButton = new JButton("Insights");
         insightsButton.setForeground(Color.BLACK);
         insightsButton.setBackground(Color.LIGHT_GRAY);
         insightsButton.addActionListener(_ -> handleInsights());
-        navButtons.add(insightsButton);
-
-        handleHomeButton();
+        return insightsButton;
     }
 
     private void handleInsights() {

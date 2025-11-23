@@ -28,19 +28,27 @@ public class AdminDashboard extends DashBoard {
         navButtons.setLayout(new GridLayout(1, 2, 10, 10));
         setResizable(false);
 
+
+        navButtons.add(getPendingButton());
+        navButtons.add(getAllButton());
+
+        handleHomeButton();
+    }
+
+    private JButton getPendingButton(){
         JButton pendingCoursesButton = new JButton("Pending Courses");
         pendingCoursesButton.setForeground(Color.BLACK);
         pendingCoursesButton.setBackground(Color.LIGHT_GRAY);
         pendingCoursesButton.addActionListener(_ -> handlePendingCourses());
-        navButtons.add(pendingCoursesButton);
+        return pendingCoursesButton;
+    }
 
+    private JButton getAllButton(){
         JButton allCoursesButton = new JButton("All Courses");
         allCoursesButton.setForeground(Color.BLACK);
         allCoursesButton.setBackground(Color.LIGHT_GRAY);
         allCoursesButton.addActionListener(_ -> handleAllCourses());
-        navButtons.add(allCoursesButton);
-
-        handleHomeButton();
+        return allCoursesButton;
     }
 
     public void handlePendingCourses() {
