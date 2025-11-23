@@ -100,6 +100,13 @@ public class StudentDashboard extends DashBoard{
             }
         });
         navButtons.add(enrollButton);
+        JButton certificatesButton = new JButton("My Certificates");
+        certificatesButton.setBackground(Color.LIGHT_GRAY);
+        certificatesButton.setForeground(Color.BLACK);
+        certificatesButton.addActionListener(e -> {
+            changeContentPanel(new CertificateViewer(student));
+        });
+        navButtons.add(certificatesButton);
 
         handleHomeButton();
     }

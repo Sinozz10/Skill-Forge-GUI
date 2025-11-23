@@ -187,14 +187,14 @@ public class AdminDashboard extends DashBoard {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setBackground(Color.WHITE);
 
-        JButton approveButton = new JButton("✓ Approve");
+        JButton approveButton = new JButton("Approve");
         approveButton.setBackground(new Color(76, 175, 80));
         approveButton.setForeground(Color.WHITE);
         approveButton.setFont(new Font("Arial", Font.BOLD, 12));
         approveButton.setFocusPainted(false);
         approveButton.addActionListener(e -> handleApprove(course));
 
-        JButton rejectButton = new JButton("✗ Reject");
+        JButton rejectButton = new JButton("Reject");
         rejectButton.setBackground(new Color(244, 67, 54));
         rejectButton.setForeground(Color.WHITE);
         rejectButton.setFont(new Font("Arial", Font.BOLD, 12));

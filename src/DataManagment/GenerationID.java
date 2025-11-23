@@ -1,9 +1,6 @@
 package DataManagment;
 
-import CustomDataTypes.Chapter;
-import CustomDataTypes.Course;
-import CustomDataTypes.Lesson;
-import CustomDataTypes.User;
+import CustomDataTypes.*;
 
 public class GenerationID {
     private UserDatabaseManager userDatabase = UserDatabaseManager.getDatabaseInstance();
@@ -135,6 +132,34 @@ public class GenerationID {
                         }
                     } catch (Exception e) {
                         System.err.println("Error parsing lesson ID: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        return highest;
+    }
+
+    // Certificate ID generation
+    public String generateCertificateID() {
+        int highest = getHighestCertificateID();
+        return String.format("CERT%04d", highest + 1);
+    }
+
+    private int getHighestCertificateID() {
+        int highest = 0;
+        for (User user : userDatabase.getRecords()) {
+            if (user instanceof Student) {
+                Student student = (Student) user;
+                for (Certificate cert : student.getCertificates()) {
+                    String certId = cert.getCertificateID();
+                    try {
+                        String numberPart = certId.replaceAll("[^0-9]", "");
+                        int idNumber = Integer.parseInt(numberPart);
+                        if (idNumber > highest) {
+                            highest = idNumber;
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error parsing cert ID: " + e.getMessage());
                     }
                 }
             }

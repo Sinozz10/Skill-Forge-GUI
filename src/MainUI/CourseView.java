@@ -1,9 +1,14 @@
 package MainUI;
 
+import DataManagment.CertificateGenerator;
+import java.awt.Desktop;
+import java.io.File;
+
 import CustomDataTypes.*;
 import CustomUIElements.CollapsablePanel;
 import CustomUIElements.LessonPanel;
 import DataManagment.CourseDatabaseManager;
+import DataManagment.GenerationID;
 import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
@@ -28,8 +33,14 @@ public class CourseView extends JPanel{
     private JPanel editPanel;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+    private final GenerationID idGenerator;
+    private final Student student;
+    private final Course course;
 
     public CourseView(Course course, Student student) {
+        this.student = student;
+        this.course = course;
+        this.idGenerator = new GenerationID();
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
@@ -78,20 +89,52 @@ public class CourseView extends JPanel{
         descriptionTextPane.setText(course.getDescription());
     }
 
-    public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson, Progress progress){
-        JPanel tempPanel = new JPanel();
-        tempPanel.setLayout(new BorderLayout());
+    public void leftClickHandler(MouseEvent e, LessonPanel Lp, Lesson lesson, Progress progress){
+        // Show lesson
+        JPanel panel = new JPanel(new BorderLayout());
         JTextPane content = new JTextPane();
         content.setText(lesson.getContent());
         content.setEditable(false);
-        tempPanel.add(content, BorderLayout.CENTER);
+        panel.add(content, BorderLayout.CENTER);
 
+        // Mark complete
         Lp.setComplete();
         progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+        userDB.updateRecord(student);
+        userDB.saveToFile();
 
+        // Check if course complete
+        if (progress.isCourseComplete() && student.getCertificateByCourseID(course.getID()) == null) {
+            // Create certificate
+            Certificate cert = new Certificate(idGenerator.generateCertificateID(),
+                    student.getID(),
+                    course.getID(),
+                    student.getUsername(),
+                    course.getTitle()
+            );
+
+            student.addCertificate(cert);
+            userDB.saveToFile();
+
+            // Try to generate PDF
+            try {
+                new CertificateGenerator().generateCertificate(cert);
+                // Ask to view
+                if (JOptionPane.showConfirmDialog(this,
+                        "Course completed!\nView certificate?",
+                        "Congratulations!",
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    Desktop.getDesktop().open(new File(CertificateGenerator.getPath(cert.getCertificateID())));
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Certificate saved. View from 'My Certificates'");
+            }
+        }
+
+        // bn-Update UI
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
-        changeContentPanel(tempPanel);
+        changeContentPanel(panel);
     }
 
     public void changeContentPanel(JPanel panel){
