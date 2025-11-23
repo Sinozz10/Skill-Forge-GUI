@@ -8,12 +8,12 @@ import java.awt.*;
 import java.io.File;
 
 public class CertificateViewer extends JPanel {
-    private Student student;
+    private final Student student;
 
     public CertificateViewer(Student student) {
         this.student = student;
         setLayout(new BorderLayout());
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(Color.GRAY);
 
         // Title
         JLabel title = new JLabel("My Certificates", SwingConstants.CENTER);

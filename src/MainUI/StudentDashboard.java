@@ -31,17 +31,9 @@ public class StudentDashboard extends DashBoard{
         }
         userDB.saveToFile();
 
-        JButton viewButton = getViewButton(student);
-        navButtons.add(viewButton);
-
-        JButton enrollButton = getEnrollButton(student);
-        navButtons.add(enrollButton);
-
-        JButton certificatesButton = new JButton("My Certificates");
-        certificatesButton.setBackground(Color.LIGHT_GRAY);
-        certificatesButton.setForeground(Color.BLACK);
-        certificatesButton.addActionListener(_ -> changeContentPanel(new CertificateViewer(student)));
-        navButtons.add(certificatesButton);
+        navButtons.add(getViewButton(student));
+        navButtons.add(getEnrollButton(student));
+        navButtons.add(getCertificatesButton(student));
 
         handleHomeButton();
     }
@@ -110,6 +102,14 @@ public class StudentDashboard extends DashBoard{
             }
         }));
         return enrollButton;
+    }
+
+    private JButton getCertificatesButton(Student student){
+        JButton certificatesButton = new JButton("My Certificates");
+        certificatesButton.setBackground(Color.LIGHT_GRAY);
+        certificatesButton.setForeground(Color.BLACK);
+        certificatesButton.addActionListener(_ -> changeContentPanel(new CertificateViewer(student)));
+        return certificatesButton;
     }
 
     @Override

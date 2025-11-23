@@ -1,11 +1,7 @@
 package CustomDataTypes;
 
-import com.google.gson.annotations.Expose;
-
 public class GeneralTracker {
-    @Expose
     private final String ID;
-    @Expose
     private boolean state;
 
     public GeneralTracker(String ID) {
