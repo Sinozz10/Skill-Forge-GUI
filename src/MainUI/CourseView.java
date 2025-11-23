@@ -18,31 +18,32 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class CourseView extends JPanel{
-    private JLabel courseTitle;
-    private JPanel lessonView;
-    private JScrollPane scrollPane;
-    private JPanel contentPanel;
-    private JTabbedPane extrasPane;
-    private JPanel descriptionPanel;
-    private JPanel resourcesPanel;
-    private JLabel lessonTitle;
-    private JPanel cvPanel;
-    private JPanel listPanel;
-    private JTextPane descriptionTextPane;
-    private JScrollPane resourcesScrollPane;
-    private JPanel mainPanel;
-    private JScrollPane mainScrollPane;
-    private JButton quizButton;
-    private JPanel editPanel;
+    protected JLabel courseTitle;
+    protected JPanel lessonView;
+    protected JScrollPane scrollPane;
+    protected JPanel contentPanel;
+    protected JTabbedPane extrasPane;
+    protected JPanel descriptionPanel;
+    protected JPanel resourcesPanel;
+    protected JLabel lessonTitle;
+    protected JPanel cvPanel;
+    protected JPanel listPanel;
+    protected JTextPane descriptionTextPane;
+    protected JScrollPane resourcesScrollPane;
+    protected JPanel mainPanel;
+    protected JScrollPane mainScrollPane;
+    protected JButton quizButton;
+    protected JPanel editPanel;
 
-    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
-    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
-    private final JTextPane content = new JTextPane();
-    private boolean quizViewState;
-    private final StudentDashboard dashboard;
-    private final GenerationID idGenerator;
-    private final Student student;
-    private final Course course;
+    protected final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    protected final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+    protected final JTextPane textContent = new JTextPane();
+    protected boolean quizViewState;
+    protected final StudentDashboard dashboard;
+    protected final GenerationID idGenerator;
+    protected final Student student;
+    protected final Course course;
+    protected final Progress progress;
 
     public CourseView(Course course, Student student, StudentDashboard dashboard) {
         this.dashboard = dashboard;
@@ -55,21 +56,28 @@ public class CourseView extends JPanel{
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
         mainScrollPane.getVerticalScrollBar().setUnitIncrement(32);
 
-        content.setPreferredSize(new Dimension(350, content.getPreferredSize().height));
-        content.setBorder(new EmptyBorder(10, 10, 10, 10));
-        content.setEditable(false);
+        textContent.setPreferredSize(new Dimension(350, textContent.getPreferredSize().height));
+        textContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        textContent.setEditable(false);
 
         setBackground(Color.LIGHT_GRAY);
         setForeground(Color.BLACK);
 
-        Progress progress = student.getProgressTrackerByCourseID(course.getID());
+        progress = student.getProgressTrackerByCourseID(course.getID());
 
         lessonTitle.setVisible(false);
         lessonTitle.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+        listPanel.setLayout(new BorderLayout());
+        listPanel.add(generateSideBar(), BorderLayout.CENTER);
+
+        courseTitle.setText(course.getTitle());
+        descriptionTextPane.setText(course.getDescription());
+    }
+
+    private JScrollPane generateSideBar(){
         JPanel coursesPanel = new JPanel();
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
-
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
         for (Chapter chapter: sortedChapters){
@@ -78,63 +86,44 @@ public class CourseView extends JPanel{
             ArrayList<Lesson> sortedLessons = chapter.getLessons();
             sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
             for (Lesson lesson: sortedLessons){
-                LessonPanel lp = new LessonPanel(lesson){
-                    @Override
-                    public void leftClickHandler(MouseEvent e){
-                        CourseView.this.leftClickHandler(this, lesson, progress);
-                    }
-                };
-                LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
-                if (tracker != null && tracker.isComplete()){
-                    lp.setComplete();
-                }
-                cur.addContent(lp);
+                cur.addContent(generateLessonPanel(lesson));
                 cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
             }
             coursesPanel.add(cur);
         }
-
         JScrollPane scrollPane = new JScrollPane(coursesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 
-        listPanel.setLayout(new BorderLayout());
-        listPanel.add(scrollPane, BorderLayout.CENTER);
-
-        courseTitle.setText(course.getTitle());
-        descriptionTextPane.setText(course.getDescription());
+        return scrollPane;
     }
 
-    public void leftClickHandler(LessonPanel Lp, Lesson lesson, Progress progress){
+    private LessonPanel generateLessonPanel(Lesson lesson){
+        LessonPanel lp = new LessonPanel(lesson){
+            @Override
+            public void leftClickHandler(MouseEvent e){
+                lessonPanelClickHandler(this, lesson, progress);
+            }
+        };
+        LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
+        if (tracker != null && tracker.isComplete()){
+            lp.setComplete();
+        }
+        return  lp;
+    }
+
+    private void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson, Progress progress){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
         quizButton.setVisible(false);
-        content.setText(lesson.getContent());
-        panel.add(content, BorderLayout.CENTER);
-        panel.add(content, BorderLayout.CENTER);
+        textContent.setText(lesson.getContent());
+        panel.add(textContent, BorderLayout.CENTER);
+        panel.add(textContent, BorderLayout.CENTER);
 
         if (lesson.hasQuiz()){
-            quizButton.setVisible(true);
-            for (ActionListener al : quizButton.getActionListeners()) {
-                quizButton.removeActionListener(al);
-            }
-
-            quizViewState = false;
-            quizButton.addActionListener(_ -> {
-                if (quizViewState){
-                    content.setText(lesson.getContent());
-                    panel.add(content, BorderLayout.CENTER);
-                    quizButton.setText("Take Quiz");
-                    quizViewState = false;
-                    changeContentPanel(panel);
-                }else {
-                    quizButton.setText("Back");
-                    quizViewState = true;
-                    changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
-                }
-            });
+            hasQuizLogic(panel, lesson, Lp);
         }else {
-            temporaryMethodName(Lp, lesson, progress);
+            hasNoQuizLogic(Lp, lesson, progress);
         }
 
         lessonTitle.setVisible(true);
@@ -142,7 +131,29 @@ public class CourseView extends JPanel{
         changeContentPanel(panel);
     }
 
-    public void temporaryMethodName(LessonPanel Lp, Lesson lesson, Progress progress){
+    private void hasQuizLogic(JPanel panel, Lesson lesson, LessonPanel Lp){
+        quizButton.setVisible(true);
+        for (ActionListener al : quizButton.getActionListeners()) {
+            quizButton.removeActionListener(al);
+        }
+
+        quizViewState = false;
+        quizButton.addActionListener(_ -> {
+            if (quizViewState){
+                textContent.setText(lesson.getContent());
+                panel.add(textContent, BorderLayout.CENTER);
+                quizButton.setText("Take Quiz");
+                quizViewState = false;
+                changeContentPanel(panel);
+            }else {
+                quizButton.setText("Back");
+                quizViewState = true;
+                changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
+            }
+        });
+    }
+
+    private void hasNoQuizLogic(LessonPanel Lp, Lesson lesson, Progress progress){
         Lp.setComplete();
         LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
         if (tracker != null) {
@@ -152,7 +163,11 @@ public class CourseView extends JPanel{
         userDB.updateRecord(student);
         userDB.saveToFile();
 
-        // Check if course complete
+        certificateLogic();
+    }
+
+    private void certificateLogic(){
+        // Check if course is complete
         if (progress.isCourseComplete() && student.getCertificateByCourseID(course.getID()) == null) {
             // Create certificate
             Certificate cert = new Certificate(idGenerator.generateCertificateID(),
