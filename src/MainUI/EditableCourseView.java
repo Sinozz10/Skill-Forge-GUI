@@ -21,7 +21,6 @@ import java.util.Optional;
 public class EditableCourseView extends JPanel {
     private JTextField courseTitle;
     private JPanel lessonView;
-    private JScrollPane scrollPane;
     private JPanel contentPanel;
     private JTabbedPane extrasPane;
     private JPanel descriptionPanel;
@@ -37,15 +36,16 @@ public class EditableCourseView extends JPanel {
     private JButton refreshButton;
     private JButton quizButton;
     private JPanel editPanel;
-    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
-    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
-    private final Course course;
-    private Lesson activeLesson = null;
     private final JTextPane content = new JTextPane();
     private final JPanel coursesPanel = new JPanel();
+
+    private boolean quizViewState;
+    private Lesson activeLesson = null;
+    private final Course course;
     private final InstructorDashboard dashboard;
     private final ArrayList<GeneralTracker> trackers = new ArrayList<>();
-    private boolean quizViewState;
+    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
     public EditableCourseView(Course course, Instructor instructor, InstructorDashboard dashboard) {
         this.course = course;
@@ -67,26 +67,18 @@ public class EditableCourseView extends JPanel {
 
         refreshButton.setBackground(Color.LIGHT_GRAY);
         refreshButton.setForeground(Color.black);
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                generateSideBar();
-            }
-        });
+        refreshButton.addActionListener(_ -> generateSideBar());
 
         saveExitButton.setBackground(Color.LIGHT_GRAY);
         saveExitButton.setForeground(Color.BLACK);
-        saveExitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                course.setDescription(descriptionTextPane.getText());
-                course.setTitle(courseTitle.getText());
-                courseDB.saveToFile();
-                dashboard.handleViewCourses();
-            }
+        saveExitButton.addActionListener(_ -> {
+            course.setDescription(descriptionTextPane.getText());
+            course.setTitle(courseTitle.getText());
+            courseDB.saveToFile();
+            dashboard.handleViewCourses();
         });
 
-        scrollPane = new JScrollPane(coursesPanel);
+        JScrollPane scrollPane = new JScrollPane(coursesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 
         listPanel.setLayout(new BorderLayout());
@@ -112,16 +104,11 @@ public class EditableCourseView extends JPanel {
         JButton addChapterButton = new JButton("Add Chapter");
         addChapterButton.setBackground(Color.LIGHT_GRAY);
         addChapterButton.setForeground(Color.BLACK);
-        addChapterButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addChapter(e);
-            }
-        });
-        JPanel buttonPanel1 = new JPanel();
-        buttonPanel1.setLayout(new BoxLayout(buttonPanel1, BoxLayout.X_AXIS));
-        buttonPanel1.add(addChapterButton);
-        coursesPanel.add(buttonPanel1);
+        addChapterButton.addActionListener(_ -> addChapter());
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.add(addChapterButton);
+        coursesPanel.add(buttonPanel);
         coursesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         generateChapters();
     }
@@ -130,58 +117,16 @@ public class EditableCourseView extends JPanel {
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
         for (Chapter chapter : sortedChapters) {
-            CollapsablePanel cur = new CollapsablePanel(chapter.getChapterID(), chapter.getTitle()) {
-                @Override
-                public void rightClickHandler(MouseEvent e) {
-                    final JPopupMenu popupMenu = new JPopupMenu();
-
-                    JMenuItem changeOrder = new JMenuItem("Change Order");
-                    changeOrder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    changeOrder.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            changeChapterOrder(e);
-                        }
-                    });
-
-                    JMenuItem changeTitle = new JMenuItem("Change Title");
-                    changeTitle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    changeTitle.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            changeChapterTitle(e);
-                        }
-                    });
-
-                    JMenuItem deleteChapter = new JMenuItem("Delete Chapter");
-                    deleteChapter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    deleteChapter.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            deleteChapter(e);
-                        }
-                    });
-
-                    popupMenu.add(changeOrder);
-                    popupMenu.add(changeTitle);
-                    popupMenu.add(deleteChapter);
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                }
-            };
+            CollapsablePanel cur = generateCollapsablePanel(chapter);
 
             JButton addLessonButton = new JButton("Add Lesson");
             addLessonButton.setBackground(Color.LIGHT_GRAY);
             addLessonButton.setForeground(Color.BLACK);
-            addLessonButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    addLesson(e);
-                }
-            });
-            JPanel buttonPanel2 = new JPanel();
-            buttonPanel2.setLayout(new BoxLayout(buttonPanel2, BoxLayout.X_AXIS));
-            buttonPanel2.add(addLessonButton);
-            cur.addContent(buttonPanel2);
+            addLessonButton.addActionListener(this::addLesson);
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+            buttonPanel.add(addLessonButton);
+            cur.addContent(buttonPanel);
             cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
 
             generateLessons(cur, chapter);
@@ -197,6 +142,32 @@ public class EditableCourseView extends JPanel {
         }
     }
 
+    public CollapsablePanel generateCollapsablePanel(Chapter chapter){
+        return new CollapsablePanel(chapter.getChapterID(), chapter.getTitle()) {
+            @Override
+            public void rightClickHandler(MouseEvent e) {
+                final JPopupMenu popupMenu = new JPopupMenu();
+
+                JMenuItem changeOrder = new JMenuItem("Change Order");
+                changeOrder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                changeOrder.addActionListener(EditableCourseView.this::changeChapterOrder);
+
+                JMenuItem changeTitle = new JMenuItem("Change Title");
+                changeTitle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                changeTitle.addActionListener(EditableCourseView.this::changeChapterTitle);
+
+                JMenuItem deleteChapter = new JMenuItem("Delete Chapter");
+                deleteChapter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                deleteChapter.addActionListener(EditableCourseView.this::deleteChapter);
+
+                popupMenu.add(changeOrder);
+                popupMenu.add(changeTitle);
+                popupMenu.add(deleteChapter);
+                popupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        };
+    }
+
     public void generateLessons(CollapsablePanel cur, Chapter chapter){
         ArrayList<Lesson> sortedLessons = chapter.getLessons();
         sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
@@ -205,7 +176,7 @@ public class EditableCourseView extends JPanel {
             LessonPanel lp = new LessonPanel(lesson) {
                 @Override
                 public void leftClickHandler(MouseEvent e) {
-                    EditableCourseView.this.leftClickHandler(e, this, lesson);
+                    EditableCourseView.this.leftClickHandler(lesson);
                 }
 
                 @Override
@@ -214,21 +185,11 @@ public class EditableCourseView extends JPanel {
 
                     JMenuItem changeOrder = new JMenuItem("Change Order");
                     changeOrder.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    changeOrder.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            changeLessonOrder(e);
-                        }
-                    });
+                    changeOrder.addActionListener(EditableCourseView.this::changeLessonOrder);
 
                     JMenuItem deleteLesson = new JMenuItem("Delete Lesson");
                     deleteLesson.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    deleteLesson.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            deleteLesson(e);
-                        }
-                    });
+                    deleteLesson.addActionListener(EditableCourseView.this::deleteLesson);
 
                     popupMenu.add(changeOrder);
                     popupMenu.add(deleteLesson);
@@ -250,7 +211,7 @@ public class EditableCourseView extends JPanel {
             parent = parent.getParent();
         }
 
-        if (parent instanceof CollapsablePanel) {
+        if (parent != null) {
             CollapsablePanel panel = (CollapsablePanel) parent;
             Chapter chapter = course.getChapterById(panel.getId());
 
@@ -287,7 +248,7 @@ public class EditableCourseView extends JPanel {
             parent = parent.getParent();
         }
 
-        if (parent instanceof CollapsablePanel) {
+        if (parent != null) {
             CollapsablePanel panel = (CollapsablePanel) parent;
             Chapter chapter = course.getChapterById(panel.getId());
 
@@ -344,7 +305,7 @@ public class EditableCourseView extends JPanel {
             parent = parent.getParent();
         }
 
-        if (parent instanceof LessonPanel) {
+        if (parent != null) {
             LessonPanel lessonPanel = (LessonPanel) parent;
             Lesson lesson = lessonPanel.getLesson();
 
@@ -395,7 +356,7 @@ public class EditableCourseView extends JPanel {
         }
     }
 
-    private void addChapter(ActionEvent e){
+    private void addChapter(){
         Chapter chapter = new ChapterDialog(dashboard, course).getResult();
 
         if (chapter != null){
@@ -433,7 +394,7 @@ public class EditableCourseView extends JPanel {
             parent = parent.getParent();
         }
 
-        if (parent instanceof CollapsablePanel) {
+        if (parent != null) {
             CollapsablePanel panel = (CollapsablePanel) parent;
             Chapter chapter = course.getChapterById(panel.getId());
 
@@ -463,7 +424,7 @@ public class EditableCourseView extends JPanel {
             parent = parent.getParent();
         }
 
-        if (parent instanceof LessonPanel) {
+        if (parent != null) {
             LessonPanel lessonPanel = (LessonPanel) parent;
             Lesson lesson = lessonPanel.getLesson();
 
@@ -486,14 +447,14 @@ public class EditableCourseView extends JPanel {
         }
     }
 
-    public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson){
+    public void leftClickHandler(Lesson lesson){
         saveActiveLesson();
         activeLesson = lesson;
 
-        JPanel tempPanel = new JPanel();
-        tempPanel.setLayout(new BorderLayout());
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
         content.setText(activeLesson.getContent());
-        tempPanel.add(content, BorderLayout.CENTER);
+        panel.add(content, BorderLayout.CENTER);
 
         quizViewState = false;
         quizButton.setVisible(true);
@@ -503,26 +464,23 @@ public class EditableCourseView extends JPanel {
             quizButton.removeActionListener(al);
         }
 
-        quizButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (quizViewState){
-                    content.setText(activeLesson.getContent());
-                    tempPanel.add(content, BorderLayout.CENTER);
-                    quizButton.setText(lesson.hasQuiz()?"Edit Quiz":"Add Quiz");
-                    quizViewState = false;
-                    changeContentPanel(tempPanel);
-                }else {
-                    quizButton.setText("Back");
-                    quizViewState = true;
-                    changeContentPanel(new EditableQuizPanel(dashboard, lesson));
-                }
+        quizButton.addActionListener(_ -> {
+            if (quizViewState){
+                content.setText(activeLesson.getContent());
+                panel.add(content, BorderLayout.CENTER);
+                quizButton.setText(lesson.hasQuiz()?"Edit Quiz":"Add Quiz");
+                quizViewState = false;
+                changeContentPanel(panel);
+            }else {
+                quizButton.setText("Back");
+                quizViewState = true;
+                changeContentPanel(new EditableQuizPanel(dashboard, lesson));
             }
         });
 
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
-        changeContentPanel(tempPanel);
+        changeContentPanel(panel);
         generateSideBar();
     }
 

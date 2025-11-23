@@ -11,7 +11,7 @@ public class LessonPanel extends JPanel{
     private JLabel titleLabel;
     private JPanel lPanel;
     private JCheckBox stateBox;
-    private Lesson lesson;
+    private final Lesson lesson;
 
     public LessonPanel(Lesson lesson) {
         this.lesson = lesson;

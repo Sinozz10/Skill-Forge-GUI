@@ -1,7 +1,6 @@
 package Dialogs;
 
 import CustomDataTypes.ChoiceQuestion;
-import CustomDataTypes.TextQuestion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +15,7 @@ public class ChoiceQuestionPanel extends JPanel {
     private JButton addButton;
     private JButton cancelButton;
     private JTextField choice;
-    private QuestionDialog parent;
+    private final QuestionDialog parent;
     private final JPanel contentPanel = new JPanel();
     private final ArrayList<String> choices = new ArrayList<>();
 
@@ -98,8 +97,8 @@ public class ChoiceQuestionPanel extends JPanel {
         });
 
 
-        addButton.addActionListener(e -> createQuestion());
-        cancelButton.addActionListener(e -> handleCancel());
+        addButton.addActionListener(_ -> createQuestion());
+        cancelButton.addActionListener(_ -> handleCancel());
     }
 
     private void createQuestion(){

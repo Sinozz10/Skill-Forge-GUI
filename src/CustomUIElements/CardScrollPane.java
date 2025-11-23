@@ -7,8 +7,6 @@ import DataManagment.CourseDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,19 +48,9 @@ public class CardScrollPane extends JPanel {
 
         searchButton.setBackground(Color.LIGHT_GRAY);
         searchButton.setForeground(Color.BLACK);
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                search();
-            }
-        });
+        searchButton.addActionListener(_ -> search());
 
-        searchBar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                search();
-            }
-        });
+        searchBar.addActionListener(_ -> search());
 
         setLayout(new BorderLayout());
         add(contentPanel, BorderLayout.CENTER);
@@ -111,22 +99,27 @@ public class CardScrollPane extends JPanel {
                     }
                 }
 
-                Card card = new Card(course, flavour) {
-                    @Override
-                    public void rightClickHandler(MouseEvent e){
-                        CardScrollPane.this.rightClickHandler(e);
-                    }
-                    @Override
-                    public void leftClickHandler(MouseEvent e){
-                        CardScrollPane.this.leftClickHandler(e);
-                    }
-                };
-                card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                card.setMaximumSize(new Dimension(Integer.MAX_VALUE, card.getPreferredSize().height));
+                Card card = getCourseCard(course, flavour);
                 cardPanel.add(card);
                 cardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }
         }
+    }
+
+    private Card getCourseCard(Course course, String flavour) {
+        Card card = new Card(course, flavour) {
+            @Override
+            public void rightClickHandler(MouseEvent e){
+                CardScrollPane.this.rightClickHandler(e);
+            }
+            @Override
+            public void leftClickHandler(MouseEvent e){
+                CardScrollPane.this.leftClickHandler(e);
+            }
+        };
+        card.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, card.getPreferredSize().height));
+        return card;
     }
 
     public void search(){

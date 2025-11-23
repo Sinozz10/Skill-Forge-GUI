@@ -12,8 +12,6 @@ import CustomUIElements.*;
 import DataManagment.*;
 
 public class ViewStudents extends JPanel {
-    private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
-    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
     public ViewStudents(Instructor instructor) {
         setLayout(new BorderLayout());
@@ -25,27 +23,33 @@ public class ViewStudents extends JPanel {
         title.setBackground(Color.LIGHT_GRAY);
         add(title, BorderLayout.NORTH);
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
         JPanel studentList = new JPanel();
         studentList.setLayout(new BoxLayout(studentList, BoxLayout.Y_AXIS));
 
         for (String courseID : instructor.getCourseIDs()) {
+            CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
             Course crs = courseDB.getRecordByID(courseID);
             if (crs != null) {
-                CollapsablePanel courseDropdown = new CollapsablePanel(crs.getID(), crs.getTitle());
-                courseDropdown.setBackground(Color.GRAY);
-                courseDropdown.setForeground(Color.BLACK);
-                for (String studentID : crs.getStudentIDs()){
-                    Student stu = (Student) userDB.getRecordByID(studentID);
-                    JLabel stuLabel = new JLabel(stu.getID());
-                    stuLabel.setForeground(Color.BLACK);
-                    courseDropdown.addContent(stuLabel);
-                }
+                CollapsablePanel courseDropdown = getCourseCollapsablePanel(crs);
                 studentList.add(courseDropdown);
             }
         }
 
 
         add(new JScrollPane(studentList), BorderLayout.CENTER);
+    }
+
+    private CollapsablePanel getCourseCollapsablePanel(Course crs) {
+        CollapsablePanel courseDropdown = new CollapsablePanel(crs.getID(), crs.getTitle());
+        courseDropdown.setBackground(Color.GRAY);
+        courseDropdown.setForeground(Color.BLACK);
+        for (String studentID : crs.getStudentIDs()){
+            UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+            Student stu = (Student) userDB.getRecordByID(studentID);
+            JLabel stuLabel = new JLabel(stu.getID());
+            stuLabel.setForeground(Color.BLACK);
+            courseDropdown.addContent(stuLabel);
+        }
+        return courseDropdown;
     }
 }

@@ -39,7 +39,7 @@ public class CollapsablePanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    leftClickHandler(e);
+                    leftClickHandler();
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     rightClickHandler(e);
                 }
@@ -116,7 +116,7 @@ public class CollapsablePanel extends JPanel {
         this.title = title;
     }
 
-    public void leftClickHandler(MouseEvent e) {
+    public void leftClickHandler() {
         toggleExpanded();
     }
 

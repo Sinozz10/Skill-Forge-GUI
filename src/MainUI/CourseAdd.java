@@ -8,8 +8,6 @@ import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -33,12 +31,7 @@ public class CourseAdd extends JPanel {
         setBackground(Color.LIGHT_GRAY);
         ADDButton.setBackground(Color.LIGHT_GRAY);
         ADDButton.setForeground(Color.BLACK);
-        ADDButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAddCourse(instructor);
-            }
-        });
+        ADDButton.addActionListener(_ -> handleAddCourse(instructor));
         CourseName.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

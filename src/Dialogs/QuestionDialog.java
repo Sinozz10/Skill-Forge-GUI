@@ -13,7 +13,7 @@ public class QuestionDialog extends JDialog {
     public QuestionDialog(Frame parent, Lesson lesson) {
         super(parent,"Adding new Question", true);
         add(contentPanel);
-        changeContentPanel(new QuestionTypePanel(QuestionDialog.this, lesson));
+        changeContentPanel(new QuestionTypePanel(QuestionDialog.this));
 
         setLocationRelativeTo(this);
         setVisible(true);

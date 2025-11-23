@@ -1,22 +1,16 @@
 package Dialogs;
 
-import CustomDataTypes.Lesson;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class QuestionTypePanel extends JPanel {
     private final QuestionDialog parent;
-    private final Lesson lesson;
     private JButton choice;
     private JButton text;
     private JButton cancelButton;
     private final JPanel contentPanel = new JPanel();
 
-    public QuestionTypePanel(QuestionDialog parent, Lesson lesson) {
-        this.lesson = lesson;
+    public QuestionTypePanel(QuestionDialog parent) {
         this.parent = parent;
 
         initComponents();
@@ -50,26 +44,11 @@ public class QuestionTypePanel extends JPanel {
     }
 
     public void addListeners(){
-        choice.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parent.changeContentPanel(new ChoiceQuestionPanel(parent));
-            }
-        });
+        choice.addActionListener(_ -> parent.changeContentPanel(new ChoiceQuestionPanel(parent)));
 
-        text.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parent.changeContentPanel(new TextQuestionPanel(parent));
-            }
-        });
+        text.addActionListener(_ -> parent.changeContentPanel(new TextQuestionPanel(parent)));
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleCancel();
-            }
-        });
+        cancelButton.addActionListener(_ -> handleCancel());
     }
 
     private void handleCancel(){

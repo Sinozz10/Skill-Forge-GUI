@@ -2,10 +2,8 @@ package Dialogs;
 
 import CustomDataTypes.Chapter;
 import CustomDataTypes.Course;
-import CustomDataTypes.Lesson;
 import DataManagment.CourseDatabaseManager;
 import DataManagment.GenerationID;
-import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +18,7 @@ public class ChapterDialog extends JDialog{
     private JButton cancelButton;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private Chapter chapter = null;
-    private Course course;
+    private final Course course;
 
     public ChapterDialog(Frame parent, Course course) {
         super(parent, "Add new chapter", true);
@@ -78,8 +76,8 @@ public class ChapterDialog extends JDialog{
             }
         });
 
-        addButton.addActionListener(e -> createLesson());
-        cancelButton.addActionListener(e -> handleCancel());
+        addButton.addActionListener(_ -> createLesson());
+        cancelButton.addActionListener(_ -> handleCancel());
     }
 
     private void createLesson(){

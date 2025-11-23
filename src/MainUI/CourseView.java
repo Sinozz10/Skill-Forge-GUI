@@ -9,7 +9,6 @@ import DataManagment.UserDatabaseManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import java.util.Comparator;
 public class CourseView extends JPanel{
     private JLabel courseTitle;
     private JPanel lessonView;
-    private JScrollPane scrollPane;
     private JPanel contentPanel;
     private JTabbedPane extrasPane;
     private JPanel descriptionPanel;
@@ -72,7 +70,7 @@ public class CourseView extends JPanel{
                 LessonPanel lp = new LessonPanel(lesson){
                     @Override
                     public void leftClickHandler(MouseEvent e){
-                        CourseView.this.leftClickHandler(e, this, lesson, progress);
+                        CourseView.this.leftClickHandler(this, lesson, progress);
                     }
                 };
                 if (progress.getTrackerByID(lesson.getLessonID()).isComplete()){
@@ -84,7 +82,7 @@ public class CourseView extends JPanel{
             coursesPanel.add(cur);
         }
 
-        scrollPane = new JScrollPane(coursesPanel);
+        JScrollPane scrollPane = new JScrollPane(coursesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
 
         listPanel.setLayout(new BorderLayout());
@@ -94,13 +92,13 @@ public class CourseView extends JPanel{
         descriptionTextPane.setText(course.getDescription());
     }
 
-    public void leftClickHandler(MouseEvent e,LessonPanel Lp, Lesson lesson, Progress progress){
-        JPanel tempPanel = new JPanel();
-        tempPanel.setLayout(new BorderLayout());
+    public void leftClickHandler(LessonPanel Lp, Lesson lesson, Progress progress){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
         quizButton.setVisible(false);
         content.setText(lesson.getContent());
-        tempPanel.add(content, BorderLayout.CENTER);
+        panel.add(content, BorderLayout.CENTER);
 
         if (lesson.hasQuiz()){
             quizButton.setVisible(true);
@@ -109,20 +107,17 @@ public class CourseView extends JPanel{
             }
 
             quizViewState = false;
-            quizButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (quizViewState){
-                        content.setText(lesson.getContent());
-                        tempPanel.add(content, BorderLayout.CENTER);
-                        quizButton.setText("Take Quiz");
-                        quizViewState = false;
-                        changeContentPanel(tempPanel);
-                    }else {
-                        quizButton.setText("Back");
-                        quizViewState = true;
-                        changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
-                    }
+            quizButton.addActionListener(_ -> {
+                if (quizViewState){
+                    content.setText(lesson.getContent());
+                    panel.add(content, BorderLayout.CENTER);
+                    quizButton.setText("Take Quiz");
+                    quizViewState = false;
+                    changeContentPanel(panel);
+                }else {
+                    quizButton.setText("Back");
+                    quizViewState = true;
+                    changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
                 }
             });
         }else {
@@ -132,7 +127,7 @@ public class CourseView extends JPanel{
 
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
-        changeContentPanel(tempPanel);
+        changeContentPanel(panel);
     }
 
     public void changeContentPanel(JPanel panel){

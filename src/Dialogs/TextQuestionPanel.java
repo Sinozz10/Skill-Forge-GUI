@@ -13,7 +13,7 @@ public class TextQuestionPanel extends JPanel {
     private JTextField order;
     private JButton addButton;
     private JButton cancelButton;
-    private QuestionDialog parent;
+    private final QuestionDialog parent;
     private final JPanel contentPanel = new JPanel();
 
     public TextQuestionPanel(QuestionDialog parent) {
@@ -82,8 +82,8 @@ public class TextQuestionPanel extends JPanel {
         });
 
 
-        addButton.addActionListener(e -> createQuestion());
-        cancelButton.addActionListener(e -> handleCancel());
+        addButton.addActionListener(_ -> createQuestion());
+        cancelButton.addActionListener(_ -> handleCancel());
     }
 
     private void createQuestion(){

@@ -131,7 +131,7 @@ public class QuizPanel extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (trackers.stream().anyMatch(tracker -> tracker.getID().equals(question.getTitle()))){
-                        Optional o= trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
+                        Optional o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
                         QuestionTracker t = (QuestionTracker) o.get();
                         t.setAnswer(userAnswer.getText());
                     }else {

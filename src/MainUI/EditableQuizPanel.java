@@ -44,20 +44,10 @@ public class EditableQuizPanel extends JPanel {
         wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
 
         JButton addButton = new JButton("Add Question");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAdd();
-            }
-        });
+        addButton.addActionListener(_ -> handleAdd());
 
         JButton deleteButton = new JButton("Delete Quiz");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleDelete();
-            }
-        });
+        deleteButton.addActionListener(_ -> handleDelete());
 
         wrapper.add(addButton);
         wrapper.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -191,12 +181,9 @@ public class EditableQuizPanel extends JPanel {
         JButton addChoiceButton = new JButton("Add Choice");
         addChoiceButton.setBackground(Color.LIGHT_GRAY);
         addChoiceButton.setForeground(Color.BLACK);
-        addChoiceButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addChoice(question);
-                fillMenu(menu, question);
-            }
+        addChoiceButton.addActionListener(_ -> {
+            addChoice(question);
+            fillMenu(menu, question);
         });
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
@@ -214,18 +201,15 @@ public class EditableQuizPanel extends JPanel {
 
                         JMenuItem delete = new JMenuItem("Delete");
                         delete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        delete.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (question.getChoices().size() > 1){
-                                    question.getChoices().remove(choice);
-                                    fillMenu(menu, question);
-                                }else {
-                                    JOptionPane.showMessageDialog(dashboard,
-                                            "Must have at least one choice!",
-                                            "Error",
-                                            JOptionPane.ERROR_MESSAGE);
-                                }
+                        delete.addActionListener(_ -> {
+                            if (question.getChoices().size() > 1){
+                                question.removeChoice(choice);
+                                fillMenu(menu, question);
+                            }else {
+                                JOptionPane.showMessageDialog(dashboard,
+                                        "Must have at least one choice!",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE);
                             }
                         });
                         popupMenu.add(delete);
@@ -276,37 +260,40 @@ public class EditableQuizPanel extends JPanel {
     private JPanel generateButtonPanel(Question question){
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        JButton deleteButton = new JButton("Delete");
-        deleteButton.setBackground(Color.LIGHT_GRAY);
-        deleteButton.setForeground(Color.BLACK);
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Question ?", "Confirm", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    lesson.getQuiz().removeQuestion(question);
-                    if (lesson.getQuiz().getQuestions().isEmpty()){
-                        lesson.setQuiz(null);
-                        lesson.setHasQuiz(false);
-                    }
-                    generatePanel();
-                }
-            }
-        });
+
+        JButton deleteButton = getDeleteButton(question);
         buttonPanel.add(deleteButton);
 
-        JButton orderButton = new JButton("Change Order");
-        orderButton.setBackground(Color.LIGHT_GRAY);
-        orderButton.setForeground(Color.BLACK);
-        orderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                orderChangePopup(question);
-            }
-        });
+        JButton orderButton = getOrderButton(question);
         buttonPanel.add(orderButton);
 
         return buttonPanel;
+    }
+
+    private JButton getDeleteButton(Question question){
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setBackground(Color.LIGHT_GRAY);
+        deleteButton.setForeground(Color.BLACK);
+        deleteButton.addActionListener(_ -> {
+            int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Question ?", "Confirm", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                lesson.getQuiz().removeQuestion(question);
+                if (lesson.getQuiz().getQuestions().isEmpty()){
+                    lesson.setQuiz(null);
+                    lesson.setHasQuiz(false);
+                }
+                generatePanel();
+            }
+        });
+        return deleteButton;
+    }
+
+    private JButton getOrderButton(Question question){
+        JButton orderButton = new JButton("Change Order");
+        orderButton.setBackground(Color.LIGHT_GRAY);
+        orderButton.setForeground(Color.BLACK);
+        orderButton.addActionListener(_ -> orderChangePopup(question));
+        return orderButton;
     }
 
     private void orderChangePopup(Question question){

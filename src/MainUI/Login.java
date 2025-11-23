@@ -8,17 +8,13 @@ import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Login extends JPanel {
-    private JPasswordField passWord;
-    private JTextField userName;
-    private JButton loginButton;
-    private JButton signupButton;
-    private LoginDashboard ld;
+    private final JPasswordField passWord;
+    private final JTextField userName;
+    private final LoginDashboard ld;
     private final AuthenticateManager auth;
 
     public Login(LoginDashboard ld) {
@@ -78,7 +74,7 @@ public class Login extends JPanel {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(20, 5, 5, 5);
-        loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(120, 35));
         loginButton.setForeground(Color.black);
         loginButton.setBackground(Color.LIGHT_GRAY);
@@ -92,7 +88,7 @@ public class Login extends JPanel {
         JPanel signupPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         JLabel notMemberLabel = new JLabel("Not a Member?");
         notMemberLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        signupButton = new JButton("Signup");
+        JButton signupButton = new JButton("Signup");
         signupButton.setPreferredSize(new Dimension(100, 30));
         signupButton.setForeground(Color.black);
         signupButton.setBackground(Color.LIGHT_GRAY);
@@ -121,19 +117,9 @@ public class Login extends JPanel {
             }
         });
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleLogin();
-            }
-        });
+        loginButton.addActionListener(_ -> handleLogin());
 
-        signupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ld.changeContentPanel(new SignUp(ld));
-            }
-        });
+        signupButton.addActionListener(_ -> ld.changeContentPanel(new SignUp(ld)));
     }
 
     private void handleLogin() {
