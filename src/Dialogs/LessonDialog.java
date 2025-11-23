@@ -17,7 +17,7 @@ public class LessonDialog extends JDialog {
     private JButton addButton;
     private JButton cancelButton;
     private Lesson lesson = null;
-    private Chapter chapter;
+    private final Chapter chapter;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
 
     public LessonDialog(Frame parent, Chapter chapter) {
@@ -90,8 +90,8 @@ public class LessonDialog extends JDialog {
             }
         });
 
-        addButton.addActionListener(e -> createLesson());
-        cancelButton.addActionListener(e -> handleCancel());
+        addButton.addActionListener(_ -> createLesson());
+        cancelButton.addActionListener(_ -> handleCancel());
     }
 
     private void createLesson(){

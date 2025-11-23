@@ -1,19 +1,19 @@
 package MainUI;
 
-import DataManagment.CertificateGenerator;
-import java.awt.Desktop;
-import java.io.File;
-
 import CustomDataTypes.*;
 import CustomUIElements.CollapsablePanel;
 import CustomUIElements.LessonPanel;
+import DataManagment.CertificateGenerator;
 import DataManagment.CourseDatabaseManager;
 import DataManagment.GenerationID;
 import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -30,20 +30,34 @@ public class CourseView extends JPanel{
     private JPanel listPanel;
     private JTextPane descriptionTextPane;
     private JScrollPane resourcesScrollPane;
+    private JPanel mainPanel;
+    private JScrollPane mainScrollPane;
+    private JButton quizButton;
     private JPanel editPanel;
+
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+    private final JTextPane content = new JTextPane();
+    private boolean quizViewState;
+    private final StudentDashboard dashboard;
     private final GenerationID idGenerator;
     private final Student student;
     private final Course course;
 
-    public CourseView(Course course, Student student) {
+    public CourseView(Course course, Student student, StudentDashboard dashboard) {
+        this.dashboard = dashboard;
         this.student = student;
         this.course = course;
         this.idGenerator = new GenerationID();
+
         setLayout(new BorderLayout());
         add(cvPanel, BorderLayout.CENTER);
         listPanel.setMinimumSize(new Dimension(200, listPanel.getPreferredSize().height));
+        mainScrollPane.getVerticalScrollBar().setUnitIncrement(32);
+
+        content.setPreferredSize(new Dimension(350, content.getPreferredSize().height));
+        content.setBorder(new EmptyBorder(10, 10, 10, 10));
+        content.setEditable(false);
 
         setBackground(Color.LIGHT_GRAY);
         setForeground(Color.BLACK);
@@ -51,6 +65,7 @@ public class CourseView extends JPanel{
         Progress progress = student.getProgressTrackerByCourseID(course.getID());
 
         lessonTitle.setVisible(false);
+        lessonTitle.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JPanel coursesPanel = new JPanel();
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
@@ -66,10 +81,10 @@ public class CourseView extends JPanel{
                 LessonPanel lp = new LessonPanel(lesson){
                     @Override
                     public void leftClickHandler(MouseEvent e){
-                        CourseView.this.leftClickHandler(e, this, lesson, progress);
+                        CourseView.this.leftClickHandler(this, lesson, progress);
                     }
                 };
-                Tracker tracker = progress.getTrackerByID(lesson.getLessonID());
+                LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
                 if (tracker != null && tracker.isComplete()){
                     lp.setComplete();
                 }
@@ -79,9 +94,8 @@ public class CourseView extends JPanel{
             coursesPanel.add(cur);
         }
 
-        scrollPane = new JScrollPane(coursesPanel);
+        JScrollPane scrollPane = new JScrollPane(coursesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(32);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         listPanel.setLayout(new BorderLayout());
         listPanel.add(scrollPane, BorderLayout.CENTER);
@@ -90,17 +104,47 @@ public class CourseView extends JPanel{
         descriptionTextPane.setText(course.getDescription());
     }
 
-    public void leftClickHandler(MouseEvent e, LessonPanel Lp, Lesson lesson, Progress progress){
-        // Show lesson
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextPane content = new JTextPane();
+    public void leftClickHandler(LessonPanel Lp, Lesson lesson, Progress progress){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        quizButton.setVisible(false);
         content.setText(lesson.getContent());
-        content.setEditable(false);
+        panel.add(content, BorderLayout.CENTER);
         panel.add(content, BorderLayout.CENTER);
 
-        // Mark completed
+        if (lesson.hasQuiz()){
+            quizButton.setVisible(true);
+            for (ActionListener al : quizButton.getActionListeners()) {
+                quizButton.removeActionListener(al);
+            }
+
+            quizViewState = false;
+            quizButton.addActionListener(_ -> {
+                if (quizViewState){
+                    content.setText(lesson.getContent());
+                    panel.add(content, BorderLayout.CENTER);
+                    quizButton.setText("Take Quiz");
+                    quizViewState = false;
+                    changeContentPanel(panel);
+                }else {
+                    quizButton.setText("Back");
+                    quizViewState = true;
+                    changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
+                }
+            });
+        }else {
+            temporaryMethodName(Lp, lesson, progress);
+        }
+
+        lessonTitle.setVisible(true);
+        lessonTitle.setText(lesson.getTitle());
+        changeContentPanel(panel);
+    }
+
+    public void temporaryMethodName(LessonPanel Lp, Lesson lesson, Progress progress){
         Lp.setComplete();
-        Tracker tracker = progress.getTrackerByID(lesson.getLessonID());
+        LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
         if (tracker != null) {
             tracker.setComplete(true);
         }
@@ -135,11 +179,6 @@ public class CourseView extends JPanel{
                 JOptionPane.showMessageDialog(this, "Certificate saved. View from 'My Certificates'");
             }
         }
-
-        // bn-Update UI
-        lessonTitle.setVisible(true);
-        lessonTitle.setText(lesson.getTitle());
-        changeContentPanel(panel);
     }
 
     public void changeContentPanel(JPanel panel){

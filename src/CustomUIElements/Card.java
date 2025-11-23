@@ -20,11 +20,12 @@ public class Card extends JPanel{
         setLayout(new BorderLayout());
         add(cardPanel, BorderLayout.CENTER);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        setBackground(Color.GRAY);
 
         title.setText(flavour != null ? course.getTitle()+"  --  Completion: "+flavour: course.getTitle());
-        id.setText("CourseID #: " + course.getID());
+        id.setText("CourseID #" + course.getID());
+
         description.setText(course.getDescription());
+        description.setBackground(Color.lightGray);
         description.setEditable(false);
 
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 2, 5));

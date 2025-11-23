@@ -5,14 +5,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class CollapsablePanel extends JPanel{
+public class CollapsablePanel extends JPanel {
     private JPanel cPanel;
     private JPanel headerPanel;
     private JLabel titleLabel;
     private JLabel arrowLabel;
     private JPanel contentPanel;
     private String title;
-    private String id;
+    private final String id;
     private boolean expanded = true;
 
     public CollapsablePanel(String id, String title) {
@@ -23,7 +23,7 @@ public class CollapsablePanel extends JPanel{
         setForeground(Color.BLACK);
         setBackground(Color.GRAY);
 
-        headerPanel.setBackground(new Color(230, 230, 230));
+        headerPanel.setBackground(Color.lightGray);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         headerPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -39,7 +39,7 @@ public class CollapsablePanel extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    leftClickHandler(e);
+                    leftClickHandler();
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     rightClickHandler(e);
                 }
@@ -47,12 +47,12 @@ public class CollapsablePanel extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                headerPanel.setBackground(new Color(210, 210, 210));
+                headerPanel.setBackground(Color.GRAY);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                headerPanel.setBackground(new Color(230, 230, 230));
+                headerPanel.setBackground(Color.lightGray);
             }
         };
 
@@ -94,7 +94,7 @@ public class CollapsablePanel extends JPanel{
         contentPanel.add(comp);
     }
 
-    public void clearContent(){
+    public void clearContent() {
         contentPanel.removeAll();
         contentPanel.revalidate();
         contentPanel.repaint();
@@ -108,13 +108,18 @@ public class CollapsablePanel extends JPanel{
         return id;
     }
 
+    public boolean getExpanded() {
+        return expanded;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void leftClickHandler(MouseEvent e){
+    public void leftClickHandler() {
         toggleExpanded();
     }
 
-    public void rightClickHandler(MouseEvent e){}
+    public void rightClickHandler(MouseEvent e) {
+    }
 }

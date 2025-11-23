@@ -11,7 +11,7 @@ import java.awt.event.WindowEvent;
 public class LoginDashboard extends JFrame{
     private JPanel mainFramePanel;
     private JPanel contentPanel;
-    private UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
     public LoginDashboard(){
         changeContentPanel(new Login(LoginDashboard.this));

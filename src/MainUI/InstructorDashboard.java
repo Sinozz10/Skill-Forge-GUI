@@ -2,13 +2,16 @@ package MainUI;
 
 import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
+import CustomDataTypes.StatusCourse;
+import CustomDataTypes.Student;
 import CustomUIElements.Card;
 import CustomUIElements.CardScrollPane;
+import DataManagment.UserDatabaseManager;
+import Statistics.ChartStatistics;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -32,23 +35,13 @@ public class InstructorDashboard extends DashBoard{
         JButton viewCoursesButton = new JButton("My Courses");
         viewCoursesButton.setForeground(Color.BLACK);
         viewCoursesButton.setBackground(Color.LIGHT_GRAY);
-        viewCoursesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleViewCourses();
-            }
-        });
+        viewCoursesButton.addActionListener(_ -> handleViewCourses());
         navButtons.add(viewCoursesButton);
 
         JButton viewStudentsButton = new JButton("My Students");
         viewStudentsButton.setForeground(Color.BLACK);
         viewStudentsButton.setBackground(Color.LIGHT_GRAY);
-        viewStudentsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new ViewStudents(instructor));
-            }
-        });
+        viewStudentsButton.addActionListener(_ -> changeContentPanel(new ViewStudents(instructor)));
         navButtons.add(viewStudentsButton);
 
         JButton insightsButton = new JButton("Insights");
@@ -115,12 +108,7 @@ public class InstructorDashboard extends DashBoard{
         JButton addButton = new JButton("Add Course");
         addButton.setForeground(Color.BLACK);
         addButton.setBackground(Color.LIGHT_GRAY);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeContentPanel(new CourseAdd(instructor));
-            }
-        });
+        addButton.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
 
         CardScrollPane pane = new CardScrollPane( null, course -> instructor.getID().equals(course.getInstructorID())) {
             @Override
@@ -137,20 +125,17 @@ public class InstructorDashboard extends DashBoard{
                 //delete item
                 JMenuItem deleteItem = new JMenuItem("Delete");
                 deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                deleteItem.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
-                                "Are you sure you want to delete?",
-                                "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+                deleteItem.addActionListener(_ -> {
+                    int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
+                            "Are you sure you want to delete?",
+                            "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
-                        if (confirm == JOptionPane.YES_OPTION) {
-                            assert clickedCard != null;
-                            handleDelete(instructor, clickedCard.getCourse());
-                            loadCoursesFromDatabase();
-                        }
-
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        assert clickedCard != null;
+                        handleDelete(instructor, clickedCard.getCourse());
+                        loadCoursesFromDatabase();
                     }
+
                 });
                 popupMenu.add(deleteItem);
 
@@ -212,7 +197,10 @@ public class InstructorDashboard extends DashBoard{
         }
         userDB.saveToFile();
 
-        JOptionPane.showMessageDialog(InstructorDashboard.this, "Course deleted", "Success", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(InstructorDashboard.this,
+                "Course deleted",
+                "Success",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
@@ -226,6 +214,7 @@ public class InstructorDashboard extends DashBoard{
     }
 
     static void main() {
+        FlatDarculaLaf.setup();
         UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
         new InstructorDashboard((Instructor) userDB.getRecordByID("I0001"));
     }

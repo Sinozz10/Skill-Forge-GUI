@@ -1,12 +1,9 @@
 package MainUI;
 
 import CustomDataTypes.User;
-import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -19,7 +16,7 @@ public class SignUp extends JPanel {
     private JComboBox<String> role;
     private JButton backButton;
     private JButton signUpButton;
-    private LoginDashboard ld;
+    private final LoginDashboard ld;
 
     private final AuthenticateManager authManager;
 
@@ -32,18 +29,8 @@ public class SignUp extends JPanel {
         backButton.setForeground(Color.BLACK);
         backButton.setBackground(Color.LIGHT_GRAY);
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ld.changeContentPanel(new Login(ld));
-            }
-        });
-        signUpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleSignUp();
-            }
-        });
+        backButton.addActionListener(_ -> ld.changeContentPanel(new Login(ld)));
+        signUpButton.addActionListener(_ -> handleSignUp());
         userName.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

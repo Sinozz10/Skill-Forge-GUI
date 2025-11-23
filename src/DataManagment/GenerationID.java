@@ -47,7 +47,7 @@ public class GenerationID {
         return String.format("C%04d", highest + 1);
     }
 
-    // Get highest user ID for a role
+    // Get the highest user ID for a role
     private int getHighestUserID(String role) {
         int highest = 0;
         for (User user : userDatabase.getRecords()) {
@@ -67,7 +67,7 @@ public class GenerationID {
         return highest;
     }
 
-    // Get highest course ID
+    // Get the highest course ID
     private int getHighestCourseID() {
         int highest = 0;
         for (Course course : courseDatabase.getRecords()) {
@@ -117,7 +117,7 @@ public class GenerationID {
         return highest;
     }
 
-    // Get highest lesson ID
+    // Get the highest lesson ID
     private int getHighestLessonID() {
         int highest = 0;
         for (Course course : courseDatabase.getRecords()) {

@@ -11,13 +11,14 @@ public class LessonPanel extends JPanel{
     private JLabel titleLabel;
     private JPanel lPanel;
     private JCheckBox stateBox;
-    private Lesson lesson;
+    private final Lesson lesson;
 
     public LessonPanel(Lesson lesson) {
         this.lesson = lesson;
         setLayout(new BorderLayout());
         add(lPanel, BorderLayout.CENTER);
         setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        lPanel.setBackground(Color.lightGray);
 
         setBackground(Color.GRAY);
         setForeground(Color.BLACK);
@@ -37,12 +38,12 @@ public class LessonPanel extends JPanel{
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                lPanel.setBackground(new Color(210, 210, 210));
+                lPanel.setBackground(Color.gray);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                lPanel.setBackground(new Color(230, 230, 230));
+                lPanel.setBackground(Color.lightGray);
             }
         };
 

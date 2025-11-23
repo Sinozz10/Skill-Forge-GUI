@@ -1,19 +1,20 @@
 package CustomDataTypes;
 
-import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.*;
 
-public class Tracker {
+
+public class LessonTracker {
     @Expose
     private final String lessonID;
     @Expose
     private boolean state;
 
-    public Tracker(Lesson lesson) {
+    public LessonTracker(Lesson lesson) {
         this.lessonID = lesson.getLessonID();
         this.state = false;
     }
 
-    public Tracker(Lesson lesson, boolean state) {
+    public LessonTracker(Lesson lesson, boolean state) {
         this.lessonID = lesson.getLessonID();
         this.state = state;
     }

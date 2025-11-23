@@ -1,6 +1,6 @@
 package CustomDataTypes;
 
-import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,10 @@ public class Lesson {
     private List<String> resources = new ArrayList<>();
     @Expose
     private int order;
+    @Expose
+    private boolean hasQuiz = false;
+    @Expose
+    private Quiz quiz = null;
 
     public Lesson(String lessonID, String chapterID, String title, String content, int order) {
         this.chapterID = chapterID;
@@ -65,5 +69,21 @@ public class Lesson {
 
     public void setChapterID(String chapterID) {
         this.chapterID = chapterID;
+    }
+
+    public boolean hasQuiz() {
+        return hasQuiz;
+    }
+
+    public void setHasQuiz(boolean hasQuiz) {
+        this.hasQuiz = hasQuiz;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
     }
 }

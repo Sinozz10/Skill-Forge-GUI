@@ -6,8 +6,6 @@ import DataManagment.UserDatabaseManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -53,19 +51,9 @@ public abstract class DashBoard extends JFrame{
         contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         navBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleLogout();
-            }
-        });
+        logoutButton.addActionListener(_ -> handleLogout());
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleHomeButton();
-            }
-        });
+        homeButton.addActionListener(_ -> handleHomeButton());
     }
 
     public void changeContentPanel(JPanel panel){
