@@ -8,20 +8,27 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class SignUp extends JPanel {
-    private JPanel SignUp;
-    private JPasswordField ConfirmedPass;
-    private JTextField userName;
-    private JTextField Email;
-    private JPasswordField Password;
-    private JComboBox<String> role;
-    private JButton backButton;
-    private JButton signUpButton;
-    private final LoginDashboard ld;
+    protected JPanel SignUp;
+    protected JPasswordField ConfirmedPass;
+    protected JTextField userName;
+    protected JTextField Email;
+    protected JPasswordField Password;
+    protected JComboBox<String> role;
+    protected JButton backButton;
+    protected JButton signUpButton;
+    protected JLabel roleLabel;
 
-    private final AuthenticateManager authManager;
+    protected final LoginDashboard dashBoard;
+    protected final AuthenticateManager authManager;
 
-    public SignUp(LoginDashboard ld) {
-        this.ld = ld;
+    protected String username;
+    protected String email;
+    protected String password;
+    protected String confirmedPass;
+    protected String userRole;
+
+    public SignUp(LoginDashboard dashBoard) {
+        this.dashBoard = dashBoard;
         this.authManager = new AuthenticateManager();
         setLayout(new BorderLayout());
         add(SignUp,BorderLayout.CENTER);
@@ -29,7 +36,7 @@ public class SignUp extends JPanel {
         backButton.setForeground(Color.BLACK);
         backButton.setBackground(Color.LIGHT_GRAY);
 
-        backButton.addActionListener(_ -> ld.changeContentPanel(new Login(ld)));
+        backButton.addActionListener(_ -> dashBoard.changeContentPanel(new Login(dashBoard)));
         signUpButton.addActionListener(_ -> handleSignUp());
         userName.addKeyListener(new KeyAdapter() {
             @Override
@@ -59,7 +66,11 @@ public class SignUp extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    role.requestFocus();
+                    if (role.isVisible()) {
+                        role.requestFocus();
+                    }else {
+                        handleSignUp();
+                    }
                 }
             }
         });
@@ -79,12 +90,16 @@ public class SignUp extends JPanel {
         signUpButton.setForeground(Color.BLACK);
     }
 
+    protected void getInputs(){
+        username = userName.getText().trim();
+        email = Email.getText().trim();
+        password = new String(Password.getPassword());
+        confirmedPass = new String(ConfirmedPass.getPassword());
+        userRole = (String) role.getSelectedItem();
+    }
+
     private void handleSignUp() {
-        String username = userName.getText();
-        String email = Email.getText();
-        String password = new String(Password.getPassword());
-        String confirmedPass = new String(ConfirmedPass.getPassword());
-        String userRole = (String) role.getSelectedItem();
+        getInputs();
 
         if (!ValidationResult.isValidUsername(username)) {
             JOptionPane.showMessageDialog(this, ValidationResult.getUsernameError(), "Invalid Username", JOptionPane.ERROR_MESSAGE);
@@ -116,7 +131,7 @@ public class SignUp extends JPanel {
         try {
             User newUser = authManager.signup(username, email, password, userRole);
             JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + " You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            ld.changeContentPanel(new Login(ld));
+            dashBoard.changeContentPanel(new Login(dashBoard));
         } catch (IllegalArgumentException e){
             System.out.println("Status: FAILED - " + e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage(), "Signup Failed", JOptionPane.ERROR_MESSAGE);
