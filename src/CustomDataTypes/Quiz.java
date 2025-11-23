@@ -1,8 +1,11 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Quiz {
+    @Expose
     private ArrayList<Question> questions = new ArrayList<>();
 
     public Quiz() {

@@ -1,9 +1,15 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 public class Question {
+    @Expose
     protected String title;
+    @Expose
     protected String correctAnswer;
+    @Expose
     protected int order;
+    @Expose
     protected QuestionType type;
 
     public Question(String title, String answer, int order) {
