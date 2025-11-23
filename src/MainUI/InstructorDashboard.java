@@ -4,9 +4,9 @@ import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
-import CustomUIElements.Card;
+import CustomUIElements.BaseCard;
 import CustomUIElements.CardScrollPane;
-import CustomUIElements.FlavourTextFunction;
+import CustomUIElements.CourseCard;
 import DataManagment.UserDatabaseManager;
 import Statistics.ChartStatistics;
 import com.formdev.flatlaf.FlatDarculaLaf;
@@ -104,16 +104,13 @@ public class InstructorDashboard extends DashBoard{
         addButton.setForeground(Color.BLACK);
         addButton.setBackground(Color.LIGHT_GRAY);
         addButton.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
-        FlavourTextFunction f = course -> "Status: "+course.getStatus().toString();
-        CardScrollPane pane = new CardScrollPane( f, course -> instructor.getID().equals(course.getInstructorID())) {
+        CardScrollPane<Course> pane = new CardScrollPane<>(
+                courseDB.getRecords(),
+                CourseCard::new,
+                course -> "Status: "+course.getStatus().toString(),
+                course -> course.getInstructorID().equals(instructor.getID())) {
             @Override
-            public void rightClickHandler(MouseEvent e){
-                Component comp = e.getComponent();
-                while (!(comp instanceof Card) && comp != null){
-                    comp = comp.getParent();
-                }
-                final Card clickedCard = (Card) comp;
-
+            public void rightClickHandler(MouseEvent e, BaseCard<Course> card){
                 // pop up menu
                 final JPopupMenu popupMenu = new JPopupMenu();
 
@@ -126,9 +123,8 @@ public class InstructorDashboard extends DashBoard{
                             "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
                     if (confirm == JOptionPane.YES_OPTION) {
-                        assert clickedCard != null;
-                        handleDelete(instructor, clickedCard.getCourse());
-                        loadCoursesFromDatabase();
+                        assert card != null;
+                        handleDelete(instructor, card.getData());
                     }
 
                 });
@@ -138,15 +134,15 @@ public class InstructorDashboard extends DashBoard{
             }
 
             @Override
-            public void leftClickHandler(MouseEvent e){
-                Component comp = e.getComponent();
-                while (!(comp instanceof Card) && comp != null){
-                    comp = comp.getParent();
-                }
-                final Card clickedCard = (Card) comp;
+            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
+//                Component comp = e.getComponent();
+//                while (!(comp instanceof CourseCard) && comp != null){
+//                    comp = comp.getParent();
+//                }
+//                final CourseCard clickedCard = (CourseCard) comp;
                 if (e.getClickCount() == 2){
-                    assert clickedCard != null;
-                    Course selectedCourse = clickedCard.getCourse();
+                    assert card != null;
+                    Course selectedCourse = card.getData();
                     changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
                 }
             }

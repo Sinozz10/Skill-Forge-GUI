@@ -1,8 +1,12 @@
 package MainUI;
 
-import CustomDataTypes.*;
-import CustomUIElements.Card;
+import CustomDataTypes.Admin;
+import CustomDataTypes.Course;
+import CustomDataTypes.Instructor;
+import CustomDataTypes.StatusCourse;
+import CustomUIElements.BaseCard;
 import CustomUIElements.CardScrollPane;
+import CustomUIElements.CourseCard;
 import DataManagment.CourseDatabaseManager;
 import DataManagment.UserDatabaseManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
@@ -50,18 +54,16 @@ public class AdminDashboard extends DashBoard {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        CardScrollPane cardScrollPane = new CardScrollPane(null, course ->
-                course.getStatus() == StatusCourse.PENDING){
+        CardScrollPane<Course> cardScrollPane = new CardScrollPane<>(
+                courseDB.getRecords(),
+                CourseCard::new,
+                course -> "Status: "+course.getStatus(),
+                course -> course.getStatus() == StatusCourse.PENDING) {
             @Override
-            public void leftClickHandler(MouseEvent e){
-                Component comp = e.getComponent();
-                while (!(comp instanceof Card) && comp != null){
-                    comp = comp.getParent();
-                }
-                final Card clickedCard = (Card) comp;
+            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
                 if (e.getClickCount() == 2){
-                    assert clickedCard != null;
-                    Course selectedCourse = clickedCard.getCourse();
+                    assert card != null;
+                    Course selectedCourse = card.getData();
                     changeContentPanel(new AdminCourseView(selectedCourse, admin, AdminDashboard.this));
                 }
             }
