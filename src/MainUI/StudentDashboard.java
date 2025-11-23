@@ -5,13 +5,12 @@ import CustomDataTypes.Progress;
 import CustomDataTypes.Student;
 import CustomUIElements.Card;
 import CustomUIElements.CardScrollPane;
+import DataManagment.UserDatabaseManager;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-
-import DataManagment.*;
-import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class StudentDashboard extends DashBoard{
     private final Student student;
