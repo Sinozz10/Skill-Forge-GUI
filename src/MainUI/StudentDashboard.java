@@ -64,7 +64,7 @@ public class StudentDashboard extends DashBoard{
                 if (e.getClickCount() == 2){
                     assert clickedCard != null;
                     Course selectedCourse = clickedCard.getCourse();
-                    changeContentPanel(new CourseView(selectedCourse, student, StudentDashboard.this));
+                    changeContentPanel(new StudentCourseView(selectedCourse, student, StudentDashboard.this));
                 }
             }
         })
