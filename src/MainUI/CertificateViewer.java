@@ -7,9 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-/**
- * MINIMAL Certificate Viewer - just list and view
- */
 public class CertificateViewer extends JPanel {
     private Student student;
 
@@ -42,9 +39,6 @@ public class CertificateViewer extends JPanel {
         add(new JScrollPane(list), BorderLayout.CENTER);
     }
 
-    /**
-     * Make one certificate card
-     */
     private JPanel makeCard(Certificate cert) {
         JPanel card = new JPanel(new BorderLayout(10, 10));
         card.setBackground(Color.WHITE);
@@ -80,9 +74,6 @@ public class CertificateViewer extends JPanel {
         return card;
     }
 
-    /**
-     * Open certificate PDF
-     */
     private void viewCertificate(Certificate cert) {
         try {
             // Generate if doesn't exist
@@ -97,7 +88,7 @@ public class CertificateViewer extends JPanel {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }
-    
+
     private void downloadCertificate(Certificate cert) {
         try {
             // Generate if doesn't exist
