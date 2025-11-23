@@ -29,6 +29,9 @@ public class Student extends User {
     }
 
     public ArrayList<Certificate> getCertificates() {
+        if (certificates == null) {
+            return new ArrayList<>();
+        }
         return certificates;
     }
 

@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Progress {
+    @Expose
     private final String courseID;
+    @Expose
     private final String studentID;
+    @Expose
     private Date completionDate;
+    @Expose
     private final ArrayList<Tracker> trackers = new ArrayList<>();
 
     public Progress(Course course, String studentID) {

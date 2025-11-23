@@ -1,14 +1,22 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Certificate {
+    @Expose
     private String certificateID;
+    @Expose
     private String studentID;
+    @Expose
     private String courseID;
+    @Expose
     private String courseName;
+    @Expose
     private String studentName;
+    @Expose
     private Date issuedDate;
 
     public Certificate(String certificateID, String studentID, String courseID,
