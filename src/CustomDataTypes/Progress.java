@@ -1,12 +1,18 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Progress {
+    @Expose
     private final String courseID;
+    @Expose
     private final String studentID;
+    @Expose
     private Date completionDate;
+    @Expose
     private final ArrayList<LessonTracker> trackers = new ArrayList<>();
 
     public Progress(Course course, String studentID) {
@@ -36,6 +42,11 @@ public class Progress {
             return 0.0;
         }
         return (complete * 100.0) / trackers.size();
+    }
+
+    public boolean isCourseComplete() {
+        if (trackers.isEmpty()) return false;
+        return trackers.stream().allMatch(LessonTracker::isComplete);
     }
 
     public void completeLesson(String lessonID) {

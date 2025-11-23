@@ -1,14 +1,22 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class User implements Record {
     //Attributes
+    @Expose
     protected String username;
+    @Expose
     protected String role; //identifier
+    @Expose
     protected String userID;
+    @Expose
     protected String email;
+    @Expose
     protected String hashedPassword;
+    @Expose
     protected ArrayList<String> courseIDs = new ArrayList<>();
 
     //Constructor

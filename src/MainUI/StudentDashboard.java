@@ -2,16 +2,16 @@ package MainUI;
 
 import CustomDataTypes.Course;
 import CustomDataTypes.Progress;
+import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
 import CustomUIElements.Card;
 import CustomUIElements.CardScrollPane;
+import DataManagment.UserDatabaseManager;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-
-import DataManagment.*;
-import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class StudentDashboard extends DashBoard{
     private final Student student;
@@ -36,6 +36,14 @@ public class StudentDashboard extends DashBoard{
         JButton enrollButton = getEnrollButton(student);
         navButtons.add(enrollButton);
 
+        JButton certificatesButton = new JButton("My Certificates");
+        certificatesButton.setBackground(Color.LIGHT_GRAY);
+        certificatesButton.setForeground(Color.BLACK);
+        certificatesButton.addActionListener(e -> {
+            changeContentPanel(new CertificateViewer(student));
+        });
+        navButtons.add(certificatesButton);
+
         handleHomeButton();
     }
 
@@ -43,7 +51,9 @@ public class StudentDashboard extends DashBoard{
         JButton viewButton = new JButton("My Courses");
         viewButton.setBackground(Color.LIGHT_GRAY);
         viewButton.setForeground(Color.BLACK);
-        viewButton.addActionListener(e -> changeContentPanel(new CardScrollPane(student, course -> student.getCourseIDs().contains(course.getID())){
+        viewButton.addActionListener(e -> changeContentPanel(new CardScrollPane(student, course ->
+                student.getCourseIDs().contains(course.getID()) &&
+                        course.getStatus() == StatusCourse.APPROVED){
             @Override
             public void leftClickHandler(MouseEvent e){
                 Component comp = e.getComponent();
@@ -57,7 +67,8 @@ public class StudentDashboard extends DashBoard{
                     changeContentPanel(new CourseView(selectedCourse, student, StudentDashboard.this));
                 }
             }
-        }));
+        })
+        );
         return viewButton;
     }
 

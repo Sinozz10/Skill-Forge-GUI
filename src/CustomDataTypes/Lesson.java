@@ -1,14 +1,22 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Lesson {
+    @Expose
     private final String lessonID;
+    @Expose
     private String chapterID, title, content;
+    @Expose
     private List<String> resources = new ArrayList<>();
+    @Expose
     private int order;
+    @Expose
     private boolean hasQuiz = false;
+    @Expose
     private Quiz quiz = null;
 
     public Lesson(String lessonID, String chapterID, String title, String content, int order) {
