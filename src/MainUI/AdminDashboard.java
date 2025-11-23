@@ -1,16 +1,15 @@
 package MainUI;
 
-import CustomDataTypes.Admin;
-import CustomDataTypes.StatusCourse;
-import CustomDataTypes.Course;
-import CustomDataTypes.Instructor;
+import CustomDataTypes.*;
+import CustomUIElements.Card;
+import CustomUIElements.CardScrollPane;
 import DataManagment.CourseDatabaseManager;
 import DataManagment.UserDatabaseManager;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 public class AdminDashboard extends DashBoard {
     private final Admin admin;
@@ -28,19 +27,19 @@ public class AdminDashboard extends DashBoard {
         JButton pendingCoursesButton = new JButton("Pending Courses");
         pendingCoursesButton.setForeground(Color.BLACK);
         pendingCoursesButton.setBackground(Color.LIGHT_GRAY);
-        pendingCoursesButton.addActionListener(e -> handlePendingCourses());
+        pendingCoursesButton.addActionListener(_ -> handlePendingCourses());
         navButtons.add(pendingCoursesButton);
 
         JButton allCoursesButton = new JButton("All Courses");
         allCoursesButton.setForeground(Color.BLACK);
         allCoursesButton.setBackground(Color.LIGHT_GRAY);
-        allCoursesButton.addActionListener(e -> handleAllCourses());
+        allCoursesButton.addActionListener(_ -> handleAllCourses());
         navButtons.add(allCoursesButton);
 
         handleHomeButton();
     }
 
-    private void handlePendingCourses() {
+    public void handlePendingCourses() {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.GRAY);
 
@@ -51,32 +50,23 @@ public class AdminDashboard extends DashBoard {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel coursesPanel = new JPanel();
-        coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
-        coursesPanel.setBackground(Color.GRAY);
-        coursesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        boolean hasPending = false;
-        for (Course course : courseDB.getRecords()) {
-            if (course != null && course.getStatus() == StatusCourse.PENDING) {
-                hasPending = true;
-                JPanel courseCard = createPendingCourseCard(course);
-                coursesPanel.add(courseCard);
-                coursesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        CardScrollPane cardScrollPane = new CardScrollPane(null, course ->
+                course.getStatus() == StatusCourse.PENDING){
+            @Override
+            public void leftClickHandler(MouseEvent e){
+                Component comp = e.getComponent();
+                while (!(comp instanceof Card) && comp != null){
+                    comp = comp.getParent();
+                }
+                final Card clickedCard = (Card) comp;
+                if (e.getClickCount() == 2){
+                    assert clickedCard != null;
+                    Course selectedCourse = clickedCard.getCourse();
+                    changeContentPanel(new AdminCourseView(selectedCourse, admin, AdminDashboard.this));
+                }
             }
-        }
-
-        if (!hasPending) {
-            JLabel noCoursesLabel = new JLabel("No pending courses", SwingConstants.CENTER);
-            noCoursesLabel.setForeground(Color.BLACK);
-            noCoursesLabel.setBackground(Color.LIGHT_GRAY);
-            noCoursesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-            coursesPanel.add(noCoursesLabel);
-        }
-
-        JScrollPane scrollPane = new JScrollPane(coursesPanel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        };
+        mainPanel.add(cardScrollPane, BorderLayout.CENTER);
 
         changeContentPanel(mainPanel);
     }
@@ -133,129 +123,6 @@ public class AdminDashboard extends DashBoard {
         changeContentPanel(mainPanel);
     }
 
-    private JPanel createPendingCourseCard(Course course) {
-        JPanel card = new JPanel(new BorderLayout(10, 10));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 2),
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)
-        ));
-
-        // Info Panel
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(Color.WHITE);
-
-        JLabel titleLabel = new JLabel(course.getTitle());
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-
-        JLabel idLabel = new JLabel("ID: " + course.getID());
-        idLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        idLabel.setForeground(Color.DARK_GRAY);
-
-        // Safely get instructor
-        String instructorInfo = course.getInstructorID();
-        try {
-            Instructor instructor = (Instructor) userDB.getRecordByID(course.getInstructorID());
-            if (instructor != null) {
-                instructorInfo = instructor.getUsername() + " (" + instructor.getID() + ")";
-            }
-        } catch (Exception e) {
-            instructorInfo = course.getInstructorID() + " (Not Found)";
-        }
-
-        JLabel instructorLabel = new JLabel("Instructor: " + instructorInfo);
-        instructorLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        JTextArea descArea = new JTextArea(course.getDescription());
-        descArea.setLineWrap(true);
-        descArea.setWrapStyleWord(true);
-        descArea.setEditable(false);
-        descArea.setBackground(Color.WHITE);
-        descArea.setFont(new Font("Arial", Font.PLAIN, 11));
-        descArea.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-        descArea.setRows(3);
-
-        infoPanel.add(titleLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        infoPanel.add(idLabel);
-        infoPanel.add(instructorLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        infoPanel.add(new JScrollPane(descArea));
-
-        // Buttons Panel
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttonsPanel.setBackground(Color.WHITE);
-
-        JButton approveButton = new JButton("Approve");
-        approveButton.setBackground(new Color(76, 175, 80));
-        approveButton.setForeground(Color.WHITE);
-        approveButton.setFont(new Font("Arial", Font.BOLD, 12));
-        approveButton.setFocusPainted(false);
-        approveButton.addActionListener(e -> handleApprove(course));
-
-        JButton rejectButton = new JButton("Reject");
-        rejectButton.setBackground(new Color(244, 67, 54));
-        rejectButton.setForeground(Color.WHITE);
-        rejectButton.setFont(new Font("Arial", Font.BOLD, 12));
-        rejectButton.setFocusPainted(false);
-        rejectButton.addActionListener(e -> handleReject(course));
-
-        buttonsPanel.add(approveButton);
-        buttonsPanel.add(rejectButton);
-
-        card.add(infoPanel, BorderLayout.CENTER);
-        card.add(buttonsPanel, BorderLayout.SOUTH);
-
-        return card;
-    }
-
-    private void handleApprove(Course course) {
-        int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Approve course: " + course.getTitle() + "?",
-                "Confirm Approval",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            course.setStatus(StatusCourse.APPROVED);
-            courseDB.updateRecord(course);
-            courseDB.saveToFile();
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Course approved successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            handlePendingCourses(); // Refresh view
-        }
-    }
-
-    private void handleReject(Course course) {
-        int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Reject course: " + course.getTitle() + "?",
-                "Confirm Rejection",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            course.setStatus(StatusCourse.REJECTED);
-            courseDB.updateRecord(course);
-            courseDB.saveToFile();
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Course rejected!",
-                    "Rejected",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            handlePendingCourses(); // Refresh view
-        }
-    }
-
     @Override
     void handleHomeButton() {
         JPanel homePanel = new JPanel(new GridBagLayout());
@@ -307,5 +174,11 @@ public class AdminDashboard extends DashBoard {
                 pendingCount, approvedCount, rejectedCount,
                 userDB.getRecords().size()
         );
+    }
+
+    static void main() {
+        FlatDarculaLaf.setup();
+        UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+        new AdminDashboard((Admin) userDB.getRecordByID("A0001"));
     }
 }

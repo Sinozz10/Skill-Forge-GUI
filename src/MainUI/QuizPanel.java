@@ -15,12 +15,12 @@ import java.util.Optional;
 
 public class QuizPanel extends JPanel {
     private final Lesson lesson;
-    private final StudentDashboard dashboard;
+    private final DashBoard dashboard;
     private final LessonPanel Lp;
     private final ArrayList<QuestionTracker> trackers = new ArrayList<>();
     private final Progress progress;
 
-    public QuizPanel(StudentDashboard dashboard, Lesson lesson, LessonPanel Lp, Progress progress) {
+    public QuizPanel(DashBoard dashboard, Lesson lesson, LessonPanel Lp, Progress progress) {
         this.lesson = lesson;
         this.dashboard = dashboard;
         this.Lp = Lp;
@@ -222,7 +222,9 @@ public class QuizPanel extends JPanel {
             double total = (complete * 100.0) / lesson.getQuiz().getQuestions().size();
             if (total >= 70.0){
                 Lp.setComplete();
-                progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+                if (progress != null){
+                    progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+                }
                 JOptionPane.showMessageDialog(
                         dashboard,
                         "You Passed!",
