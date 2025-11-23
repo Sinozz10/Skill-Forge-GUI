@@ -32,16 +32,16 @@ public class CertificateCard extends GenericCard<Certificate> {
 
         viewButton.setBackground(new Color(39, 85, 117));
         viewButton.setForeground(Color.WHITE);
-        viewButton.addActionListener(e -> viewCertificate(certificate));
+        viewButton.addActionListener(_ -> viewCertificate(certificate));
 
         downloadButton.setBackground(new Color(76, 175, 80));
         downloadButton.setForeground(Color.WHITE);
-        downloadButton.addActionListener(e -> downloadCertificate(certificate));
+        downloadButton.addActionListener(_ -> downloadCertificate(certificate));
     }
 
     private void viewCertificate(Certificate cert) {
         try {
-            // Generate if doesn't exist
+            // Generate if certificate doesn't exist
             if (!CertificateGenerator.exists(cert.getCertificateID())) {
                 new CertificateGenerator().generateCertificate(cert);
             }
@@ -56,7 +56,7 @@ public class CertificateCard extends GenericCard<Certificate> {
 
     private void downloadCertificate(Certificate cert) {
         try {
-            // Generate if doesn't exist
+            // Generate if certificate doesn't exist
             if (!CertificateGenerator.exists(cert.getCertificateID())) {
                 new CertificateGenerator().generateCertificate(cert);
             }

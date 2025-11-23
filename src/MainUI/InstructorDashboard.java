@@ -43,7 +43,7 @@ public class InstructorDashboard extends DashBoard{
         JButton insightsButton = new JButton("Insights");
         insightsButton.setForeground(Color.BLACK);
         insightsButton.setBackground(Color.LIGHT_GRAY);
-        insightsButton.addActionListener(e -> handleInsights());
+        insightsButton.addActionListener(_ -> handleInsights());
         navButtons.add(insightsButton);
 
         handleHomeButton();
@@ -72,7 +72,7 @@ public class InstructorDashboard extends DashBoard{
         quizzesBtn.setForeground(Color.BLACK);
         quizzesBtn.setBackground(Color.LIGHT_GRAY);
 
-        studentChartBtn.addActionListener(e -> {
+        studentChartBtn.addActionListener(_ -> {
             String sel = (String) courseSelector.getSelectedItem();
             if (sel != null) {
                 String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
@@ -86,7 +86,7 @@ public class InstructorDashboard extends DashBoard{
             }
         });
 
-        lessonChartBtn.addActionListener(e -> {
+        lessonChartBtn.addActionListener(_ -> {
             String sel = (String) courseSelector.getSelectedItem();
             if (sel != null) {
                 String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
@@ -100,7 +100,7 @@ public class InstructorDashboard extends DashBoard{
             }
         });
 
-        quizzesBtn.addActionListener(e -> {
+        quizzesBtn.addActionListener(_ -> {
             String sel = (String) courseSelector.getSelectedItem();
             if (sel != null) {
                 String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
@@ -122,7 +122,6 @@ public class InstructorDashboard extends DashBoard{
         panel.add(quizzesBtn);
         changeContentPanel(panel);
     }
-
 
     public void handleViewCourses(){
         JButton addButton = new JButton("Add Course");

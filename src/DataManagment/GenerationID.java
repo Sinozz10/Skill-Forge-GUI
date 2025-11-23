@@ -148,8 +148,7 @@ public class GenerationID {
     private int getHighestCertificateID() {
         int highest = 0;
         for (User user : userDatabase.getRecords()) {
-            if (user instanceof Student) {
-                Student student = (Student) user;
+            if (user instanceof Student student) {
                 if (student.getCertificates() != null) {
                     for (Certificate cert : student.getCertificates()) {
                         String certId = cert.getCertificateID();
