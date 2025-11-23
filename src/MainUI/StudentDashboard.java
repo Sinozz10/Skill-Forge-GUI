@@ -4,9 +4,9 @@ import CustomDataTypes.Course;
 import CustomDataTypes.Progress;
 import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
-import CustomUIElements.Card;
+import CustomUIElements.BaseCard;
 import CustomUIElements.CardScrollPane;
-import CustomUIElements.FlavourTextFunction;
+import CustomUIElements.CourseCard;
 import DataManagment.UserDatabaseManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
@@ -42,25 +42,25 @@ public class StudentDashboard extends DashBoard{
         JButton viewButton = new JButton("My Courses");
         viewButton.setBackground(Color.LIGHT_GRAY);
         viewButton.setForeground(Color.BLACK);
-        FlavourTextFunction f = course -> "Completion: "+this.student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString();
-        viewButton.addActionListener(_ -> changeContentPanel(new CardScrollPane(f, course ->
-                student.getCourseIDs().contains(course.getID()) &&
-                        course.getStatus() == StatusCourse.APPROVED){
+
+        CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
+                courseDB.getRecords(),
+                CourseCard::new,
+                course -> "Completion: "+student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString(),
+                course -> student.getCourseIDs().contains(course.getID())
+                        && course.getStatus() == StatusCourse.APPROVED
+                ){
             @Override
-            public void leftClickHandler(MouseEvent e){
-                Component comp = e.getComponent();
-                while (!(comp instanceof Card) && comp != null){
-                    comp = comp.getParent();
-                }
-                final Card clickedCard = (Card) comp;
+            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
                 if (e.getClickCount() == 2){
-                    assert clickedCard != null;
-                    Course selectedCourse = clickedCard.getCourse();
+                    assert card != null;
+                    Course selectedCourse = card.getData();
                     changeContentPanel(new StudentCourseView(selectedCourse, student, StudentDashboard.this));
                 }
             }
-        })
-        );
+        };
+
+        viewButton.addActionListener(_ -> changeContentPanel(courseScrollPane));
         return viewButton;
     }
 
@@ -68,23 +68,24 @@ public class StudentDashboard extends DashBoard{
         JButton enrollButton = new JButton("Enroll");
         enrollButton.setBackground(Color.LIGHT_GRAY);
         enrollButton.setForeground(Color.BLACK);
-        FlavourTextFunction f = course -> "Completion: "+this.student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString();
-        enrollButton.addActionListener(_ -> changeContentPanel(new CardScrollPane(f, course->!student.getCourseIDs().contains(course.getID())){
+
+        CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
+                courseDB.getRecords(),
+                CourseCard::new,
+                null,
+                course -> student.getCourseIDs().contains(course.getID())
+                        && course.getStatus() == StatusCourse.APPROVED
+        ){
             @Override
-            public void leftClickHandler(MouseEvent e){
-                Component comp = e.getComponent();
-                while (!(comp instanceof Card) && comp != null){
-                    comp = comp.getParent();
-                }
-                final Card clickedCard = (Card) comp;
+            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
                 if (e.getClickCount() == 2){
                     int confirm = JOptionPane.showConfirmDialog(StudentDashboard.this,
                             "Are you sure you want to enroll?",
                             "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
                     if (confirm == JOptionPane.YES_OPTION) {
-                        assert clickedCard != null;
-                        Course selected = clickedCard.getCourse();
+                        assert card != null;
+                        Course selected = card.getData();
                         student.addCourse(selected);
                         selected.enrollStudent(student);
 
@@ -94,13 +95,13 @@ public class StudentDashboard extends DashBoard{
 
                         userDB.updateRecord(student);
                         userDB.saveToFile();
-
-                        loadCoursesFromDatabase();
                         JOptionPane.showMessageDialog(StudentDashboard.this, "Enrolled Successfully!");
                     }
                 }
             }
-        }));
+        };
+
+        enrollButton.addActionListener(_ -> changeContentPanel(courseScrollPane));
         return enrollButton;
     }
 
