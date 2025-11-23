@@ -1,10 +1,8 @@
 package MainUI;
 
-import CustomDataTypes.Course;
-import CustomDataTypes.Progress;
-import CustomDataTypes.StatusCourse;
-import CustomDataTypes.Student;
-import CustomUIElements.BaseCard;
+import CustomDataTypes.*;
+import CustomUIElements.CertificateCard;
+import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
 import DataManagment.UserDatabaseManager;
@@ -46,12 +44,13 @@ public class StudentDashboard extends DashBoard{
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new,
+                "No Courses Found!",
                 course -> "Completion: "+student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString(),
                 course -> student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
                 ){
             @Override
-            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
                 if (e.getClickCount() == 2){
                     assert card != null;
                     Course selectedCourse = card.getData();
@@ -72,12 +71,13 @@ public class StudentDashboard extends DashBoard{
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new,
+                "No Courses Found!",
                 null,
                 course -> student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
         ){
             @Override
-            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
                 if (e.getClickCount() == 2){
                     int confirm = JOptionPane.showConfirmDialog(StudentDashboard.this,
                             "Are you sure you want to enroll?",
@@ -109,7 +109,16 @@ public class StudentDashboard extends DashBoard{
         JButton certificatesButton = new JButton("My Certificates");
         certificatesButton.setBackground(Color.LIGHT_GRAY);
         certificatesButton.setForeground(Color.BLACK);
-        certificatesButton.addActionListener(_ -> changeContentPanel(new CertificateViewer(student)));
+
+        CardScrollPane<Certificate> certificateScrollPane = new CardScrollPane<>(
+                student.getCertificates(),
+                CertificateCard::new,
+                "No Certificates Found!",
+                null,
+                null
+        );
+
+        certificatesButton.addActionListener(_ -> changeContentPanel(certificateScrollPane));
         return certificatesButton;
     }
 

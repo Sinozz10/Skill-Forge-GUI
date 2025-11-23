@@ -22,10 +22,14 @@ public class CardScrollPane<T> extends JPanel {
     private final Function<T, String> flavourFunction;
     private final CardFactory<T> cardFactory;
     private final ArrayList<T> dataSource;
-    public CardScrollPane(ArrayList<T> dataSource, CardFactory<T> cardFactory,
+
+    private final String noResultMessage;
+
+    public CardScrollPane(ArrayList<T> dataSource, CardFactory<T> cardFactory, String noResultMessage,
                       Function<T, String> flavourFunction, Predicate<T> filterFunction) {
         this.dataSource = dataSource;
         this.cardFactory = cardFactory;
+        this.noResultMessage = noResultMessage == null? "No items found": noResultMessage;
         this.filterFunction = filterFunction;
         this.flavourFunction = flavourFunction;
         this.availableItems = new ArrayList<>();
@@ -82,7 +86,7 @@ public class CardScrollPane<T> extends JPanel {
                     flavour = flavourFunction.apply(item);
                 }
 
-                BaseCard<T> card = createCard(item, flavour);
+                GenericCard<T> card = createCard(item, flavour);
                 cardPanel.add(card);
                 cardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }
@@ -92,7 +96,7 @@ public class CardScrollPane<T> extends JPanel {
             wrapper.setBackground(Color.gray);
             wrapper.setBorder(new EmptyBorder(10, 10,10,10));
             wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
-            JLabel noResults = new JLabel("No items found");
+            JLabel noResults = new JLabel(noResultMessage);
             noResults.setFont(new Font(null, Font.PLAIN, 20));
             wrapper.add(noResults);
             cardPanel.add(wrapper);
@@ -101,8 +105,8 @@ public class CardScrollPane<T> extends JPanel {
         }
     }
 
-    private BaseCard<T> createCard(T item, String flavour) {
-        BaseCard<T> card = cardFactory.createCard(item, flavour);
+    private GenericCard<T> createCard(T item, String flavour) {
+        GenericCard<T> card = cardFactory.createCard(item, flavour);
 
         card.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -129,7 +133,7 @@ public class CardScrollPane<T> extends JPanel {
         } else {
             ArrayList<T> searched = new ArrayList<>();
             for (T item : availableItems) {
-                BaseCard<T> tempCard = cardFactory.createCard(item, null);
+                GenericCard<T> tempCard = cardFactory.createCard(item, null);
                 if (tempCard.getSearchableText().toLowerCase().contains(key)) {
                     searched.add(item);
                 }
@@ -139,11 +143,11 @@ public class CardScrollPane<T> extends JPanel {
         displayLoadedItems();
     }
 
-    public void rightClickHandler(MouseEvent e, BaseCard<T> card) {
+    public void rightClickHandler(MouseEvent e, GenericCard<T> card) {
 
     }
 
-    public void leftClickHandler(MouseEvent e, BaseCard<T> card) {
+    public void leftClickHandler(MouseEvent e, GenericCard<T> card) {
 
     }
 }

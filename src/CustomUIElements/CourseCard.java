@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class CourseCard extends BaseCard<Course>{
+public class CourseCard extends GenericCard<Course> {
     private JPanel cardPanel;
     private JLabel id;
     private JLabel title;

@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public abstract class BaseCard<T> extends JPanel {
+public abstract class GenericCard<T> extends JPanel {
     protected final T data;
 
-    public BaseCard(T data) {
+    public GenericCard(T data) {
         this.data = data;
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }

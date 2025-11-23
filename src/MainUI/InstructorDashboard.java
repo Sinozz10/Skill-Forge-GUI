@@ -4,7 +4,7 @@ import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
-import CustomUIElements.BaseCard;
+import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
 import DataManagment.UserDatabaseManager;
@@ -107,10 +107,11 @@ public class InstructorDashboard extends DashBoard{
         CardScrollPane<Course> pane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new,
+                "No Courses Found!",
                 course -> "Status: "+course.getStatus().toString(),
                 course -> course.getInstructorID().equals(instructor.getID())) {
             @Override
-            public void rightClickHandler(MouseEvent e, BaseCard<Course> card){
+            public void rightClickHandler(MouseEvent e, GenericCard<Course> card){
                 // pop up menu
                 final JPopupMenu popupMenu = new JPopupMenu();
 
@@ -134,12 +135,7 @@ public class InstructorDashboard extends DashBoard{
             }
 
             @Override
-            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
-//                Component comp = e.getComponent();
-//                while (!(comp instanceof CourseCard) && comp != null){
-//                    comp = comp.getParent();
-//                }
-//                final CourseCard clickedCard = (CourseCard) comp;
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
                 if (e.getClickCount() == 2){
                     assert card != null;
                     Course selectedCourse = card.getData();

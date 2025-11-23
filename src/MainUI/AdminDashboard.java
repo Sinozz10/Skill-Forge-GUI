@@ -4,7 +4,7 @@ import CustomDataTypes.Admin;
 import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.StatusCourse;
-import CustomUIElements.BaseCard;
+import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
 import DataManagment.CourseDatabaseManager;
@@ -57,10 +57,11 @@ public class AdminDashboard extends DashBoard {
         CardScrollPane<Course> cardScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new,
+                "No Courses Found!",
                 course -> "Status: "+course.getStatus(),
                 course -> course.getStatus() == StatusCourse.PENDING) {
             @Override
-            public void leftClickHandler(MouseEvent e, BaseCard<Course> card){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
                 if (e.getClickCount() == 2){
                     assert card != null;
                     Course selectedCourse = card.getData();
@@ -69,7 +70,6 @@ public class AdminDashboard extends DashBoard {
             }
         };
         mainPanel.add(cardScrollPane, BorderLayout.CENTER);
-
         changeContentPanel(mainPanel);
     }
 
