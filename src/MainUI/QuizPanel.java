@@ -51,7 +51,7 @@ public class QuizPanel extends JPanel {
         JPanel wrapper = new JPanel();
         wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
 
-        if (progress == null){
+        if (progress != null){
             JButton attemptsButton = new JButton("Previous Attempts");
             attemptsButton.addActionListener(_ -> handleAttempts());
             wrapper.add(attemptsButton);

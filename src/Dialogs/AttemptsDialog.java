@@ -19,6 +19,8 @@ public class AttemptsDialog extends JDialog {
 
         pack();
         setLocationRelativeTo(this);
+        setSize(new Dimension(200, 250));
+        setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
@@ -33,18 +35,28 @@ public class AttemptsDialog extends JDialog {
         ArrayList<Attempt> sorted = new ArrayList<>(tracker.getAttempts());
         sorted.sort(Comparator.comparingInt(Attempt::getAttemptNum));
         System.out.println(sorted);
-        for (Attempt attempt: sorted){
+
+        wrapper.add(Box.createRigidArea(new Dimension(0, 15)));
+        if (sorted.isEmpty()){
             JPanel row = new JPanel();
             row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-            row.add(new JLabel(String.valueOf(attempt.getAttemptNum())));
-            row.add(Box.createRigidArea(new Dimension(10, 0)));
-            row.add(new JLabel(String.valueOf(attempt.getScore())));
-
+            row.add(new JLabel("No Previous Attempts"));
             wrapper.add(row);
-            wrapper.add(Box.createRigidArea(new Dimension(0, 10)));
+        }else {
+            for (Attempt attempt: sorted){
+                JPanel row = new JPanel();
+                row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+                row.add(new JLabel("Attempt num "+attempt.getAttemptNum()+":"));
+                row.add(Box.createRigidArea(new Dimension(15, 0)));
+                row.add(new JLabel(String.valueOf(attempt.getScore())));
+
+                wrapper.add(row);
+                wrapper.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
         }
 
-        scrollPane.add(wrapper);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(25);
+        scrollPane.setViewportView(wrapper);
         add(scrollPane, BorderLayout.CENTER);
     }
 }
