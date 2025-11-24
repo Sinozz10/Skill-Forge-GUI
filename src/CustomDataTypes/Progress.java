@@ -41,7 +41,7 @@ public class Progress {
         if (trackers.isEmpty()){
             return 0.0;
         }
-        return (complete * 100.0) / trackers.size();
+        return rounder( (complete * 100.0)/trackers.size() );
     }
 
     public boolean isCourseComplete() {
@@ -109,5 +109,13 @@ public class Progress {
 
     public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
+    }
+
+    private static double rounder(double mark){
+        int decimalPlaces = 2;
+        // Round to 2 decimal places
+        double roundedNumber = Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
+
+        return roundedNumber;
     }
 }
