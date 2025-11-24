@@ -53,44 +53,30 @@ public class AdminCourseView extends CourseView{
         int confirm = JOptionPane.showConfirmDialog(
                 dashboard,
                 "Approve course: " + course.getTitle() + "?",
-                "Confirm Approval",
-                JOptionPane.YES_NO_OPTION
-        );
+                "Confirm Approval", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             course.setStatus(StatusCourse.APPROVED);
             courseDB.updateRecord(course);
             courseDB.saveToFile();
 
-            JOptionPane.showMessageDialog(
-                    dashboard,
-                    "Course approved successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            JOptionPane.showMessageDialog(dashboard, "Course approved successfully!",
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
             dashboard.handlePendingCourses();
         }
     }
 
     private void handleReject() {
-        int confirm = JOptionPane.showConfirmDialog(
-                dashboard,
-                "Reject course: " + course.getTitle() + "?",
-                "Confirm Rejection",
-                JOptionPane.YES_NO_OPTION
-        );
+        int confirm = JOptionPane.showConfirmDialog(dashboard, "Reject course: " + course.getTitle() + "?",
+                "Confirm Rejection", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             course.setStatus(StatusCourse.REJECTED);
             courseDB.updateRecord(course);
             courseDB.saveToFile();
 
-            JOptionPane.showMessageDialog(
-                    dashboard,
-                    "Course rejected!",
-                    "Rejected",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            JOptionPane.showMessageDialog(dashboard, "Course rejected!",
+                    "Rejected", JOptionPane.INFORMATION_MESSAGE);
             dashboard.handlePendingCourses();
         }
     }
@@ -120,7 +106,6 @@ public class AdminCourseView extends CourseView{
             for (ActionListener al : quizButton.getActionListeners()) {
                 quizButton.removeActionListener(al);
             }
-
             quizViewState = false;
             quizButton.addActionListener(_ -> {
                 if (quizViewState){
@@ -138,7 +123,6 @@ public class AdminCourseView extends CourseView{
         }else {
             Lp.setComplete();
         }
-
         lessonTitle.setVisible(true);
         lessonTitle.setText(lesson.getTitle());
         changeContentPanel(panel);
