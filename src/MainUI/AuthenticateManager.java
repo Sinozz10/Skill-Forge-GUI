@@ -16,12 +16,9 @@ public class AuthenticateManager {
     }
 
     public User signup(String username, String email, String password, String role) {
-        // Check if fields are empty
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("All fields are required!");
         }
-
-        // Check if email already exists
         if (database.getRecordByEmail(email) != null) {
             throw new IllegalArgumentException("Email already registered!");
         }
@@ -38,7 +35,7 @@ public class AuthenticateManager {
         } else  if (role.equalsIgnoreCase("instructor")) {
             newUser = new Instructor(userId, role, username, email, hashedPassword);
         }else {
-            newUser = new Admin(userId, role, username, email, hashedPassword);
+            newUser = new Admin(userId, role, username, email, hashedPassword); //Zawedt User Admin
         }
 
         database.addRecord(newUser);
@@ -47,15 +44,12 @@ public class AuthenticateManager {
     }
 
     public User login(String username, String password) {
-        // Check if fields are empty
         if (username.isEmpty() || password.isEmpty()) {
             return null;
         }
-
-        // Get user from database
         User user = database.getRecordByUsername(username);
         if (user == null) {
-            return null; // CustomDataTypes.User not found
+            return null;
         }
 
         // Check if password matches
@@ -64,6 +58,4 @@ public class AuthenticateManager {
         }
         return null; // Wrong password
     }
-
-
 }
