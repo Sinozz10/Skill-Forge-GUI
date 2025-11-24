@@ -103,7 +103,9 @@ public class AdminCourseView extends CourseView {
         panel.add(content, BorderLayout.CENTER);
         panel.add(content, BorderLayout.CENTER);
 
+        quizButton.setVisible(false);
         if (lesson.hasQuiz()) {
+            quizButton.setVisible(true);
             for (ActionListener al : quizButton.getActionListeners()) {
                 quizButton.removeActionListener(al);
             }

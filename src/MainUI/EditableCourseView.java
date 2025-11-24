@@ -73,6 +73,7 @@ public class EditableCourseView extends JPanel {
         saveExitButton.addActionListener(_ -> {
             course.setDescription(descriptionTextPane.getText());
             course.setTitle(courseTitle.getText());
+            course.setStatus(StatusCourse.PENDING);
             courseDB.saveToFile();
             dashboard.handleViewCourses();
         });
