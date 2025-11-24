@@ -10,32 +10,30 @@ import java.io.FileOutputStream;
 public class CertificateGenerator {
     private static final String FOLDER = "files/certificates/";
 
-    //
+    //Constructor
     public CertificateGenerator() {
+        //Btdwar 3la file w t-create it.(by3ml directory mn el akher).
         new File(FOLDER).mkdirs();
     }
 
     public String generateCertificate(Certificate certificate) throws DocumentException, FileNotFoundException {
         String filename = FOLDER + certificate.getCertificateID() + ".pdf";
 
-        // Create PDF
+        // Creates PDF
         Document doc = new Document(PageSize.A4.rotate());
         PdfWriter.getInstance(doc, new FileOutputStream(filename));
         doc.open();
 
-        // Blue color
         BaseColor blue = new BaseColor(39, 85, 117);
-
-        // Add all content with spacing
-        doc.add(new Paragraph("\n\n\n\n"));
+        doc.add(new Paragraph("\n\n\n")); //Spaces
 
         // Title
-        Font titleFont = new Font(Font.FontFamily.HELVETICA, 40, Font.BOLD, blue);
-        Paragraph title = new Paragraph("CERTIFICATE OF COMPLETION", titleFont);
+        Font titleBig = new Font(Font.FontFamily.HELVETICA, 40, Font.BOLD, blue);
+        Paragraph title = new Paragraph("CERTIFICATE OF COMPLETION", titleBig);
         title.setAlignment(Element.ALIGN_CENTER);
         doc.add(title);
 
-        doc.add(new Paragraph("\n\n"));
+        doc.add(new Paragraph("\n"));
 
         Font normalFont = new Font(Font.FontFamily.HELVETICA, 16);
         Paragraph certifies = new Paragraph("This is to certify that", normalFont);
@@ -44,7 +42,7 @@ public class CertificateGenerator {
 
         doc.add(new Paragraph("\n"));
 
-        // Student name - big and bold
+        // Student name
         Font nameFont = new Font(Font.FontFamily.HELVETICA, 32, Font.BOLD, blue);
         Paragraph name = new Paragraph(certificate.getStudentName(), nameFont);
         name.setAlignment(Element.ALIGN_CENTER);
@@ -52,26 +50,25 @@ public class CertificateGenerator {
 
         doc.add(new Paragraph("\n"));
 
-        // "has completed"
         Paragraph completed = new Paragraph("has successfully completed the course", normalFont);
         completed.setAlignment(Element.ALIGN_CENTER);
         doc.add(completed);
 
         doc.add(new Paragraph("\n"));
 
-        // Course name - medium bold
+        // Course name
         Font courseFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, blue);
         Paragraph course = new Paragraph(certificate.getCourseName(), courseFont);
         course.setAlignment(Element.ALIGN_CENTER);
         doc.add(course);
 
-        doc.add(new Paragraph("\n\n"));
+        doc.add(new Paragraph("\n"));
 
         // Certificate ID and Date
         Font smallFont = new Font(Font.FontFamily.HELVETICA, 11);
         Paragraph details = new Paragraph(
-                "Certificate ID: " + certificate.getCertificateID() +
-                        "     Date: " + certificate.getFormattedDate(),
+                " Certificate ID: " + certificate.getCertificateID() +
+                        "  Date: " + certificate.getFormattedDate(),
                 smallFont
         );
         details.setAlignment(Element.ALIGN_CENTER);
@@ -80,7 +77,7 @@ public class CertificateGenerator {
         doc.add(new Paragraph("\n\n"));
 
         // Signature
-        Paragraph sig = new Paragraph("_____________________\nAuthorized Signature\nSkill Forge System", normalFont);
+        Paragraph sig = new Paragraph("\nSignature\nSkill Forge System", normalFont);
         sig.setAlignment(Element.ALIGN_CENTER);
         doc.add(sig);
 

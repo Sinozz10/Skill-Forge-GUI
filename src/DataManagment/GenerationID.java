@@ -25,14 +25,14 @@ public class GenerationID {
         this.userDatabase = userDatabase;
     }
 
-    // Generate User ID (Student or Instructor)(Added admin hena) //Rest of code zy ma hwa
+    // Generate UserID (Student or Instructor)(Added admin hena) //Rest of code zy ma hwa
     public String generateUserID(String role) {
         String prefix;
         if (role.equalsIgnoreCase("student")) {
             prefix = "S";
         } else if (role.equalsIgnoreCase("instructor")) {
             prefix = "I";
-        } else if (role.equalsIgnoreCase("admin")) {
+        } else if (role.equalsIgnoreCase("admin")) { // <-
             prefix = "A";
         } else {
             throw new IllegalArgumentException("Invalid role: " + role);
@@ -41,13 +41,13 @@ public class GenerationID {
         return String.format("%s%04d", prefix, highest + 1);
     }
 
-    // Generate Course ID
+    // CourseID
     public String generateCourseID() {
         int highest = getHighestCourseID();
         return String.format("C%04d", highest + 1);
     }
 
-    // Get the highest user ID for a role
+    // Get the highest userID for role
     private int getHighestUserID(String role) {
         int highest = 0;
         for (User user : userDatabase.getRecords()) {
@@ -67,7 +67,7 @@ public class GenerationID {
         return highest;
     }
 
-    // Get the highest course ID
+    // Get highest courseID
     private int getHighestCourseID() {
         int highest = 0;
         for (Course course : courseDatabase.getRecords()) {
@@ -85,19 +85,19 @@ public class GenerationID {
         return highest;
     }
 
-    // Generate CustomDataTypes.Chapter ID
+    // ChapterID
     public String generateChapterID() {
         int highest = getHighestChapterID();
         return String.format("CH%04d", highest + 1);
     }
 
-    // Generate Lesson ID
+    //  LessonID
     public String generateLessonID() {
         int highest = getHighestLessonID();
         return String.format("L%04d", highest + 1);
     }
 
-    // Get highest chapter ID
+    // Get highest chapterID
     private int getHighestChapterID() {
         int highest = 0;
         for (Course course : courseDatabase.getRecords()) {
@@ -117,7 +117,7 @@ public class GenerationID {
         return highest;
     }
 
-    // Get the highest lesson ID
+    // Get highest lessonID
     private int getHighestLessonID() {
         int highest = 0;
         for (Course course : courseDatabase.getRecords()) {
@@ -139,12 +139,13 @@ public class GenerationID {
         return highest;
     }
 
-    // Certificate ID generation
+    // CertID generation
     public String generateCertificateID() {
         int highest = getHighestCertificateID();
         return String.format("CERT%04d", highest + 1);
     }
 
+    // Get Highest CertID
     private int getHighestCertificateID() {
         int highest = 0;
         for (User user : userDatabase.getRecords()) {
