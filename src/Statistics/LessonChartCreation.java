@@ -28,9 +28,7 @@ public class LessonChartCreation extends SuperChart {
                         }
                     }
                 }
-                double rate = course.getStudentIDs().size() > 0
-                        ? (completed * 100.0 / course.getStudentIDs().size())
-                        : 0;
+                double rate = course.getStudentIDs().size() > 0 ? rounder((completed * 100.0) / course.getStudentIDs().size()) : 0;
 
                 dataset.addValue(rate, "Completion", lesson.getTitle());
             }
