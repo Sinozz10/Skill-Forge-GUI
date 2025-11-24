@@ -19,7 +19,7 @@ public class Question {
     }
 
     public boolean checkAnswer(String ans) {
-        return correctAnswer.equals(ans);
+        return correctAnswer.toLowerCase().trim().equals(ans.toLowerCase().trim());
     }
 
     public QuestionType getType() {

@@ -229,6 +229,7 @@ public class EditableCourseView extends JPanel {
                         String title = input.trim();
                         chapter.setTitle(title);
                         courseDB.saveToFile();
+                        course.setStatus(StatusCourse.PENDING);
                         generateSideBar();
                     } catch (NumberFormatException nfe) {
                         JOptionPane.showMessageDialog(this, "Order must be an integer",
@@ -364,6 +365,7 @@ public class EditableCourseView extends JPanel {
         if (chapter != null) {
             course.addChapter(chapter);
             courseDB.saveToFile();
+            course.setStatus(StatusCourse.PENDING);
             generateSideBar();
         }
     }
@@ -382,6 +384,7 @@ public class EditableCourseView extends JPanel {
         if (lesson != null) {
             chapter.addLesson(lesson);
             courseDB.saveToFile();
+            course.setStatus(StatusCourse.PENDING);
             generateSideBar();
         }
     }
@@ -410,6 +413,7 @@ public class EditableCourseView extends JPanel {
                     }
                     course.deleteChapter(chapter);
                     courseDB.saveToFile();
+                    course.setStatus(StatusCourse.PENDING);
                     generateSideBar();
                 }
             }
@@ -443,6 +447,7 @@ public class EditableCourseView extends JPanel {
                         parentChapter.removeLesson(lesson);
                     }
                     courseDB.saveToFile();
+                    course.setStatus(StatusCourse.PENDING);
                     generateSideBar();
                 }
             }
