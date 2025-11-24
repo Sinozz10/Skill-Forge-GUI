@@ -37,6 +37,7 @@ public abstract class SuperChart extends JFrame {
     protected abstract void drawDataSet(DefaultCategoryDataset dataset, Course course, UserDatabaseManager userDB);
 
     protected static void customizeChart(JFreeChart chart) {
+
         chart.setBackgroundPaint(new Color(128, 131, 131));
 
         CategoryPlot plot = chart.getCategoryPlot();
@@ -45,7 +46,7 @@ public abstract class SuperChart extends JFrame {
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
         renderer.setShadowVisible(false);
         renderer.setBarPainter(new org.jfree.chart.renderer.category.StandardBarPainter());
-        renderer.setMaximumBarWidth(0.05);
+        renderer.setMaximumBarWidth(0.03);
         renderer.setSeriesPaint(0, new Color(39, 85, 117));
 
         // Make axis labels larger
@@ -68,7 +69,6 @@ public abstract class SuperChart extends JFrame {
     protected static double rounder(double mark){
         int decimalPlaces = 2;
         // Round to 2 decimal places
-
         return Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
 }

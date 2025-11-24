@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public abstract class CourseView extends JPanel{
+
     protected JLabel courseTitle;
     protected JPanel lessonView;
     protected JScrollPane scrollPane;
