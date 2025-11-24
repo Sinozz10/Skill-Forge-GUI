@@ -60,13 +60,15 @@ public class CourseEdit extends JPanel {
         String desc = description.getText().trim();
 
         if (id.isEmpty() || title.isEmpty() || desc.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "All fields are required!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Course c = databaseManager.getRecordByID(courseID.getText());
         if (c == null){
-            JOptionPane.showMessageDialog(this, "Course not found", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course not found",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -74,7 +76,8 @@ public class CourseEdit extends JPanel {
         c.setDescription(description.getText());
         databaseManager.updateRecord(c);
         databaseManager.saveToFile();
-        JOptionPane.showMessageDialog(CourseEdit.this, "Course Edited Successfully!","Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(CourseEdit.this, "Course Edited Successfully!",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
 
         courseID.setText("");
         courseTitle.setText("");

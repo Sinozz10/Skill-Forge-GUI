@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class SignUp extends JPanel {
+    //Attributes
     protected JPanel SignUp;
     protected JPasswordField ConfirmedPass;
     protected JTextField userName;
@@ -27,6 +28,7 @@ public class SignUp extends JPanel {
     protected String confirmedPass;
     protected String userRole;
 
+    //Constructor
     public SignUp(LoginDashboard dashBoard) {
         this.dashBoard = dashBoard;
         this.authManager = new AuthenticateManager();

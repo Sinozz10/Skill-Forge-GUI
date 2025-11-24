@@ -217,8 +217,8 @@ public class EditableCourseView extends JPanel {
 
             if (chapter != null) {
                 String input = (String) JOptionPane.showInputDialog(
-                        this, "Enter new Title for:", "Change Title",
-                        JOptionPane.PLAIN_MESSAGE,
+                        this, "Enter new Title for:",
+                        "Change Title", JOptionPane.PLAIN_MESSAGE,
                         null,
                         null,
                         chapter.getTitle()
@@ -231,7 +231,8 @@ public class EditableCourseView extends JPanel {
                         courseDB.saveToFile();
                         generateSideBar();
                     } catch (NumberFormatException nfe) {
-                        JOptionPane.showMessageDialog(this, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Order must be an integer",
+                                "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -254,7 +255,8 @@ public class EditableCourseView extends JPanel {
 
             if (chapter != null) {
                 String input = (String) JOptionPane.showInputDialog(
-                        this, "Enter new order for '" + chapter.getTitle() + "':", "Change Order",
+                        this, "Enter new order for '" + chapter.getTitle() + "':",
+                        "Change Order",
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         null,

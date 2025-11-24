@@ -12,10 +12,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class CourseAdd extends JPanel {
-    private JButton ADDButton;
+    private JButton addBtn;
     private JTextField description;
     private JPanel add;
-    private JTextField CourseName;
+    private JTextField courseName;
     private final String instructorId;
     private final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
@@ -27,12 +27,13 @@ public class CourseAdd extends JPanel {
 
         setLayout(new BorderLayout());
         add(add,BorderLayout.CENTER);
-
         setBackground(Color.LIGHT_GRAY);
-        ADDButton.setBackground(Color.LIGHT_GRAY);
-        ADDButton.setForeground(Color.BLACK);
-        ADDButton.addActionListener(_ -> handleAddCourse(instructor));
-        CourseName.addKeyListener(new KeyAdapter() {
+
+        addBtn.setBackground(Color.LIGHT_GRAY);
+        addBtn.setForeground(Color.BLACK);
+        addBtn.addActionListener(_ -> handleAddCourse(instructor));
+
+        courseName.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -51,11 +52,12 @@ public class CourseAdd extends JPanel {
     }
 
     private void handleAddCourse(Instructor instructor) {
-        String courseName = CourseName.getText().trim();
+        String courseName = this.courseName.getText().trim();
         String courseDescription = description.getText().trim();
 
         if(courseName.isEmpty() || courseDescription.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid course name!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter a valid course name!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -69,14 +71,16 @@ public class CourseAdd extends JPanel {
             userDB.updateRecord(instructor);
             userDB.saveToFile();
 
-            JOptionPane.showMessageDialog(this, "Course added successfully!" + courseID, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course added successfully!" + courseID,
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            CourseName.setText("");
+            this.courseName.setText("");
             description.setText("");
-            CourseName.requestFocus();
+            this.courseName.requestFocus();
 
         }catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error adding course!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error adding course!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }

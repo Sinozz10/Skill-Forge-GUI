@@ -108,30 +108,27 @@ public class StudentCourseView extends CourseView{
         progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
         userDB.updateRecord(student);
         userDB.saveToFile();
-
         certificateLogic();
     }
 
     private void certificateLogic(){
         // Check if course is complete
         if (progress.isCourseComplete() && student.getCertificateByCourseID(course.getID()) == null) {
-            // Create certificate
+            //Create Cert
             Certificate cert = new Certificate(idGenerator.generateCertificateID(),
                     student.getID(),
                     course.getID(),
                     student.getUsername(),
                     course.getTitle()
             );
-
             student.addCertificate(cert);
             userDB.saveToFile();
 
-            // Try to generate PDF
+            // Generate PDF
             try {
                 new CertificateGenerator().generateCertificate(cert);
                 // Ask to view
-                if (JOptionPane.showConfirmDialog(this,
-                        "Course completed!\nView certificate?",
+                if (JOptionPane.showConfirmDialog(this, "Course completed!\nView certificate?",
                         "Congratulations!",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     Desktop.getDesktop().open(new File(CertificateGenerator.getPath(cert.getCertificateID())));

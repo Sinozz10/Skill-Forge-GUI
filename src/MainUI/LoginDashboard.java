@@ -16,7 +16,7 @@ public class LoginDashboard extends JFrame{
     public LoginDashboard(){
         changeContentPanel(new Login(LoginDashboard.this));
         setContentPane(mainFramePanel);
-        setSize(500, 375);
+        setSize(550,400);
         setBackground(Color.gray);
         setLocationRelativeTo(null);
         setVisible(true);

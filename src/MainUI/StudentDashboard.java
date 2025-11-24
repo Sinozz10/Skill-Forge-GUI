@@ -5,8 +5,6 @@ import CustomUIElements.CertificateCard;
 import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
-import DataManagment.UserDatabaseManager;
-import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,9 +35,9 @@ public class StudentDashboard extends DashBoard{
     }
 
     private JButton getViewButton(Student student) {
-        JButton viewButton = new JButton("My Courses");
-        viewButton.setBackground(Color.LIGHT_GRAY);
-        viewButton.setForeground(Color.BLACK);
+        JButton viewBtn = new JButton("My Courses");
+        viewBtn.setBackground(Color.LIGHT_GRAY);
+        viewBtn.setForeground(Color.BLACK);
 
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
@@ -59,8 +57,8 @@ public class StudentDashboard extends DashBoard{
             }
         };
 
-        viewButton.addActionListener(_ -> changeContentPanel(courseScrollPane));
-        return viewButton;
+        viewBtn.addActionListener(_ -> changeContentPanel(courseScrollPane));
+        return viewBtn;
     }
 
     private JButton getEnrollButton(Student student){
@@ -79,8 +77,7 @@ public class StudentDashboard extends DashBoard{
             @Override
             public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
                 if (e.getClickCount() == 2){
-                    int confirm = JOptionPane.showConfirmDialog(StudentDashboard.this,
-                            "Are you sure you want to enroll?",
+                    int confirm = JOptionPane.showConfirmDialog(StudentDashboard.this, "Are you sure you want to enroll?",
                             "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
                     if (confirm == JOptionPane.YES_OPTION) {
@@ -89,10 +86,8 @@ public class StudentDashboard extends DashBoard{
                         student.addCourse(selected);
                         selected.enrollStudent(student);
 
-
                         courseDB.updateRecord(selected);
                         courseDB.saveToFile();
-
                         userDB.updateRecord(student);
                         userDB.saveToFile();
                         JOptionPane.showMessageDialog(StudentDashboard.this, "Enrolled Successfully!");
@@ -106,39 +101,32 @@ public class StudentDashboard extends DashBoard{
     }
 
     private JButton getCertificatesButton(Student student){
-        JButton certificatesButton = new JButton("My Certificates");
-        certificatesButton.setBackground(Color.LIGHT_GRAY);
-        certificatesButton.setForeground(Color.BLACK);
+        JButton certificateBtn = new JButton("My Certificates");
+        certificateBtn.setBackground(Color.LIGHT_GRAY);
+        certificateBtn.setForeground(Color.BLACK);
 
         CardScrollPane<Certificate> certificateScrollPane = new CardScrollPane<>(
                 student.getCertificates(),
-                CertificateCard::new,
-                "No Certificates Found!",
+                CertificateCard::new, "No Certificates Found!",
                 null,
                 null
         );
 
-        certificatesButton.addActionListener(_ -> changeContentPanel(certificateScrollPane));
-        return certificatesButton;
+        certificateBtn.addActionListener(_ -> changeContentPanel(certificateScrollPane));
+        return certificateBtn;
     }
 
     @Override
     void handleHomeButton(){
-        JLabel userLabel = new JLabel("Welcome "+student.getUsername());
-        userLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        userLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
+        JLabel userWelcome = new JLabel("Welcome "+student.getUsername());
+        userWelcome.setFont(new Font("Verdana", Font.PLAIN, 50));
+        userWelcome.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
         JPanel userPanel = new JPanel();
-        userPanel.add(userLabel);
+        userPanel.add(userWelcome);
         changeContentPanel(userPanel);
     }
 
     public Student getStudent(){
         return student;
-    }
-
-    static void main() {
-        FlatDarculaLaf.setup();
-        UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
-        new StudentDashboard((Student) userDB.getRecordByID("S0001"));
     }
 }

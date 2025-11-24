@@ -34,7 +34,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="537bf" class="javax.swing.JTextField" binding="CourseName">
+      <component id="537bf" class="javax.swing.JTextField" binding="courseName">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -42,7 +42,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="de880" class="javax.swing.JButton" binding="ADDButton" default-binding="true">
+      <component id="de880" class="javax.swing.JButton" binding="addBtn" default-binding="true">
         <constraints>
           <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
