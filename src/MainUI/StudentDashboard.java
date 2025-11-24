@@ -38,15 +38,29 @@ public class StudentDashboard extends DashBoard{
         JButton viewBtn = new JButton("My Courses");
         viewBtn.setBackground(Color.LIGHT_GRAY);
         viewBtn.setForeground(Color.BLACK);
+        viewBtn.addActionListener(_ -> handleViewCourses());
 
+        return viewBtn;
+    }
+
+    private JButton getEnrollButton(Student student){
+        JButton enrollButton = new JButton("Enroll");
+        enrollButton.setBackground(Color.LIGHT_GRAY);
+        enrollButton.setForeground(Color.BLACK);
+        enrollButton.addActionListener(_ -> handleViewEnrollableCourses());
+
+        return enrollButton;
+    }
+
+    private void handleViewCourses(){
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new,
                 "No Courses Found!",
-                course -> "Completion: "+student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage().toString(),
+                course -> "Completion: "+rounder(student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage()),
                 course -> student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
-                ){
+        ){
             @Override
             public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
                 if (e.getClickCount() == 2){
@@ -57,14 +71,10 @@ public class StudentDashboard extends DashBoard{
             }
         };
 
-        viewBtn.addActionListener(_ -> changeContentPanel(courseScrollPane));
-        return viewBtn;
+        changeContentPanel(courseScrollPane);
     }
 
-    private JButton getEnrollButton(Student student){
-        JButton enrollButton = new JButton("Enroll");
-        enrollButton.setBackground(Color.LIGHT_GRAY);
-        enrollButton.setForeground(Color.BLACK);
+    private void handleViewEnrollableCourses(){
 
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
@@ -96,8 +106,7 @@ public class StudentDashboard extends DashBoard{
             }
         };
 
-        enrollButton.addActionListener(_ -> changeContentPanel(courseScrollPane));
-        return enrollButton;
+        changeContentPanel(courseScrollPane);
     }
 
     private JButton getCertificatesButton(Student student){
@@ -114,6 +123,13 @@ public class StudentDashboard extends DashBoard{
 
         certificateBtn.addActionListener(_ -> changeContentPanel(certificateScrollPane));
         return certificateBtn;
+    }
+
+    protected static double rounder(double mark){
+        int decimalPlaces = 2;
+        // Round to 2 decimal places
+
+        return Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
 
     @Override

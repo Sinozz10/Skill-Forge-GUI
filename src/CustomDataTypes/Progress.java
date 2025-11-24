@@ -63,7 +63,7 @@ public class Progress {
         if (tracker != null){
             tracker.setComplete(false);
         }else {
-            throw new IllegalArgumentException("Uncompleted lesson");
+            throw new IllegalArgumentException("Lesson not found in tracker");
         }
     }
 

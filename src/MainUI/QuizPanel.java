@@ -223,7 +223,7 @@ public class QuizPanel extends JPanel {
             if (total >= 70.0){
                 Lp.setComplete();
                 if (progress != null){
-                    progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+                    progress.completeLesson(lesson.getLessonID());
                 }
                 JOptionPane.showMessageDialog(
                         dashboard,

@@ -136,6 +136,7 @@ public class InstructorDashboard extends DashBoard{
         addCourseBtn.setForeground(Color.BLACK);
         addCourseBtn.setBackground(Color.LIGHT_GRAY);
         addCourseBtn.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
+
         CardScrollPane<Course> pane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new, "No Courses Found!",

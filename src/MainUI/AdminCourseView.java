@@ -86,13 +86,13 @@ public class AdminCourseView extends CourseView{
         return new LessonPanel(lesson){
             @Override
             public void leftClickHandler(MouseEvent e){
-                lessonPanelClickHandler(this, lesson, null);
+                lessonPanelClickHandler(this, lesson);
             }
         };
     }
 
     @Override
-    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson, Progress progress) {
+    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 

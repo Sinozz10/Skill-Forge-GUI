@@ -90,7 +90,7 @@ public abstract class CourseView extends JPanel{
 
     protected abstract LessonPanel generateLessonPanel(Lesson lesson);
 
-    protected abstract void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson, Progress progress);
+    protected abstract void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson);
 
     public void changeContentPanel(JPanel panel){
         contentPanel.removeAll();

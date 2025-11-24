@@ -44,7 +44,7 @@ public class StudentCourseView extends CourseView{
         LessonPanel lp = new LessonPanel(lesson){
             @Override
             public void leftClickHandler(MouseEvent e){
-                lessonPanelClickHandler(this, lesson, progress);
+                lessonPanelClickHandler(this, lesson);
             }
         };
         if (progress != null){
@@ -57,7 +57,7 @@ public class StudentCourseView extends CourseView{
     }
 
     @Override
-    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson, Progress progress){
+    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -69,7 +69,7 @@ public class StudentCourseView extends CourseView{
         if (lesson.hasQuiz()){
             hasQuizLogic(panel, lesson, Lp);
         }else {
-            hasNoQuizLogic(Lp, lesson, progress);
+            hasNoQuizLogic(Lp, lesson);
         }
 
         lessonTitle.setVisible(true);
@@ -99,13 +99,13 @@ public class StudentCourseView extends CourseView{
         });
     }
 
-    private void hasNoQuizLogic(LessonPanel Lp, Lesson lesson, Progress progress){
+    private void hasNoQuizLogic(LessonPanel Lp, Lesson lesson){
         Lp.setComplete();
         LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
         if (tracker != null) {
             tracker.setComplete(true);
         }
-        progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+        progress.completeLesson(lesson.getLessonID());
         userDB.updateRecord(student);
         userDB.saveToFile();
         certificateLogic();
