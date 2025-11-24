@@ -71,7 +71,7 @@ public class StudentDashboard extends DashBoard{
                 CourseCard::new,
                 "No Courses Found!",
                 null,
-                course -> student.getCourseIDs().contains(course.getID())
+                course -> !student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
         ){
             @Override
