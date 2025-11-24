@@ -104,28 +104,6 @@ SuperChart (abstract parent)
 
 ---
 
-## OOP Concepts Used
-
-**Inheritance:**
-- User → Admin, Instructor, Student
-- Question → TextQuestion, ChoiceQuestion
-- DashBoard → AdminDashboard, InstructorDashboard, StudentDashboard
-
-**Polymorphism:**
-- Abstract methods in DashBoard, CourseView, SuperChart
-- Interface implementations (Record, CardFactory)
-
-**Abstraction:**
-- Abstract classes: DashBoard, CourseView, SuperChart, Question
-- Interfaces: Record, CardFactory
-
-**Encapsulation:**
-- Private fields with getters/setters
-- Singleton pattern for database managers
-- Password hashing (SHA-256)
-
----
-
 ## Run Requirments
 
 **Prerequisites:**
