@@ -84,8 +84,11 @@ public class Login extends JPanel {
         gbc.gridy = 4;
         gbc.insets = new Insets(30, 5, 5, 5);
         JPanel signupPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-        JLabel notMemberLabel = new JLabel("Not a Member?");
-        notMemberLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        JLabel notMemberLabel = new JLabel("Not a Member ?");
+        notMemberLabel.setForeground(Color.BLACK);
+        notMemberLabel.setBackground(Color.LIGHT_GRAY);
+        notMemberLabel.setFont(new Font("Veranda", Font.BOLD, 14));
+
         JButton signupBtn = new JButton("Signup");
         signupBtn.setPreferredSize(new Dimension(100, 30));
         signupBtn.setForeground(Color.black);
