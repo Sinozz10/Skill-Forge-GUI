@@ -7,10 +7,8 @@ import CustomDataTypes.Student;
 import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
-import DataManagment.UserDatabaseManager;
 import Statistics.*;
 import Statistics.CompletionChartCreation;
-import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -134,16 +132,16 @@ public class InstructorDashboard extends DashBoard{
     }
 
     public void handleViewCourses(){
-        JButton addButton = new JButton("Add Course");
-        addButton.setForeground(Color.BLACK);
-        addButton.setBackground(Color.LIGHT_GRAY);
-        addButton.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
+        JButton addCourseBtn = new JButton("Add Course");
+        addCourseBtn.setForeground(Color.BLACK);
+        addCourseBtn.setBackground(Color.LIGHT_GRAY);
+        addCourseBtn.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
         CardScrollPane<Course> pane = new CardScrollPane<>(
                 courseDB.getRecords(),
-                CourseCard::new,
-                "No Courses Found!",
+                CourseCard::new, "No Courses Found!",
                 course -> "Status: "+course.getStatus().toString(),
                 course -> course.getInstructorID().equals(instructor.getID())) {
+
             @Override
             public void rightClickHandler(MouseEvent e, GenericCard<Course> card){
                 // pop up menu
@@ -153,8 +151,7 @@ public class InstructorDashboard extends DashBoard{
                 JMenuItem deleteItem = new JMenuItem("Delete");
                 deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 deleteItem.addActionListener(_ -> {
-                    int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this,
-                            "Are you sure you want to delete?",
+                    int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this, "Are you sure you want to delete?",
                             "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
 
                     if (confirm == JOptionPane.YES_OPTION) {
@@ -164,7 +161,6 @@ public class InstructorDashboard extends DashBoard{
 
                 });
                 popupMenu.add(deleteItem);
-
                 popupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
 
@@ -183,7 +179,7 @@ public class InstructorDashboard extends DashBoard{
         viewPanel.add(pane);
         JPanel addPanel = new JPanel();
         addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.X_AXIS));
-        addPanel.add(addButton);
+        addPanel.add(addCourseBtn);
         viewPanel.add(addPanel);
 
         changeContentPanel(viewPanel);
@@ -206,25 +202,18 @@ public class InstructorDashboard extends DashBoard{
         }
         userDB.saveToFile();
 
-        JOptionPane.showMessageDialog(InstructorDashboard.this,
-                "Course deleted",
+        JOptionPane.showMessageDialog(InstructorDashboard.this, "Course deleted",
                 "Success",
                 JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
     void handleHomeButton(){
-        JLabel userLabel = new JLabel("Welcome " + instructor.getUsername());
-        userLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
-        userLabel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
+        JLabel userWelcome = new JLabel("Welcome " + instructor.getUsername());
+        userWelcome.setFont(new Font("Verdana", Font.PLAIN, 50));
+        userWelcome.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
         JPanel userPanel = new JPanel();
-        userPanel.add(userLabel);
+        userPanel.add(userWelcome);
         changeContentPanel(userPanel);
-    }
-
-    static void main() {
-        FlatDarculaLaf.setup();
-        UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
-        new InstructorDashboard((Instructor) userDB.getRecordByID("I0001"));
     }
 }
