@@ -55,6 +55,7 @@ public class QuizPanel extends JPanel {
             JButton attemptsButton = new JButton("Previous Attempts");
             attemptsButton.addActionListener(_ -> handleAttempts());
             wrapper.add(attemptsButton);
+            wrapper.add(Box.createRigidArea(new Dimension(10, 0)));
         }
 
         JButton completeButton = new JButton("Submit");
