@@ -3,6 +3,7 @@ package MainUI;
 import CustomDataTypes.*;
 import CustomUIElements.LessonPanel;
 import DataManagment.UserDatabaseManager;
+import Dialogs.AttemptsDialog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -50,10 +51,16 @@ public class QuizPanel extends JPanel {
         JPanel wrapper = new JPanel();
         wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
 
+        if (progress == null){
+            JButton attemptsButton = new JButton("Previous Attempts");
+            attemptsButton.addActionListener(_ -> handleAttempts());
+            wrapper.add(attemptsButton);
+        }
+
         JButton completeButton = new JButton("Submit");
         completeButton.addActionListener(_ -> handleComplete());
-
         wrapper.add(completeButton);
+
         add(wrapper);
     }
 
@@ -195,6 +202,10 @@ public class QuizPanel extends JPanel {
 
         answerPanel.add(userAnswer);
         return answerPanel;
+    }
+
+    private void handleAttempts(){
+        new AttemptsDialog(dashboard, progress.getTrackerByLessonID(lesson.getLessonID()));
     }
 
     private void handleComplete() {

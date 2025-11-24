@@ -85,7 +85,7 @@ public class Progress {
 
                 if (o.isPresent()) {
                     LessonTracker t = o.get();
-                    newTrackers.add(new LessonTracker(lesson, t.isTrue()));
+                    newTrackers.add(new LessonTracker(lesson,t.getAttempts(), t.isTrue()));
                 } else {
                     newTrackers.add(new LessonTracker(lesson));
                 }
