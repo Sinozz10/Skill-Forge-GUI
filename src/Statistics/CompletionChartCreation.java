@@ -4,16 +4,15 @@ import CustomDataTypes.Course;
 import CustomDataTypes.Progress;
 import CustomDataTypes.Student;
 import DataManagment.UserDatabaseManager;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
+
 import org.jfree.data.category.DefaultCategoryDataset;
 
 //Dah bt3 el Student btw
 public class CompletionChartCreation extends SuperChart {
 
-    public CompletionChartCreation(String title, JFreeChart chart) {
-        super(title,chart);
+    public CompletionChartCreation(String header, JFreeChart chart) {
+        super(header,chart);
     }
 
     @Override

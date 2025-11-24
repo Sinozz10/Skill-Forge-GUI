@@ -2,15 +2,13 @@ package Statistics;
 
 import CustomDataTypes.*;
 import DataManagment.UserDatabaseManager;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class QuizAnalyticsCompletion extends SuperChart {
 
-    public QuizAnalyticsCompletion(String title, JFreeChart chart) {
-        super(title,chart);
+    public QuizAnalyticsCompletion(String header, JFreeChart chart) {
+        super(header,chart);
     }
 
     @Override

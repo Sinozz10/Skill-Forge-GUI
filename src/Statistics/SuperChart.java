@@ -14,8 +14,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class SuperChart extends JFrame {
-    public SuperChart(String title, JFreeChart chart) {
-        super(title);
+    public SuperChart(String header, JFreeChart chart) {
+        super(header);
         setContentPane(new ChartPanel(chart));
         setSize(850, 600);
         setLocationRelativeTo(null);
