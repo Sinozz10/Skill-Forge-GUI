@@ -39,7 +39,6 @@ public class EditableCourseView extends JPanel {
     private final JTextPane content = new JTextPane();
     private final JPanel coursesPanel = new JPanel();
 
-    private boolean quizViewState;
     private Lesson activeLesson = null;
     private final Course course;
     private final InstructorDashboard dashboard;
@@ -458,7 +457,6 @@ public class EditableCourseView extends JPanel {
         content.setText(activeLesson.getContent());
         panel.add(content, BorderLayout.CENTER);
 
-        quizViewState = false;
         quizButton.setVisible(true);
         quizButton.setText(lesson.hasQuiz() ? "Edit Quiz" : "Add Quiz");
 
@@ -467,15 +465,13 @@ public class EditableCourseView extends JPanel {
         }
 
         quizButton.addActionListener(_ -> {
-            if (quizViewState) {
+            if (quizButton.getText().equals("Back")) {
                 content.setText(activeLesson.getContent());
                 panel.add(content, BorderLayout.CENTER);
                 quizButton.setText(lesson.hasQuiz() ? "Edit Quiz" : "Add Quiz");
-                quizViewState = false;
                 changeContentPanel(panel);
             } else {
                 quizButton.setText("Back");
-                quizViewState = true;
                 changeContentPanel(new EditableQuizPanel(dashboard, lesson));
             }
         });
