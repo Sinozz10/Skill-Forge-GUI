@@ -206,8 +206,7 @@ public class EditableQuizPanel extends JPanel {
                                 question.removeChoice(choice);
                                 fillMenu(menu, question);
                             }else {
-                                JOptionPane.showMessageDialog(dashboard,
-                                        "Must have at least one choice!",
+                                JOptionPane.showMessageDialog(dashboard, "Must have at least one choice!",
                                         "Error",
                                         JOptionPane.ERROR_MESSAGE);
                             }
@@ -236,9 +235,7 @@ public class EditableQuizPanel extends JPanel {
     }
 
     private void addChoice(ChoiceQuestion question){
-        String input = (String) JOptionPane.showInputDialog(dashboard,
-                "Enter Choice:",
-                "Add Choice",
+        String input = (String) JOptionPane.showInputDialog(dashboard, "Enter Choice:", "Add Choice",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
@@ -251,14 +248,12 @@ public class EditableQuizPanel extends JPanel {
                 if (!input.equals(question.getCorrectAnswer())){
                     question.addChoice(input);
                 }else {
-                    JOptionPane.showMessageDialog(dashboard,
-                            "Choice must be different from correct answer!",
+                    JOptionPane.showMessageDialog(dashboard, "Choice must be different from correct answer!",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }else {
-                JOptionPane.showMessageDialog(dashboard,
-                        "Choice must be unique!",
+                JOptionPane.showMessageDialog(dashboard, "Choice must be unique!",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -283,7 +278,8 @@ public class EditableQuizPanel extends JPanel {
         deleteButton.setBackground(Color.LIGHT_GRAY);
         deleteButton.setForeground(Color.BLACK);
         deleteButton.addActionListener(_ -> {
-            int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Question ?", "Confirm", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Question ?",
+                    "Confirm", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 lesson.getQuiz().removeQuestion(question);
                 if (lesson.getQuiz().getQuestions().isEmpty()){
@@ -319,7 +315,8 @@ public class EditableQuizPanel extends JPanel {
 
                 changeQuestionOrder(question, newOrder, oldOrder);
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(dashboard, "Order must be an integer", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dashboard, "Order must be an integer",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -363,8 +360,7 @@ public class EditableQuizPanel extends JPanel {
             for(Question q: lesson.getQuiz().getQuestions()){
                 if (question.getTitle().equals(q.getTitle())){
                     flag = false;
-                    JOptionPane.showMessageDialog(dashboard,
-                            "Question must be unique",
+                    JOptionPane.showMessageDialog(dashboard, "Question must be unique",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
@@ -381,8 +377,7 @@ public class EditableQuizPanel extends JPanel {
     }
 
     public void handleDelete(){
-        int confirm = JOptionPane.showConfirmDialog(dashboard,
-                "Delete Quiz?",
+        int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Quiz?",
                 "Confirm",
                 JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
