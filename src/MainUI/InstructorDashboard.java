@@ -117,7 +117,7 @@ public class InstructorDashboard extends DashBoard{
                     QuizAnalyticsCompletion chartCreator = new QuizAnalyticsCompletion("Quiz Completed", null);
                     org.jfree.chart.JFreeChart chart = chartCreator.createChart(c, userDB,
                             "Quiz Completed Rates", "Lessons", "%");
-                    new LessonChartCreation("Quiz Completed", chart).setVisible(true);
+                    new QuizAnalyticsCompletion("Quiz Completed", chart).setVisible(true);
                 }
             }
         });
