@@ -45,11 +45,11 @@ public class Chapter {
         this.lessons = lessons;
     }
 
-    public void addLesson(Lesson lesson){
+    public void addLesson(Lesson lesson) {
         lessons.add(lesson);
     }
 
-    public void removeLesson(Lesson lesson){
+    public void removeLesson(Lesson lesson) {
         lessons.remove(lesson);
     }
 

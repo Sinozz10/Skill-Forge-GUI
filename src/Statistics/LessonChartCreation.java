@@ -21,14 +21,14 @@ public class LessonChartCreation extends SuperChart {
                     if (s != null) {
                         Progress progress = s.getProgressTrackerByCourseID(course.getID());
                         if (progress != null) {
-                            LessonTracker lt = progress.getTrackerByID(lesson.getLessonID());
-                            if (lt != null && lt.isComplete()) {
+                            LessonTracker lt = progress.getTrackerByLessonID(lesson.getLessonID());
+                            if (lt != null && lt.isTrue()) {
                                 completed++;
                             }
                         }
                     }
                 }
-                double rate = course.getStudentIDs().size() > 0 ? rounder((completed * 100.0) / course.getStudentIDs().size()) : 0;
+                double rate = !course.getStudentIDs().isEmpty() ? rounder((completed * 100.0) / course.getStudentIDs().size()) : 0;
 
                 dataset.addValue(rate, "Completion", lesson.getTitle());
             }

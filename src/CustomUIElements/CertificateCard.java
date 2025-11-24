@@ -25,7 +25,7 @@ public class CertificateCard extends GenericCard<Certificate> {
 
         titleLabel.setText(flavour != null ? certificate.getCourseName() + "  --  " + flavour : certificate.getCourseName());
         bodyTextPane.setEditable(false);
-        bodyTextPane.setText( "ID: " + certificate.getCertificateID()+ "\nDate: " + certificate.getFormattedDate());
+        bodyTextPane.setText("ID: " + certificate.getCertificateID() + "\nDate: " + certificate.getFormattedDate());
         bodyTextPane.setBorder(BorderFactory.createEmptyBorder(0, 15, 5, 5));
 
         headerPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 5));

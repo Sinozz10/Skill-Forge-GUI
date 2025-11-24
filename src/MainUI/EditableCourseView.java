@@ -39,7 +39,6 @@ public class EditableCourseView extends JPanel {
     private final JTextPane content = new JTextPane();
     private final JPanel coursesPanel = new JPanel();
 
-    private boolean quizViewState;
     private Lesson activeLesson = null;
     private final Course course;
     private final InstructorDashboard dashboard;
@@ -74,6 +73,7 @@ public class EditableCourseView extends JPanel {
         saveExitButton.addActionListener(_ -> {
             course.setDescription(descriptionTextPane.getText());
             course.setTitle(courseTitle.getText());
+            course.setStatus(StatusCourse.PENDING);
             courseDB.saveToFile();
             dashboard.handleViewCourses();
         });
@@ -91,8 +91,8 @@ public class EditableCourseView extends JPanel {
     }
 
     public void generateSideBar() {
-        for (Component comp: coursesPanel.getComponents()){
-            if (comp instanceof CollapsablePanel panel){
+        for (Component comp : coursesPanel.getComponents()) {
+            if (comp instanceof CollapsablePanel panel) {
                 trackers.add(new GeneralTracker(panel.getId(), panel.getExpanded()));
             }
         }
@@ -113,7 +113,7 @@ public class EditableCourseView extends JPanel {
         generateChapters();
     }
 
-    public void generateChapters(){
+    public void generateChapters() {
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
         for (Chapter chapter : sortedChapters) {
@@ -133,8 +133,8 @@ public class EditableCourseView extends JPanel {
             coursesPanel.add(cur);
 
             Optional<GeneralTracker> result = trackers.stream().filter(tracker -> cur.getId().equals(tracker.getID())).findFirst();
-            if (result.isPresent()){
-                if (result.get().isTrue()){
+            if (result.isPresent()) {
+                if (result.get().isTrue()) {
                     cur.toggleExpanded();
                 }
                 trackers.remove(result.get());
@@ -142,7 +142,7 @@ public class EditableCourseView extends JPanel {
         }
     }
 
-    public CollapsablePanel generateCollapsablePanel(Chapter chapter){
+    public CollapsablePanel generateCollapsablePanel(Chapter chapter) {
         return new CollapsablePanel(chapter.getChapterID(), chapter.getTitle()) {
             @Override
             public void rightClickHandler(MouseEvent e) {
@@ -168,7 +168,7 @@ public class EditableCourseView extends JPanel {
         };
     }
 
-    public void generateLessons(CollapsablePanel cur, Chapter chapter){
+    public void generateLessons(CollapsablePanel cur, Chapter chapter) {
         ArrayList<Lesson> sortedLessons = chapter.getLessons();
         sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
 
@@ -229,6 +229,7 @@ public class EditableCourseView extends JPanel {
                         String title = input.trim();
                         chapter.setTitle(title);
                         courseDB.saveToFile();
+                        course.setStatus(StatusCourse.PENDING);
                         generateSideBar();
                     } catch (NumberFormatException nfe) {
                         JOptionPane.showMessageDialog(this, "Order must be an integer",
@@ -358,19 +359,20 @@ public class EditableCourseView extends JPanel {
         }
     }
 
-    private void addChapter(){
+    private void addChapter() {
         Chapter chapter = new ChapterDialog(dashboard, course).getResult();
 
-        if (chapter != null){
+        if (chapter != null) {
             course.addChapter(chapter);
             courseDB.saveToFile();
+            course.setStatus(StatusCourse.PENDING);
             generateSideBar();
         }
     }
 
-    private void addLesson(ActionEvent e){
-        Component comp =(Component) e.getSource();
-        while (!(comp instanceof CollapsablePanel) && comp != null){
+    private void addLesson(ActionEvent e) {
+        Component comp = (Component) e.getSource();
+        while (!(comp instanceof CollapsablePanel) && comp != null) {
             comp = comp.getParent();
         }
         CollapsablePanel clickedPanel = (CollapsablePanel) comp;
@@ -379,9 +381,10 @@ public class EditableCourseView extends JPanel {
 
         Lesson lesson = new LessonDialog(dashboard, chapter).getResult();
 
-        if (lesson != null){
+        if (lesson != null) {
             chapter.addLesson(lesson);
             courseDB.saveToFile();
+            course.setStatus(StatusCourse.PENDING);
             generateSideBar();
         }
     }
@@ -410,6 +413,7 @@ public class EditableCourseView extends JPanel {
                     }
                     course.deleteChapter(chapter);
                     courseDB.saveToFile();
+                    course.setStatus(StatusCourse.PENDING);
                     generateSideBar();
                 }
             }
@@ -443,13 +447,14 @@ public class EditableCourseView extends JPanel {
                         parentChapter.removeLesson(lesson);
                     }
                     courseDB.saveToFile();
+                    course.setStatus(StatusCourse.PENDING);
                     generateSideBar();
                 }
             }
         }
     }
 
-    public void leftClickHandler(Lesson lesson){
+    public void leftClickHandler(Lesson lesson) {
         saveActiveLesson();
         activeLesson = lesson;
 
@@ -458,24 +463,21 @@ public class EditableCourseView extends JPanel {
         content.setText(activeLesson.getContent());
         panel.add(content, BorderLayout.CENTER);
 
-        quizViewState = false;
         quizButton.setVisible(true);
-        quizButton.setText(lesson.hasQuiz()?"Edit Quiz":"Add Quiz");
+        quizButton.setText(lesson.hasQuiz() ? "Edit Quiz" : "Add Quiz");
 
         for (ActionListener al : quizButton.getActionListeners()) {
             quizButton.removeActionListener(al);
         }
 
         quizButton.addActionListener(_ -> {
-            if (quizViewState){
+            if (quizButton.getText().equals("Back")) {
                 content.setText(activeLesson.getContent());
                 panel.add(content, BorderLayout.CENTER);
-                quizButton.setText(lesson.hasQuiz()?"Edit Quiz":"Add Quiz");
-                quizViewState = false;
+                quizButton.setText(lesson.hasQuiz() ? "Edit Quiz" : "Add Quiz");
                 changeContentPanel(panel);
-            }else {
+            } else {
                 quizButton.setText("Back");
-                quizViewState = true;
                 changeContentPanel(new EditableQuizPanel(dashboard, lesson));
             }
         });
@@ -486,14 +488,14 @@ public class EditableCourseView extends JPanel {
         generateSideBar();
     }
 
-    public void saveActiveLesson(){
-        if (activeLesson != null){
+    public void saveActiveLesson() {
+        if (activeLesson != null) {
             activeLesson.setTitle(lessonTitle.getText().trim());
             activeLesson.setContent(content.getText());
         }
     }
 
-    public void changeContentPanel(JPanel panel){
+    public void changeContentPanel(JPanel panel) {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(panel, BorderLayout.CENTER);

@@ -77,19 +77,19 @@ public class User implements Record {
         this.hashedPassword = hashedPassword;
     }
 
-    public ArrayList<String> getCourseIDs(){
+    public ArrayList<String> getCourseIDs() {
         return courseIDs;
     }
 
-    public void setCourses(ArrayList<String> courseIDs){
+    public void setCourses(ArrayList<String> courseIDs) {
         this.courseIDs = courseIDs;
     }
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         courseIDs.add(course.getID());
     }
 
-    public void removeCourse(Course course){
+    public void removeCourse(Course course) {
         courseIDs.remove(course.getID());
     }
 }

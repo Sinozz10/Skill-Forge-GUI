@@ -1,8 +1,5 @@
 package MainUI;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class AdminSignUp extends SignUp {
     public AdminSignUp(LoginDashboard dashboard) {
         super(dashboard);
@@ -12,7 +9,7 @@ public class AdminSignUp extends SignUp {
     }
 
     @Override
-    protected void getInputs(){
+    protected void getInputs() {
         username = userName.getText();
         email = Email.getText();
         password = new String(Password.getPassword());

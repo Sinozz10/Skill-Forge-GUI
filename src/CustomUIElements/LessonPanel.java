@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LessonPanel extends JPanel{
+public class LessonPanel extends JPanel {
     private JLabel titleLabel;
     private JPanel lPanel;
     private JCheckBox stateBox;
@@ -52,7 +52,7 @@ public class LessonPanel extends JPanel{
         stateBox.addMouseListener(clickListener);
     }
 
-    public void setComplete(){
+    public void setComplete() {
         stateBox.setSelected(true);
         lPanel.revalidate();
         lPanel.repaint();
@@ -62,9 +62,10 @@ public class LessonPanel extends JPanel{
         return lesson;
     }
 
-    public void leftClickHandler(MouseEvent e){
+    public void leftClickHandler(MouseEvent e) {
 
     }
 
-    public void rightClickHandler(MouseEvent e){}
+    public void rightClickHandler(MouseEvent e) {
+    }
 }

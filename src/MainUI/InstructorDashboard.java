@@ -4,17 +4,18 @@ import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.StatusCourse;
 import CustomDataTypes.Student;
-import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
-import Statistics.*;
+import CustomUIElements.GenericCard;
 import Statistics.CompletionChartCreation;
+import Statistics.LessonChartCreation;
+import Statistics.QuizAnalyticsCompletion;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class InstructorDashboard extends DashBoard{
+public class InstructorDashboard extends DashBoard {
     private final Instructor instructor;
 
     public InstructorDashboard(Instructor instructor) {
@@ -23,7 +24,7 @@ public class InstructorDashboard extends DashBoard{
 
         setTitle("Dashboard - " + instructor.getUsername());
         setBackground(Color.GRAY);
-        navButtons.setLayout(new GridLayout(1,3, 10, 10));
+        navButtons.setLayout(new GridLayout(1, 3, 10, 10));
         setResizable(false);
 
 
@@ -33,7 +34,8 @@ public class InstructorDashboard extends DashBoard{
 
         handleHomeButton();
     }
-    private JButton getCoursesButton(){
+
+    private JButton getCoursesButton() {
         JButton viewCoursesButton = new JButton("My Courses");
         viewCoursesButton.setForeground(Color.BLACK);
         viewCoursesButton.setBackground(Color.LIGHT_GRAY);
@@ -41,7 +43,7 @@ public class InstructorDashboard extends DashBoard{
         return viewCoursesButton;
     }
 
-    private JButton getStudentsButton(){
+    private JButton getStudentsButton() {
         JButton viewStudentsButton = new JButton("My Students");
         viewStudentsButton.setForeground(Color.BLACK);
         viewStudentsButton.setBackground(Color.LIGHT_GRAY);
@@ -49,7 +51,7 @@ public class InstructorDashboard extends DashBoard{
         return viewStudentsButton;
     }
 
-    private JButton getInsightButton(){
+    private JButton getInsightButton() {
         JButton insightsButton = new JButton("Insights");
         insightsButton.setForeground(Color.BLACK);
         insightsButton.setBackground(Color.LIGHT_GRAY);
@@ -131,19 +133,20 @@ public class InstructorDashboard extends DashBoard{
         changeContentPanel(panel);
     }
 
-    public void handleViewCourses(){
+    public void handleViewCourses() {
         JButton addCourseBtn = new JButton("Add Course");
         addCourseBtn.setForeground(Color.BLACK);
         addCourseBtn.setBackground(Color.LIGHT_GRAY);
         addCourseBtn.addActionListener(_ -> changeContentPanel(new CourseAdd(instructor)));
+
         CardScrollPane<Course> pane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new, "No Courses Found!",
-                course -> "Status: "+course.getStatus().toString(),
+                course -> "Status: " + course.getStatus().toString(),
                 course -> course.getInstructorID().equals(instructor.getID())) {
 
             @Override
-            public void rightClickHandler(MouseEvent e, GenericCard<Course> card){
+            public void rightClickHandler(MouseEvent e, GenericCard<Course> card) {
                 // pop up menu
                 final JPopupMenu popupMenu = new JPopupMenu();
 
@@ -152,7 +155,7 @@ public class InstructorDashboard extends DashBoard{
                 deleteItem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 deleteItem.addActionListener(_ -> {
                     int confirm = JOptionPane.showConfirmDialog(InstructorDashboard.this, "Are you sure you want to delete?",
-                            "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+                            "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                     if (confirm == JOptionPane.YES_OPTION) {
                         assert card != null;
@@ -165,8 +168,8 @@ public class InstructorDashboard extends DashBoard{
             }
 
             @Override
-            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
-                if (e.getClickCount() == 2){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card) {
+                if (e.getClickCount() == 2) {
                     assert card != null;
                     Course selectedCourse = card.getData();
                     changeContentPanel(new EditableCourseView(selectedCourse, instructor, InstructorDashboard.this));
@@ -194,7 +197,7 @@ public class InstructorDashboard extends DashBoard{
 
         instructor.removeCourse(courseToDelete);
         userDB.updateRecord(instructor);
-        for (String studentID: courseToDelete.getStudentIDs()){
+        for (String studentID : courseToDelete.getStudentIDs()) {
             System.out.println(studentID);
             Student student = (Student) userDB.getRecordByID(studentID);
             student.removeCourse(courseToDelete);
@@ -208,7 +211,7 @@ public class InstructorDashboard extends DashBoard{
     }
 
     @Override
-    void handleHomeButton(){
+    void handleHomeButton() {
         JLabel userWelcome = new JLabel("Welcome " + instructor.getUsername());
         userWelcome.setFont(new Font("Verdana", Font.PLAIN, 50));
         userWelcome.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));

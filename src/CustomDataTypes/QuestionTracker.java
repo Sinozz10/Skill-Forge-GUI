@@ -1,6 +1,6 @@
 package CustomDataTypes;
 
-public class QuestionTracker extends GeneralTracker{
+public class QuestionTracker extends GeneralTracker {
     private String answer;
 
     public QuestionTracker(String ID, String answer) {

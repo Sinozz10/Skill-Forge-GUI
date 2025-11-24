@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public abstract class DashBoard extends JFrame{
+public abstract class DashBoard extends JFrame {
     private JButton logoutButton;
     private JPanel navBar;
     private JPanel contentPanel;
@@ -56,7 +56,7 @@ public abstract class DashBoard extends JFrame{
         homeButton.addActionListener(_ -> handleHomeButton());
     }
 
-    public void changeContentPanel(JPanel panel){
+    public void changeContentPanel(JPanel panel) {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(panel, BorderLayout.CENTER);

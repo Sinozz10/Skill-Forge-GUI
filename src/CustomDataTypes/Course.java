@@ -8,7 +8,7 @@ public class Course implements Record {
     @Expose
     private final String courseID, instructorID;
     @Expose
-    private String title , description;
+    private String title, description;
     @Expose
     private StatusCourse status;
     @Expose
@@ -21,7 +21,7 @@ public class Course implements Record {
         this.title = title;
         this.description = description;
         this.instructorID = instructorID;
-        this.status= StatusCourse.PENDING; // bybd2 dayman as Pending w hyt8yar b3daha.
+        this.status = StatusCourse.PENDING; // bybd2 dayman as Pending w hyt8yar b3daha.
     }
 
     @Override
@@ -110,6 +110,6 @@ public class Course implements Record {
                 return chapter;
             }
         }
-        return null ;
+        return null;
     }
 }

@@ -2,7 +2,8 @@ package DataManagment;
 
 import CustomDataTypes.Certificate;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ public class CertificateGenerator {
         doc.open();
 
         BaseColor blue = new BaseColor(39, 85, 117);
-        doc.add(new Paragraph("\n\n\n")); //Spaces
+        doc.add(new Paragraph("\n")); //Spaces
 
         // Title
         Font titleBig = new Font(Font.FontFamily.HELVETICA, 40, Font.BOLD, blue);
@@ -74,10 +75,10 @@ public class CertificateGenerator {
         details.setAlignment(Element.ALIGN_CENTER);
         doc.add(details);
 
-        doc.add(new Paragraph("\n\n"));
+        doc.add(new Paragraph("\n"));
 
         // Signature
-        Paragraph sig = new Paragraph("\nSignature\nSkill Forge System", normalFont);
+        Paragraph sig = new Paragraph("Signature\nSkill Forge System", normalFont);
         sig.setAlignment(Element.ALIGN_CENTER);
         doc.add(sig);
 

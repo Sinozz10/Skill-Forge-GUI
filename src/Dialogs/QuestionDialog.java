@@ -11,7 +11,7 @@ public class QuestionDialog extends JDialog {
     private Question question;
 
     public QuestionDialog(Frame parent, Lesson lesson) {
-        super(parent,"Adding new Question", true);
+        super(parent, "Adding new Question", true);
         add(contentPanel);
         changeContentPanel(new QuestionTypePanel(QuestionDialog.this));
 
@@ -20,7 +20,7 @@ public class QuestionDialog extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    public void changeContentPanel(JPanel panel){
+    public void changeContentPanel(JPanel panel) {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(panel, BorderLayout.CENTER);
@@ -29,11 +29,11 @@ public class QuestionDialog extends JDialog {
         pack();
     }
 
-    public void setQuestion(Question question){
+    public void setQuestion(Question question) {
         this.question = question;
     }
 
-    public Question getResult(){
+    public Question getResult() {
         return question;
     }
 }

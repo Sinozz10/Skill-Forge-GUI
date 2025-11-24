@@ -33,39 +33,39 @@ public class LessonDialog extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void initComponents(){
-            setLayout(new BorderLayout(10, 10));
+    private void initComponents() {
+        setLayout(new BorderLayout(10, 10));
 
-            JPanel formPanel = new JPanel();
-            formPanel.setLayout(new GridLayout(4, 2, 10, 10));
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(4, 2, 10, 10));
 
-            formPanel.add(new JLabel("Title:"));
-            title = new JTextField();
-            formPanel.add(title);
+        formPanel.add(new JLabel("Title:"));
+        title = new JTextField();
+        formPanel.add(title);
 
-            formPanel.add(new JLabel("Order:"));
-            orderField = new JTextField();
-            formPanel.add(orderField);
+        formPanel.add(new JLabel("Order:"));
+        orderField = new JTextField();
+        formPanel.add(orderField);
 
-            formPanel.add(new JLabel("Content:"));
-            content = new JTextArea(3, 20);
-            JScrollPane scroll = new JScrollPane(content);
-            formPanel.add(scroll);
+        formPanel.add(new JLabel("Content:"));
+        content = new JTextArea(3, 20);
+        JScrollPane scroll = new JScrollPane(content);
+        formPanel.add(scroll);
 
-            addButton = new JButton("Add Lesson");
-            addButton.setBackground(Color.LIGHT_GRAY);
-            addButton.setForeground(Color.BLACK);
-            formPanel.add(addButton);
+        addButton = new JButton("Add Lesson");
+        addButton.setBackground(Color.LIGHT_GRAY);
+        addButton.setForeground(Color.BLACK);
+        formPanel.add(addButton);
 
-            cancelButton = new JButton("Cancel");
-            cancelButton.setBackground(Color.LIGHT_GRAY);
-            cancelButton.setForeground(Color.BLACK);
-            formPanel.add(cancelButton);
+        cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.LIGHT_GRAY);
+        cancelButton.setForeground(Color.BLACK);
+        formPanel.add(cancelButton);
 
-            add(formPanel, BorderLayout.CENTER);
+        add(formPanel, BorderLayout.CENTER);
     }
 
-    private void addListeners(){
+    private void addListeners() {
         title.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -94,7 +94,7 @@ public class LessonDialog extends JDialog {
         cancelButton.addActionListener(_ -> handleCancel());
     }
 
-    private void createLesson(){
+    private void createLesson() {
         GenerationID generator = new GenerationID();
 
         String chapID = chapter.getChapterID();
@@ -111,11 +111,11 @@ public class LessonDialog extends JDialog {
         }
     }
 
-    private void handleCancel(){
+    private void handleCancel() {
         dispose();
     }
 
-    public Lesson getResult(){
+    public Lesson getResult() {
         return lesson;
     }
 }

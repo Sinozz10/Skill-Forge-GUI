@@ -11,14 +11,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
+public class CourseDatabaseManager extends JsonDatabaseManager<Course> {
     private static final CourseDatabaseManager courseDB = new CourseDatabaseManager("courses.json");
 
     public CourseDatabaseManager(String filename) {
         super(filename);
     }
 
-    public static CourseDatabaseManager getDatabaseInstance(){
+    public static CourseDatabaseManager getDatabaseInstance() {
         return courseDB;
     }
 
@@ -88,15 +88,15 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
                 records.add(course);
             }
         } catch (IOException e) {
-            System.err.println("Error file not found: "+e.getMessage());
+            System.err.println("Error file not found: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
     @Override
-    public void saveToFile(){
-        try(FileWriter writer = new FileWriter(filename)){
+    public void saveToFile() {
+        try (FileWriter writer = new FileWriter(filename)) {
             JsonArray jsonArray = new JsonArray();
 
             for (Course course : records) {
@@ -105,7 +105,7 @@ public class CourseDatabaseManager extends JsonDatabaseManager<Course>{
             }
 
             writer.write(gson.toJson(jsonArray));
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error writing to file:" + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException();

@@ -26,15 +26,15 @@ public class EditableQuizPanel extends JPanel {
         generatePanel();
     }
 
-    public void generatePanel(){
+    public void generatePanel() {
         removeAll();
         repaint();
         revalidate();
 
-        if(lesson.hasQuiz()){
+        if (lesson.hasQuiz()) {
             ArrayList<Question> sortedQuestions = lesson.getQuiz().getQuestions();
             sortedQuestions.sort(Comparator.comparingInt(Question::getOrder));
-            for (Question question:sortedQuestions){
+            for (Question question : sortedQuestions) {
                 generateQuestionPanel(question);
                 add(Box.createRigidArea(new Dimension(0, 10)));
             }
@@ -55,15 +55,15 @@ public class EditableQuizPanel extends JPanel {
         add(wrapper);
     }
 
-    public void generateQuestionPanel(Question question){
-        if (question.getType() == QuestionType.TEXT_QUESTION){
+    public void generateQuestionPanel(Question question) {
+        if (question.getType() == QuestionType.TEXT_QUESTION) {
             generateTextQuestion((TextQuestion) question);
-        }else {
+        } else {
             generateChoiceQuestion((ChoiceQuestion) question);
         }
     }
 
-    public void generateTextQuestion(TextQuestion question){
+    public void generateTextQuestion(TextQuestion question) {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -81,7 +81,7 @@ public class EditableQuizPanel extends JPanel {
         add(container);
     }
 
-    public void generateChoiceQuestion(ChoiceQuestion question){
+    public void generateChoiceQuestion(ChoiceQuestion question) {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -100,7 +100,7 @@ public class EditableQuizPanel extends JPanel {
         add(container);
     }
 
-    private JPanel generateTitlePanel(Question question){
+    private JPanel generateTitlePanel(Question question) {
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
         JLabel titleLabel = new JLabel("Question:");
@@ -133,7 +133,7 @@ public class EditableQuizPanel extends JPanel {
         return titlePanel;
     }
 
-    private JPanel generateAnswerPanel(Question question){
+    private JPanel generateAnswerPanel(Question question) {
         JPanel answerPanel = new JPanel();
         answerPanel.setLayout(new BoxLayout(answerPanel, BoxLayout.X_AXIS));
         JLabel answerLabel = new JLabel("Answer:");
@@ -165,7 +165,7 @@ public class EditableQuizPanel extends JPanel {
         return answerPanel;
     }
 
-    private JPanel generateChoicesPanel(Question question){
+    private JPanel generateChoicesPanel(Question question) {
         JPanel choicesPanel = new JPanel();
         choicesPanel.setLayout(new BoxLayout(choicesPanel, BoxLayout.X_AXIS));
 
@@ -176,7 +176,7 @@ public class EditableQuizPanel extends JPanel {
         return choicesPanel;
     }
 
-    private void fillMenu(CollapsablePanel menu, ChoiceQuestion question){
+    private void fillMenu(CollapsablePanel menu, ChoiceQuestion question) {
         menu.clearContent();
         JButton addChoiceButton = new JButton("Add Choice");
         addChoiceButton.setBackground(Color.LIGHT_GRAY);
@@ -190,7 +190,7 @@ public class EditableQuizPanel extends JPanel {
         buttonPanel.add(addChoiceButton);
         menu.addContent(buttonPanel);
         menu.addContent(Box.createRigidArea(new Dimension(0, 5)));
-        for (String choice:question.getChoices()){
+        for (String choice : question.getChoices()) {
             JPanel c = new JPanel();
             c.add(new JLabel(choice));
             c.addMouseListener(new MouseAdapter() {
@@ -202,10 +202,10 @@ public class EditableQuizPanel extends JPanel {
                         JMenuItem delete = new JMenuItem("Delete");
                         delete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                         delete.addActionListener(_ -> {
-                            if (question.getChoices().size() > 1){
+                            if (question.getChoices().size() > 1) {
                                 question.removeChoice(choice);
                                 fillMenu(menu, question);
-                            }else {
+                            } else {
                                 JOptionPane.showMessageDialog(dashboard, "Must have at least one choice!",
                                         "Error",
                                         JOptionPane.ERROR_MESSAGE);
@@ -234,7 +234,7 @@ public class EditableQuizPanel extends JPanel {
         menu.toggleExpanded();
     }
 
-    private void addChoice(ChoiceQuestion question){
+    private void addChoice(ChoiceQuestion question) {
         String input = (String) JOptionPane.showInputDialog(dashboard, "Enter Choice:", "Add Choice",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
@@ -244,15 +244,15 @@ public class EditableQuizPanel extends JPanel {
 
         input = input.trim();
         if (!input.isEmpty()) {
-            if (!question.getChoices().contains(input)){
-                if (!input.equals(question.getCorrectAnswer())){
+            if (!question.getChoices().contains(input)) {
+                if (!input.equals(question.getCorrectAnswer())) {
                     question.addChoice(input);
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(dashboard, "Choice must be different from correct answer!",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(dashboard, "Choice must be unique!",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -260,7 +260,7 @@ public class EditableQuizPanel extends JPanel {
         }
     }
 
-    private JPanel generateButtonPanel(Question question){
+    private JPanel generateButtonPanel(Question question) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 
@@ -273,7 +273,7 @@ public class EditableQuizPanel extends JPanel {
         return buttonPanel;
     }
 
-    private JButton getDeleteButton(Question question){
+    private JButton getDeleteButton(Question question) {
         JButton deleteButton = new JButton("Delete");
         deleteButton.setBackground(Color.LIGHT_GRAY);
         deleteButton.setForeground(Color.BLACK);
@@ -282,7 +282,7 @@ public class EditableQuizPanel extends JPanel {
                     "Confirm", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 lesson.getQuiz().removeQuestion(question);
-                if (lesson.getQuiz().getQuestions().isEmpty()){
+                if (lesson.getQuiz().getQuestions().isEmpty()) {
                     lesson.setQuiz(null);
                     lesson.setHasQuiz(false);
                 }
@@ -292,7 +292,7 @@ public class EditableQuizPanel extends JPanel {
         return deleteButton;
     }
 
-    private JButton getOrderButton(Question question){
+    private JButton getOrderButton(Question question) {
         JButton orderButton = new JButton("Change Order");
         orderButton.setBackground(Color.LIGHT_GRAY);
         orderButton.setForeground(Color.BLACK);
@@ -300,7 +300,7 @@ public class EditableQuizPanel extends JPanel {
         return orderButton;
     }
 
-    private void orderChangePopup(Question question){
+    private void orderChangePopup(Question question) {
         String input = (String) JOptionPane.showInputDialog(dashboard, "Enter new order:", "Change Order",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
@@ -321,7 +321,7 @@ public class EditableQuizPanel extends JPanel {
         }
     }
 
-    private void changeQuestionOrder(Question question, int newOrder, int oldOrder){
+    private void changeQuestionOrder(Question question, int newOrder, int oldOrder) {
         if (newOrder != oldOrder) {
             // Shift all lessons between old and new order
             if (newOrder < oldOrder) {
@@ -349,23 +349,23 @@ public class EditableQuizPanel extends JPanel {
         }
     }
 
-    public void handleAdd(){
+    public void handleAdd() {
         Question question = new QuestionDialog(dashboard, lesson).getResult();
         if (question != null) {
-            if (lesson.getQuiz() == null){
+            if (lesson.getQuiz() == null) {
                 lesson.setQuiz(new Quiz());
                 lesson.setHasQuiz(true);
             }
             boolean flag = true;
-            for(Question q: lesson.getQuiz().getQuestions()){
-                if (question.getTitle().equals(q.getTitle())){
+            for (Question q : lesson.getQuiz().getQuestions()) {
+                if (question.getTitle().equals(q.getTitle())) {
                     flag = false;
                     JOptionPane.showMessageDialog(dashboard, "Question must be unique",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (flag){
+            if (flag) {
                 int order = question.getOrder();
                 question.setOrder(Integer.MAX_VALUE);
                 lesson.getQuiz().addQuestion(question);
@@ -376,7 +376,7 @@ public class EditableQuizPanel extends JPanel {
         }
     }
 
-    public void handleDelete(){
+    public void handleDelete() {
         int confirm = JOptionPane.showConfirmDialog(dashboard, "Delete Quiz?",
                 "Confirm",
                 JOptionPane.YES_NO_OPTION);

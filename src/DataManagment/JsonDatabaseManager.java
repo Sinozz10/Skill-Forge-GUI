@@ -11,7 +11,7 @@ public abstract class JsonDatabaseManager<T extends Record> {
     protected final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
     protected ArrayList<T> records = new ArrayList<>();
 
-    public JsonDatabaseManager(String filename){
+    public JsonDatabaseManager(String filename) {
         FilesChecker.checkFile(filename);
         this.filename = FilesChecker.getPath(filename);
         readFromFile();
@@ -39,8 +39,8 @@ public abstract class JsonDatabaseManager<T extends Record> {
     }
 
     public T getRecordByID(String recordID) {
-        for (T record: records){
-            if (recordID.equals(record.getID())){
+        for (T record : records) {
+            if (recordID.equals(record.getID())) {
                 return record;
             }
         }

@@ -26,7 +26,7 @@ public class CourseAdd extends JPanel {
         this.idGenerator = new GenerationID();
 
         setLayout(new BorderLayout());
-        add(add,BorderLayout.CENTER);
+        add(add, BorderLayout.CENTER);
         setBackground(Color.LIGHT_GRAY);
 
         addBtn.setBackground(Color.LIGHT_GRAY);
@@ -55,13 +55,13 @@ public class CourseAdd extends JPanel {
         String courseName = this.courseName.getText().trim();
         String courseDescription = description.getText().trim();
 
-        if(courseName.isEmpty() || courseDescription.isEmpty()) {
+        if (courseName.isEmpty() || courseDescription.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a valid course name!",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        try{
+        try {
             String courseID = idGenerator.generateCourseID();
             Course newCourse = new Course(courseID, courseName, courseDescription, instructorId);
             courseDB.addRecord(newCourse);
@@ -78,7 +78,7 @@ public class CourseAdd extends JPanel {
             description.setText("");
             this.courseName.requestFocus();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error adding course!",
                     "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();

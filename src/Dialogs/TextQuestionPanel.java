@@ -25,7 +25,7 @@ public class TextQuestionPanel extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
     }
 
-    public void initComponents(){
+    public void initComponents() {
         setLayout(new BorderLayout(10, 10));
 
         JPanel formPanel = new JPanel();
@@ -56,7 +56,7 @@ public class TextQuestionPanel extends JPanel {
         contentPanel.add(formPanel, BorderLayout.CENTER);
     }
 
-    public void addListeners(){
+    public void addListeners() {
         title.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -86,7 +86,7 @@ public class TextQuestionPanel extends JPanel {
         cancelButton.addActionListener(_ -> handleCancel());
     }
 
-    private void createQuestion(){
+    private void createQuestion() {
         String t = title.getText().trim();
         String ans = correctAns.getText().trim();
         String orderStr = order.getText().trim();
@@ -99,7 +99,7 @@ public class TextQuestionPanel extends JPanel {
         }
     }
 
-    private void handleCancel(){
+    private void handleCancel() {
         parent.dispose();
     }
 }

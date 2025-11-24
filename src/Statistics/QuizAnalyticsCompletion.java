@@ -8,7 +8,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public class QuizAnalyticsCompletion extends SuperChart {
 
     public QuizAnalyticsCompletion(String header, JFreeChart chart) {
-        super(header,chart);
+        super(header, chart);
     }
 
     @Override
@@ -23,8 +23,8 @@ public class QuizAnalyticsCompletion extends SuperChart {
                         if (s != null) {
                             Progress progress = s.getProgressTrackerByCourseID(course.getID());
                             if (progress != null) {
-                                LessonTracker lt = progress.getTrackerByID(l.getLessonID());
-                                if (lt != null && lt.isComplete()) {
+                                LessonTracker lt = progress.getTrackerByLessonID(l.getLessonID());
+                                if (lt != null && lt.isTrue()) {
                                     completed++;
                                 }
                             }

@@ -11,9 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-public class StudentCourseView extends CourseView{
+public class StudentCourseView extends CourseView {
     private final JTextPane content = new JTextPane();
-    private boolean quizViewState;
     private final StudentDashboard dashboard;
     private final GenerationID idGenerator;
     private final Student student;
@@ -40,24 +39,24 @@ public class StudentCourseView extends CourseView{
     }
 
     @Override
-    protected LessonPanel generateLessonPanel(Lesson lesson){
-        LessonPanel lp = new LessonPanel(lesson){
+    protected LessonPanel generateLessonPanel(Lesson lesson) {
+        LessonPanel lp = new LessonPanel(lesson) {
             @Override
-            public void leftClickHandler(MouseEvent e){
-                lessonPanelClickHandler(this, lesson, progress);
+            public void leftClickHandler(MouseEvent e) {
+                lessonPanelClickHandler(this, lesson);
             }
         };
-        if (progress != null){
-            LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
-            if (tracker != null && tracker.isComplete()){
+        if (progress != null) {
+            LessonTracker tracker = progress.getTrackerByLessonID(lesson.getLessonID());
+            if (tracker != null && tracker.isTrue()) {
                 lp.setComplete();
             }
         }
-        return  lp;
+        return lp;
     }
 
     @Override
-    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson, Progress progress){
+    protected void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -66,10 +65,10 @@ public class StudentCourseView extends CourseView{
         panel.add(textContent, BorderLayout.CENTER);
         panel.add(textContent, BorderLayout.CENTER);
 
-        if (lesson.hasQuiz()){
+        if (lesson.hasQuiz()) {
             hasQuizLogic(panel, lesson, Lp);
-        }else {
-            hasNoQuizLogic(Lp, lesson, progress);
+        } else {
+            hasNoQuizLogic(Lp, lesson);
         }
 
         lessonTitle.setVisible(true);
@@ -77,41 +76,43 @@ public class StudentCourseView extends CourseView{
         changeContentPanel(panel);
     }
 
-    private void hasQuizLogic(JPanel panel, Lesson lesson, LessonPanel Lp){
+    private void hasQuizLogic(JPanel panel, Lesson lesson, LessonPanel Lp) {
         quizButton.setVisible(true);
+        quizButton.setText("Take Quiz");
         for (ActionListener al : quizButton.getActionListeners()) {
             quizButton.removeActionListener(al);
         }
 
-        quizViewState = false;
         quizButton.addActionListener(_ -> {
-            if (quizViewState){
+            if (quizButton.getText().equals("Back")) {
                 textContent.setText(lesson.getContent());
                 panel.add(textContent, BorderLayout.CENTER);
+
+                lessonTitle.setText(lesson.getTitle());
                 quizButton.setText("Take Quiz");
-                quizViewState = false;
+
                 changeContentPanel(panel);
-            }else {
+            } else {
                 quizButton.setText("Back");
-                quizViewState = true;
+                displayStatus(lesson);
                 changeContentPanel(new QuizPanel(dashboard, lesson, Lp, progress));
             }
         });
     }
 
-    private void hasNoQuizLogic(LessonPanel Lp, Lesson lesson, Progress progress){
+    private void hasNoQuizLogic(LessonPanel Lp, Lesson lesson) {
         Lp.setComplete();
-        LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
+        LessonTracker tracker = progress.getTrackerByLessonID(lesson.getLessonID());
         if (tracker != null) {
-            tracker.setComplete(true);
+            tracker.setState(true);
         }
-        progress.getTrackerByID(lesson.getLessonID()).setComplete(true);
+        progress.completeLesson(lesson.getLessonID());
         userDB.updateRecord(student);
         userDB.saveToFile();
         certificateLogic();
     }
 
-    private void certificateLogic(){
+    protected void certificateLogic() {
         // Check if course is complete
         if (progress.isCourseComplete() && student.getCertificateByCourseID(course.getID()) == null) {
             //Create Cert
@@ -139,4 +140,13 @@ public class StudentCourseView extends CourseView{
         }
     }
 
+    protected void displayStatus(Lesson lesson){
+        if (progress != null) {
+            LessonTracker t = progress.getTrackerByLessonID(lesson.getLessonID());
+            Attempt a = t.getHighScore();
+            if (a != null && lesson.hasQuiz()) {
+                lessonTitle.setText(lesson.getTitle() + "  --  Attempts: " + a.getAttemptNum() + "  --  HighScore: " + a.getScore());
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 
-public class ChoiceQuestion extends Question{
+public class ChoiceQuestion extends Question {
     @Expose
     private ArrayList<String> choices;
 
@@ -13,13 +13,13 @@ public class ChoiceQuestion extends Question{
         type = QuestionType.CHOICE_QUESTION;
     }
 
-    public void addChoice(String choice){
-        if (!choices.contains(choice)){
+    public void addChoice(String choice) {
+        if (!choices.contains(choice)) {
             choices.add(choice);
         }
     }
 
-    public void removeChoice(String choice){
+    public void removeChoice(String choice) {
         choices.remove(choice);
     }
 

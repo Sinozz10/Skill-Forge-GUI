@@ -1,33 +1,45 @@
 package CustomDataTypes;
 
-import com.google.gson.annotations.*;
+import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 
-public class LessonTracker {
+public class LessonTracker extends GeneralTracker {
     @Expose
-    private final String lessonID;
-    @Expose
-    private boolean state;
+    private ArrayList<Attempt> attempts = new ArrayList<>();
 
     public LessonTracker(Lesson lesson) {
-        this.lessonID = lesson.getLessonID();
-        this.state = false;
+        super(lesson.getLessonID());
     }
 
     public LessonTracker(Lesson lesson, boolean state) {
-        this.lessonID = lesson.getLessonID();
-        this.state = state;
+        super(lesson.getLessonID(), state);
     }
 
-    public String getLessonID() {
-        return lessonID;
+    public LessonTracker(Lesson lesson, ArrayList<Attempt> attempts, boolean state) {
+        super(lesson.getLessonID(), state);
+        this.attempts.addAll(attempts);
     }
 
-    public boolean isComplete() {
-        return state;
+
+    public int getNumberOfAttempts() {
+        return attempts.size();
     }
 
-    public void setComplete(boolean state) {
-        this.state = state;
+    public Attempt getHighScore() {
+        return attempts.stream().max(Comparator.comparingDouble(Attempt::getScore)).orElse(null);
+    }
+
+    public void addAttempt(Attempt attempt) {
+        attempts.add(attempt);
+    }
+
+    public ArrayList<Attempt> getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(ArrayList<Attempt> attempts) {
+        this.attempts = attempts;
     }
 }
