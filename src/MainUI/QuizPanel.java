@@ -222,8 +222,15 @@ public class QuizPanel extends JPanel {
             double total = (complete * 100.0) / lesson.getQuiz().getQuestions().size();
             if (total >= 70.0){
                 Lp.setComplete();
+                StudentCourseView parent = null;
                 if (progress != null){
                     progress.completeLesson(lesson.getLessonID());
+                    Component comp = QuizPanel.this;
+                    while (!(comp instanceof StudentCourseView) && comp != null){
+                        comp = comp.getParent();
+                    }
+                    parent = (StudentCourseView) comp;
+                    assert parent != null;
                 }
                 JOptionPane.showMessageDialog(
                         dashboard,
@@ -232,6 +239,9 @@ public class QuizPanel extends JPanel {
                         JOptionPane.INFORMATION_MESSAGE,
                         UIManager.getIcon("OptionPane.informationIcon")
                 );
+                if (parent!= null){
+                    parent.certificateLogic();
+                }
             }else {
                 JOptionPane.showMessageDialog(
                         dashboard,

@@ -111,7 +111,7 @@ public class StudentCourseView extends CourseView{
         certificateLogic();
     }
 
-    private void certificateLogic(){
+    protected void certificateLogic(){
         // Check if course is complete
         if (progress.isCourseComplete() && student.getCertificateByCourseID(course.getID()) == null) {
             //Create Cert

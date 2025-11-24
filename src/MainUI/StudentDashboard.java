@@ -114,14 +114,16 @@ public class StudentDashboard extends DashBoard{
         certificateBtn.setBackground(Color.LIGHT_GRAY);
         certificateBtn.setForeground(Color.BLACK);
 
-        CardScrollPane<Certificate> certificateScrollPane = new CardScrollPane<>(
-                student.getCertificates(),
-                CertificateCard::new, "No Certificates Found!",
-                null,
-                null
-        );
+        certificateBtn.addActionListener(_ -> {
+            CardScrollPane<Certificate> certificateScrollPane = new CardScrollPane<>(
+                    student.getCertificates(),
+                    CertificateCard::new, "No Certificates Found!",
+                    null,
+                    null
+            );
+            changeContentPanel(certificateScrollPane);
+        });
 
-        certificateBtn.addActionListener(_ -> changeContentPanel(certificateScrollPane));
         return certificateBtn;
     }
 
