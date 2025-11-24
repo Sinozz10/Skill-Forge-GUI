@@ -126,7 +126,7 @@ public class StudentCourseView extends CourseView{
 
             // Generate PDF
             try {
-                new CertificateGenerator().generateCertificate(cert);
+                new CertificateGenerator().certificateGenerator(cert);
                 // Ask to view
                 if (JOptionPane.showConfirmDialog(this, "Course completed!\nView certificate?",
                         "Congratulations!",

@@ -16,7 +16,7 @@ public class CertificateGenerator {
         new File(FOLDER).mkdirs();
     }
 
-    public String generateCertificate(Certificate certificate) throws DocumentException, FileNotFoundException {
+    public String certificateGenerator(Certificate certificate) throws DocumentException, FileNotFoundException {
         String filename = FOLDER + certificate.getCertificateID() + ".pdf";
 
         // Creates PDF

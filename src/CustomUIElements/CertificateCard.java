@@ -41,12 +41,11 @@ public class CertificateCard extends GenericCard<Certificate> {
 
     private void viewCertificate(Certificate cert) {
         try {
-            // Generate if certificate doesn't exist
+            // if certificate doesn't exist,e3ml gdeeda
             if (!CertificateGenerator.exists(cert.getCertificateID())) {
-                new CertificateGenerator().generateCertificate(cert);
+                new CertificateGenerator().certificateGenerator(cert);
             }
-
-            // Open
+            // To be able to open
             Desktop.getDesktop().open(new File(CertificateGenerator.getPath(cert.getCertificateID())));
 
         } catch (Exception e) {
@@ -56,12 +55,11 @@ public class CertificateCard extends GenericCard<Certificate> {
 
     private void downloadCertificate(Certificate cert) {
         try {
-            // Generate if certificate doesn't exist
+            // if certificate doesn't exist,e3ml gdeeda
             if (!CertificateGenerator.exists(cert.getCertificateID())) {
-                new CertificateGenerator().generateCertificate(cert);
+                new CertificateGenerator().certificateGenerator(cert);
             }
-
-            // Choose location
+            //Location
             JFileChooser chooser = new JFileChooser();
             chooser.setSelectedFile(new File(cert.getCertificateID() + ".pdf"));
 
