@@ -35,12 +35,6 @@ Supports three roles: **Admin**, **Instructor**, and **Student**.
 - ✅ Stored in users.json
 - ✅ View/download certificates from dashboard
 
-### 5. OOP Concepts
-- ✅ Inheritance (User → Admin/Instructor/Student, etc.)
-- ✅ Polymorphism (abstract methods, interfaces)
-- ✅ Abstraction (abstract classes, interfaces)
-- ✅ Encapsulation (private fields, getters/setters)
-
 ---
 
 ## Libraries Required
