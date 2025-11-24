@@ -16,7 +16,6 @@ public class LessonChartCreation extends SuperChart {
         for (Chapter chap : course.getChapters()) {
             for (Lesson lesson : chap.getLessons()) {
                 int completed = 0;
-
                 for (String sid : course.getStudentIDs()) {
                     Student s = (Student) userDB.getRecordByID(sid);
                     if (s != null) {
