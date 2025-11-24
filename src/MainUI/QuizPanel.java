@@ -130,9 +130,9 @@ public class QuizPanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (trackers.stream().anyMatch(tracker -> tracker.getID().equals(question.getTitle()))){
-                        Optional o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
-                        QuestionTracker t = (QuestionTracker) o.get();
+                    Optional<QuestionTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
+                    if (o.isPresent()){
+                        QuestionTracker t = o.get();
                         t.setAnswer(userAnswer.getText());
                     }else {
                         QuestionTracker t = new QuestionTracker(question.getTitle(), userAnswer.getText());

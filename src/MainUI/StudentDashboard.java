@@ -57,7 +57,7 @@ public class StudentDashboard extends DashBoard{
                 courseDB.getRecords(),
                 CourseCard::new,
                 "No Courses Found!",
-                course -> "Completion: "+rounder(student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage()),
+                course -> "Completion: "+student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage(),
                 course -> student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
         ){
@@ -125,13 +125,6 @@ public class StudentDashboard extends DashBoard{
         });
 
         return certificateBtn;
-    }
-
-    protected static double rounder(double mark){
-        int decimalPlaces = 2;
-        // Round to 2 decimal places
-
-        return Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
 
     @Override

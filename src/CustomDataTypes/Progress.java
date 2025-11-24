@@ -4,6 +4,7 @@ import com.google.gson.annotations.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 public class Progress {
     @Expose
@@ -13,14 +14,18 @@ public class Progress {
     @Expose
     private Date completionDate;
     @Expose
-    private final ArrayList<LessonTracker> trackers = new ArrayList<>();
+    private ArrayList<LessonTracker> trackers = new ArrayList<>();
 
     public Progress(Course course, String studentID) {
         this.courseID = course.getID();
         this.studentID = studentID;
         for (Chapter chapter: course.getChapters()){
             for (Lesson lesson: chapter.getLessons()){
-                trackers.add(new LessonTracker(lesson));
+                if (lesson.hasQuiz()){
+                    trackers.add(new QuizLessonTracker(lesson));
+                }else {
+                    trackers.add(new LessonTracker(lesson));
+                }
             }
         }
     }
@@ -41,7 +46,7 @@ public class Progress {
         if (trackers.isEmpty()){
             return 0.0;
         }
-        return rounder( (complete * 100.0)/trackers.size() );
+        return rounder((complete * 100.0)/trackers.size() );
     }
 
     public boolean isCourseComplete() {
@@ -76,23 +81,30 @@ public class Progress {
             throw new IllegalArgumentException("Incorrect Course");
         }
 
-        ArrayList<String> completed = new ArrayList<>();
-        for (LessonTracker tracker: trackers){
-            if (tracker.isTrue()){
-                completed.add(tracker.getID());
+        ArrayList<LessonTracker> newTrackers = new ArrayList<>();
+
+        for (Chapter chapter: course.getChapters()) {
+            for (Lesson lesson : chapter.getLessons()) {
+                Optional<LessonTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(lesson.getLessonID())).findFirst();
+                if (o.isPresent()) {
+                    LessonTracker t = o.get();
+                    if (t instanceof QuizLessonTracker || lesson.hasQuiz()) {
+                        try{
+                            assert t instanceof QuizLessonTracker;
+                            newTrackers.add(new QuizLessonTracker(lesson, ((QuizLessonTracker) t).getAttempts(), t.isTrue()));
+                        }catch (ClassCastException _){
+                            newTrackers.add(new QuizLessonTracker(lesson, t.isTrue()));
+                        }
+                    } else {
+                        newTrackers.add(new LessonTracker(lesson, t.isTrue()));
+                    }
+                }
             }
         }
 
         trackers.clear();
-        for (Chapter chapter: course.getChapters()){
-            for (Lesson lesson: chapter.getLessons()){
-                if (completed.contains(lesson.getLessonID())){
-                    trackers.add(new LessonTracker(lesson, true));
-                }else {
-                    trackers.add(new LessonTracker(lesson));
-                }
-            }
-        }
+        trackers = newTrackers;
+
     }
 
     public String getCourseID() {
@@ -112,10 +124,6 @@ public class Progress {
     }
 
     private static double rounder(double mark){
-        int decimalPlaces = 2;
-        // Round to 2 decimal places
-        double roundedNumber = Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
-
-        return roundedNumber;
+        return Math.round(mark * Math.pow(10, 2)) / Math.pow(10, 2);
     }
 }

@@ -1,50 +1,36 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
+import java.util.ArrayList;
+
 public class QuizLessonTracker extends LessonTracker{
-    private int attempts;
-    private double highScore;
+    @Expose
+    private ArrayList<Attempt> attempts = new ArrayList<>();
 
     public QuizLessonTracker(Lesson lesson) {
         super(lesson);
-        this.attempts = 0;
-        this.highScore = 0.0;
     }
 
-    public QuizLessonTracker(Lesson lesson, int attempts, double highScore) {
-        super(lesson);
-        this.attempts = attempts;
-        this.highScore = highScore;
+    public QuizLessonTracker(Lesson lesson, boolean state) {
+        super(lesson, state);
     }
 
-    public QuizLessonTracker(Lesson lesson , int attempts, double highScore, boolean state) {
+    public QuizLessonTracker(Lesson lesson, ArrayList<Attempt> attempts, boolean state) {
         super(lesson, state);
         this.attempts = attempts;
-        this.highScore = highScore;
     }
 
-    private void incrementAttempts(){
-        attempts++;
+    public void addAttempt(Attempt attempt){
+        attempts.add(attempt);
     }
 
-    private void setHigherScore(double highScore){
-        if (highScore > this.highScore){
-            this.highScore =highScore;
-        }
-    }
-
-    public int getAttempts() {
+    public ArrayList<Attempt> getAttempts() {
         return attempts;
     }
 
-    public void setAttempts(int attempts) {
+    public void setAttempts(ArrayList<Attempt> attempts) {
         this.attempts = attempts;
     }
-
-    public double getHighScore() {
-        return highScore;
-    }
-
-    public void setHighScore(double highScore) {
-        this.highScore = highScore;
-    }
 }
+
