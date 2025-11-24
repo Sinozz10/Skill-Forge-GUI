@@ -3,7 +3,6 @@ package MainUI;
 import CustomDataTypes.Chapter;
 import CustomDataTypes.Course;
 import CustomDataTypes.Lesson;
-import CustomDataTypes.Progress;
 import CustomUIElements.CollapsablePanel;
 import CustomUIElements.LessonPanel;
 import DataManagment.CourseDatabaseManager;
@@ -15,7 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public abstract class CourseView extends JPanel{
+public abstract class CourseView extends JPanel {
 
     protected JLabel courseTitle;
     protected JPanel lessonView;
@@ -38,8 +37,6 @@ public abstract class CourseView extends JPanel{
     protected final CourseDatabaseManager courseDB = CourseDatabaseManager.getDatabaseInstance();
     protected final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
     protected final JTextPane textContent = new JTextPane();
-    protected boolean quizViewState;
-
     protected final Course course;
 
     public CourseView(Course course) {
@@ -67,17 +64,17 @@ public abstract class CourseView extends JPanel{
         descriptionTextPane.setText(course.getDescription());
     }
 
-    protected JScrollPane generateSideBar(){
+    protected JScrollPane generateSideBar() {
         JPanel coursesPanel = new JPanel();
         coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
         ArrayList<Chapter> sortedChapters = course.getChapters();
         sortedChapters.sort(Comparator.comparingInt(Chapter::getOrder));
-        for (Chapter chapter: sortedChapters){
+        for (Chapter chapter : sortedChapters) {
             CollapsablePanel cur = new CollapsablePanel(chapter.getChapterID(), chapter.getTitle());
 
             ArrayList<Lesson> sortedLessons = chapter.getLessons();
             sortedLessons.sort(Comparator.comparingInt(Lesson::getOrder));
-            for (Lesson lesson: sortedLessons){
+            for (Lesson lesson : sortedLessons) {
                 cur.addContent(generateLessonPanel(lesson));
                 cur.addContent(Box.createRigidArea(new Dimension(0, 5)));
             }
@@ -93,7 +90,7 @@ public abstract class CourseView extends JPanel{
 
     protected abstract void lessonPanelClickHandler(LessonPanel Lp, Lesson lesson);
 
-    public void changeContentPanel(JPanel panel){
+    public void changeContentPanel(JPanel panel) {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(panel, BorderLayout.CENTER);

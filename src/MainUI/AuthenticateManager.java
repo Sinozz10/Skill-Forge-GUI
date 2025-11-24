@@ -1,11 +1,11 @@
 package MainUI;
 
 import CustomDataTypes.Admin;
-import DataManagment.*;
-
 import CustomDataTypes.Instructor;
 import CustomDataTypes.Student;
 import CustomDataTypes.User;
+import DataManagment.GenerationID;
+import DataManagment.UserDatabaseManager;
 
 public class AuthenticateManager {
     protected final UserDatabaseManager database = UserDatabaseManager.getDatabaseInstance();
@@ -32,9 +32,9 @@ public class AuthenticateManager {
         User newUser;
         if (role.equalsIgnoreCase("student")) {
             newUser = new Student(userId, role, username, email, hashedPassword);
-        } else  if (role.equalsIgnoreCase("instructor")) {
+        } else if (role.equalsIgnoreCase("instructor")) {
             newUser = new Instructor(userId, role, username, email, hashedPassword);
-        }else {
+        } else {
             newUser = new Admin(userId, role, username, email, hashedPassword); //Zawedt User Admin
         }
 

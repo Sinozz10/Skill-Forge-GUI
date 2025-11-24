@@ -19,7 +19,7 @@ public class QuestionTypePanel extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
     }
 
-    public void initComponents(){
+    public void initComponents() {
         setLayout(new BorderLayout(10, 10));
 
         JPanel formPanel = new JPanel();
@@ -43,7 +43,7 @@ public class QuestionTypePanel extends JPanel {
         contentPanel.add(formPanel, BorderLayout.CENTER);
     }
 
-    public void addListeners(){
+    public void addListeners() {
         choice.addActionListener(_ -> parent.changeContentPanel(new ChoiceQuestionPanel(parent)));
 
         text.addActionListener(_ -> parent.changeContentPanel(new TextQuestionPanel(parent)));
@@ -51,7 +51,7 @@ public class QuestionTypePanel extends JPanel {
         cancelButton.addActionListener(_ -> handleCancel());
     }
 
-    private void handleCancel(){
+    private void handleCancel() {
         parent.dispose();
     }
 }

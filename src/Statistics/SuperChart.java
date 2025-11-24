@@ -25,10 +25,10 @@ public abstract class SuperChart extends JFrame {
     public JFreeChart createChart(Course course, UserDatabaseManager userDB, String title, String xAxisLabel, String yAxisLabel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        drawDataSet(dataset, course,userDB);
+        drawDataSet(dataset, course, userDB);
 
-        JFreeChart chart = ChartFactory.createBarChart(title,xAxisLabel,yAxisLabel,dataset, PlotOrientation.VERTICAL,
-                false,true,false);
+        JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL,
+                false, true, false);
 
         customizeChart(chart);
         return chart;
@@ -66,7 +66,7 @@ public abstract class SuperChart extends JFrame {
         );
     }
 
-    protected static double rounder(double mark){
+    protected static double rounder(double mark) {
         int decimalPlaces = 2;
         // Round to 2 decimal places
         return Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);

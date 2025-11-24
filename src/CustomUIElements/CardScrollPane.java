@@ -27,10 +27,10 @@ public class CardScrollPane<T> extends JPanel {
     private final String noResultMessage;
 
     public CardScrollPane(ArrayList<T> dataSource, CardFactory<T> cardFactory, String noResultMessage,
-                      Function<T, String> flavourFunction, Predicate<T> filterFunction) {
+                          Function<T, String> flavourFunction, Predicate<T> filterFunction) {
         this.dataSource = dataSource;
         this.cardFactory = cardFactory;
-        this.noResultMessage = noResultMessage == null? "No items found": noResultMessage;
+        this.noResultMessage = noResultMessage == null ? "No items found" : noResultMessage;
         this.filterFunction = filterFunction;
         this.flavourFunction = flavourFunction;
         this.availableItems = new ArrayList<>();
@@ -95,7 +95,7 @@ public class CardScrollPane<T> extends JPanel {
             cardPanel.removeAll();
             JPanel wrapper = new JPanel();
             wrapper.setBackground(Color.gray);
-            wrapper.setBorder(new EmptyBorder(10, 10,10,10));
+            wrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
             wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
             JLabel noResults = new JLabel(noResultMessage);
             noResults.setFont(new Font(null, Font.PLAIN, 20));

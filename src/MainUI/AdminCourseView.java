@@ -1,6 +1,9 @@
 package MainUI;
 
-import CustomDataTypes.*;
+import CustomDataTypes.Admin;
+import CustomDataTypes.Course;
+import CustomDataTypes.Lesson;
+import CustomDataTypes.StatusCourse;
 import CustomUIElements.LessonPanel;
 import DataManagment.GenerationID;
 
@@ -9,9 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-public class AdminCourseView extends CourseView{
+public class AdminCourseView extends CourseView {
     private final JTextPane content = new JTextPane();
-    private boolean quizViewState;
     private final AdminDashboard dashboard;
     private final GenerationID idGenerator;
     private final Admin admin;
@@ -25,19 +27,19 @@ public class AdminCourseView extends CourseView{
         addButtons();
     }
 
-    private void addButtons(){
+    private void addButtons() {
         JPanel wrapper = new JPanel();
         wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
 
         JButton rejectButton = new JButton("Reject");
-        rejectButton.addActionListener(e->handleReject());
+        rejectButton.addActionListener(e -> handleReject());
         rejectButton.setBackground(new Color(120, 7, 5));
         wrapper.add(rejectButton);
 
         wrapper.add(Box.createRigidArea(new Dimension(10, 0)));
 
         JButton approveButton = new JButton("Approve");
-        approveButton.addActionListener(e->handleApprove());
+        approveButton.addActionListener(e -> handleApprove());
         approveButton.setBackground(new Color(7, 120, 5));
         wrapper.add(approveButton);
 
@@ -83,9 +85,9 @@ public class AdminCourseView extends CourseView{
 
     @Override
     protected LessonPanel generateLessonPanel(Lesson lesson) {
-        return new LessonPanel(lesson){
+        return new LessonPanel(lesson) {
             @Override
-            public void leftClickHandler(MouseEvent e){
+            public void leftClickHandler(MouseEvent e) {
                 lessonPanelClickHandler(this, lesson);
             }
         };
@@ -96,31 +98,27 @@ public class AdminCourseView extends CourseView{
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        quizButton.setVisible(false);
+        quizButton.setText("Take Quiz");
         content.setText(lesson.getContent());
         panel.add(content, BorderLayout.CENTER);
         panel.add(content, BorderLayout.CENTER);
 
-        if (lesson.hasQuiz()){
-            quizButton.setVisible(true);
+        if (lesson.hasQuiz()) {
             for (ActionListener al : quizButton.getActionListeners()) {
                 quizButton.removeActionListener(al);
             }
-            quizViewState = false;
             quizButton.addActionListener(_ -> {
-                if (quizViewState){
+                if (quizButton.getText().equals("Back")) {
                     content.setText(lesson.getContent());
                     panel.add(content, BorderLayout.CENTER);
                     quizButton.setText("Take Quiz");
-                    quizViewState = false;
                     changeContentPanel(panel);
-                }else {
+                } else {
                     quizButton.setText("Back");
-                    quizViewState = true;
                     changeContentPanel(new QuizPanel(dashboard, lesson, Lp, null));
                 }
             });
-        }else {
+        } else {
             Lp.setComplete();
         }
         lessonTitle.setVisible(true);

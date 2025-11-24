@@ -2,7 +2,8 @@ package DataManagment;
 
 import CustomDataTypes.Certificate;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

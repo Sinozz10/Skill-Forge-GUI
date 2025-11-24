@@ -1,7 +1,11 @@
 package CustomDataTypes;
 
+import com.google.gson.annotations.Expose;
+
 public class Attempt {
+    @Expose
     private int attemptNum;
+    @Expose
     private double score;
 
     public Attempt(int attemptNum, double score) {

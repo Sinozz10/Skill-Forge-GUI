@@ -4,9 +4,9 @@ import CustomDataTypes.Admin;
 import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.StatusCourse;
-import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
 import CustomUIElements.CourseCard;
+import CustomUIElements.GenericCard;
 import DataManagment.CourseDatabaseManager;
 import DataManagment.UserDatabaseManager;
 
@@ -31,7 +31,7 @@ public class AdminDashboard extends DashBoard {
         handleHomeButton();
     }
 
-    private JButton getPendingButton(){
+    private JButton getPendingButton() {
         JButton pending = new JButton("Pending Courses");
         pending.setForeground(Color.BLACK);
         pending.setBackground(Color.LIGHT_GRAY);
@@ -39,7 +39,7 @@ public class AdminDashboard extends DashBoard {
         return pending;
     }
 
-    private JButton getAllButton(){
+    private JButton getAllButton() {
         JButton allCourses = new JButton("All Courses");
         allCourses.setForeground(Color.BLACK);
         allCourses.setBackground(Color.LIGHT_GRAY);
@@ -60,11 +60,11 @@ public class AdminDashboard extends DashBoard {
 
         CardScrollPane<Course> cardScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
-                CourseCard::new, "No Courses Found!",   course -> "Status: "+course.getStatus(),
+                CourseCard::new, "No Courses Found!", course -> "Status: " + course.getStatus(),
                 course -> course.getStatus() == StatusCourse.PENDING) {
             @Override
-            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
-                if (e.getClickCount() == 2){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card) {
+                if (e.getClickCount() == 2) {
                     assert card != null;
                     Course selectedCourse = card.getData();
                     changeContentPanel(new AdminCourseView(selectedCourse, admin, AdminDashboard.this));

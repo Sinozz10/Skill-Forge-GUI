@@ -1,16 +1,16 @@
 package MainUI;
 
 import CustomDataTypes.*;
-import CustomUIElements.CertificateCard;
-import CustomUIElements.GenericCard;
 import CustomUIElements.CardScrollPane;
+import CustomUIElements.CertificateCard;
 import CustomUIElements.CourseCard;
+import CustomUIElements.GenericCard;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class StudentDashboard extends DashBoard{
+public class StudentDashboard extends DashBoard {
     private final Student student;
 
     public StudentDashboard(Student student) {
@@ -18,11 +18,11 @@ public class StudentDashboard extends DashBoard{
         this.student = student;
 
         setTitle("Dashboard - " + student.getUsername());
-        navButtons.setLayout(new GridLayout(1,2, 10, 10));
+        navButtons.setLayout(new GridLayout(1, 2, 10, 10));
         setBackground(Color.LIGHT_GRAY);
         setResizable(false);
 
-        for (Progress prog: student.getAllProgressTrackers()){
+        for (Progress prog : student.getAllProgressTrackers()) {
             prog.updateTrackers(courseDB.getRecordByID(prog.getCourseID()));
         }
         userDB.saveToFile();
@@ -43,7 +43,7 @@ public class StudentDashboard extends DashBoard{
         return viewBtn;
     }
 
-    private JButton getEnrollButton(Student student){
+    private JButton getEnrollButton(Student student) {
         JButton enrollButton = new JButton("Enroll");
         enrollButton.setBackground(Color.LIGHT_GRAY);
         enrollButton.setForeground(Color.BLACK);
@@ -52,18 +52,18 @@ public class StudentDashboard extends DashBoard{
         return enrollButton;
     }
 
-    private void handleViewCourses(){
+    private void handleViewCourses() {
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
                 CourseCard::new,
                 "No Courses Found!",
-                course -> "Completion: "+student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage(),
+                course -> "Completion: " + student.getProgressTrackerByCourseID(course.getID()).getCompletionPercentage(),
                 course -> student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
-        ){
+        ) {
             @Override
-            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
-                if (e.getClickCount() == 2){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card) {
+                if (e.getClickCount() == 2) {
                     assert card != null;
                     Course selectedCourse = card.getData();
                     changeContentPanel(new StudentCourseView(selectedCourse, student, StudentDashboard.this));
@@ -74,7 +74,7 @@ public class StudentDashboard extends DashBoard{
         changeContentPanel(courseScrollPane);
     }
 
-    private void handleViewEnrollableCourses(){
+    private void handleViewEnrollableCourses() {
 
         CardScrollPane<Course> courseScrollPane = new CardScrollPane<>(
                 courseDB.getRecords(),
@@ -83,12 +83,12 @@ public class StudentDashboard extends DashBoard{
                 null,
                 course -> !student.getCourseIDs().contains(course.getID())
                         && course.getStatus() == StatusCourse.APPROVED
-        ){
+        ) {
             @Override
-            public void leftClickHandler(MouseEvent e, GenericCard<Course> card){
-                if (e.getClickCount() == 2){
+            public void leftClickHandler(MouseEvent e, GenericCard<Course> card) {
+                if (e.getClickCount() == 2) {
                     int confirm = JOptionPane.showConfirmDialog(StudentDashboard.this, "Are you sure you want to enroll?",
-                            "Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+                            "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                     if (confirm == JOptionPane.YES_OPTION) {
                         assert card != null;
@@ -109,7 +109,7 @@ public class StudentDashboard extends DashBoard{
         changeContentPanel(courseScrollPane);
     }
 
-    private JButton getCertificatesButton(Student student){
+    private JButton getCertificatesButton(Student student) {
         JButton certificateBtn = new JButton("My Certificates");
         certificateBtn.setBackground(Color.LIGHT_GRAY);
         certificateBtn.setForeground(Color.BLACK);
@@ -128,8 +128,8 @@ public class StudentDashboard extends DashBoard{
     }
 
     @Override
-    void handleHomeButton(){
-        JLabel userWelcome = new JLabel("Welcome "+student.getUsername());
+    void handleHomeButton() {
+        JLabel userWelcome = new JLabel("Welcome " + student.getUsername());
         userWelcome.setFont(new Font("Verdana", Font.PLAIN, 50));
         userWelcome.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
         JPanel userPanel = new JPanel();
@@ -137,7 +137,7 @@ public class StudentDashboard extends DashBoard{
         changeContentPanel(userPanel);
     }
 
-    public Student getStudent(){
+    public Student getStudent() {
         return student;
     }
 }

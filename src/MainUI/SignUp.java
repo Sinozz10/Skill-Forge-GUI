@@ -33,7 +33,7 @@ public class SignUp extends JPanel {
         this.dashBoard = dashBoard;
         this.authManager = new AuthenticateManager();
         setLayout(new BorderLayout());
-        add(SignUp,BorderLayout.CENTER);
+        add(SignUp, BorderLayout.CENTER);
         backButton.setFont(new Font("Arial", Font.BOLD, 14));
         backButton.setForeground(Color.BLACK);
         backButton.setBackground(Color.LIGHT_GRAY);
@@ -70,7 +70,7 @@ public class SignUp extends JPanel {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (role.isVisible()) {
                         role.requestFocus();
-                    }else {
+                    } else {
                         handleSignUp();
                     }
                 }
@@ -85,14 +85,14 @@ public class SignUp extends JPanel {
             }
         });
 
-        signUpButton.setPreferredSize(new Dimension(10,20));
+        signUpButton.setPreferredSize(new Dimension(10, 20));
         signUpButton.setMargin(new Insets(3, 10, 3, 10));
         signUpButton.setFont(new Font("Arial", Font.BOLD, 14));
         signUpButton.setBackground(Color.LIGHT_GRAY);
         signUpButton.setForeground(Color.BLACK);
     }
 
-    protected void getInputs(){
+    protected void getInputs() {
         username = userName.getText().trim();
         email = Email.getText().trim();
         password = new String(Password.getPassword());
@@ -122,7 +122,7 @@ public class SignUp extends JPanel {
                     "Invalid Password", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(!password.equals(confirmedPass)){
+        if (!password.equals(confirmedPass)) {
             JOptionPane.showMessageDialog(null, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
             ConfirmedPass.setText("");
             Password.setText("");
@@ -134,7 +134,7 @@ public class SignUp extends JPanel {
             User newUser = authManager.signup(username, email, password, userRole);
             JOptionPane.showMessageDialog(this, "Account created successfully!\nWelcome, " + newUser.getUsername() + " You can now sign in with your credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
             dashBoard.changeContentPanel(new Login(dashBoard));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println("Status: FAILED - " + e.getMessage());
             JOptionPane.showMessageDialog(this, e.getMessage(), "Signup Failed", JOptionPane.ERROR_MESSAGE);
         }

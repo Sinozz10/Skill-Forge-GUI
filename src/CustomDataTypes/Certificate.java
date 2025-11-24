@@ -20,7 +20,7 @@ public class Certificate {
     private Date issuedDate;
 
     public Certificate(String certificateID, String studentID, String courseID,
-    String studentName, String courseName) {
+                       String studentName, String courseName) {
         this.certificateID = certificateID;
         this.studentID = studentID;
         this.courseID = courseID;

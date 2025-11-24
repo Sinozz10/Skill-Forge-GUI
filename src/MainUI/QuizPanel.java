@@ -2,6 +2,7 @@ package MainUI;
 
 import CustomDataTypes.*;
 import CustomUIElements.LessonPanel;
+import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -35,10 +36,10 @@ public class QuizPanel extends JPanel {
         repaint();
         revalidate();
 
-        if(lesson.hasQuiz()){
+        if (lesson.hasQuiz()) {
             ArrayList<Question> sortedQuestions = lesson.getQuiz().getQuestions();
             sortedQuestions.sort(Comparator.comparingInt(Question::getOrder));
-            for (Question question:sortedQuestions){
+            for (Question question : sortedQuestions) {
                 generateQuestionPanel(question);
                 add(Box.createRigidArea(new Dimension(0, 10)));
             }
@@ -48,26 +49,21 @@ public class QuizPanel extends JPanel {
         wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
 
         JButton completeButton = new JButton("Submit");
-        completeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleComplete();
-            }
-        });
+        completeButton.addActionListener(_ -> handleComplete());
 
         wrapper.add(completeButton);
         add(wrapper);
     }
 
     private void generateQuestionPanel(Question question) {
-        if (question.getType() == QuestionType.TEXT_QUESTION){
+        if (question.getType() == QuestionType.TEXT_QUESTION) {
             generateTextQuestion((TextQuestion) question);
-        }else {
+        } else {
             generateChoiceQuestion((ChoiceQuestion) question);
         }
     }
 
-    public void generateTextQuestion(TextQuestion question){
+    public void generateTextQuestion(TextQuestion question) {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -84,7 +80,7 @@ public class QuizPanel extends JPanel {
         add(container);
     }
 
-    public void generateChoiceQuestion(ChoiceQuestion question){
+    public void generateChoiceQuestion(ChoiceQuestion question) {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -101,7 +97,7 @@ public class QuizPanel extends JPanel {
         add(container);
     }
 
-    private JPanel generateTitlePanel(Question question){
+    private JPanel generateTitlePanel(Question question) {
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
         JLabel titleLabel = new JLabel("Question:");
@@ -118,7 +114,7 @@ public class QuizPanel extends JPanel {
         return titlePanel;
     }
 
-    private JPanel generateTextPanel(TextQuestion question){
+    private JPanel generateTextPanel(TextQuestion question) {
         JPanel answerPanel = new JPanel();
         answerPanel.setLayout(new BoxLayout(answerPanel, BoxLayout.X_AXIS));
         JLabel answerLabel = new JLabel("Answer:");
@@ -131,10 +127,10 @@ public class QuizPanel extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     Optional<QuestionTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
-                    if (o.isPresent()){
+                    if (o.isPresent()) {
                         QuestionTracker t = o.get();
                         t.setAnswer(userAnswer.getText());
-                    }else {
+                    } else {
                         QuestionTracker t = new QuestionTracker(question.getTitle(), userAnswer.getText());
                         trackers.add(t);
                     }
@@ -149,11 +145,11 @@ public class QuizPanel extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (trackers.stream().anyMatch(tracker -> tracker.getID().equals(question.getTitle()))){
-                    Optional<QuestionTracker> o= trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
+                if (trackers.stream().anyMatch(tracker -> tracker.getID().equals(question.getTitle()))) {
+                    Optional<QuestionTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
                     QuestionTracker t = o.get();
                     t.setAnswer(userAnswer.getText());
-                }else {
+                } else {
                     QuestionTracker t = new QuestionTracker(question.getTitle(), userAnswer.getText());
                     trackers.add(t);
                 }
@@ -163,7 +159,7 @@ public class QuizPanel extends JPanel {
         return answerPanel;
     }
 
-    private JPanel generateDropDownPanel(ChoiceQuestion question){
+    private JPanel generateDropDownPanel(ChoiceQuestion question) {
         JPanel answerPanel = new JPanel();
         answerPanel.setLayout(new BoxLayout(answerPanel, BoxLayout.X_AXIS));
         JLabel answerLabel = new JLabel("Answer:");
@@ -175,21 +171,21 @@ public class QuizPanel extends JPanel {
         ArrayList<String> choices = new ArrayList<>(question.getChoices());
         choices.add(question.getCorrectAnswer());
         Collections.shuffle(choices);
-        for(String option: choices){
+        for (String option : choices) {
             userAnswer.addItem(option);
         }
 
-        userAnswer.addActionListener(e -> {
+        userAnswer.addActionListener(_ -> {
             if (userAnswer.getSelectedIndex() == 0) {
                 return;
             }
             String selected = (String) userAnswer.getSelectedItem();
 
-            if (trackers.stream().anyMatch(tracker -> tracker.getID().equals(question.getTitle()))){
-                Optional<QuestionTracker> o= trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
+            if (trackers.stream().anyMatch(tracker -> tracker.getID().equals(question.getTitle()))) {
+                Optional<QuestionTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
                 QuestionTracker t = o.get();
                 t.setAnswer(selected);
-            }else {
+            } else {
                 QuestionTracker t = new QuestionTracker(question.getTitle(), selected);
                 trackers.add(t);
             }
@@ -202,36 +198,44 @@ public class QuizPanel extends JPanel {
     private void handleComplete() {
         long complete = 0;
         boolean flag = true;
-        for (Question question: lesson.getQuiz().getQuestions()){
-            if (trackers.stream().noneMatch(tracker -> tracker.getID().equals(question.getTitle()))){
+        for (Question question : lesson.getQuiz().getQuestions()) {
+            if (trackers.stream().noneMatch(tracker -> tracker.getID().equals(question.getTitle()))) {
                 JOptionPane.showMessageDialog(dashboard,
                         "All Questions must be answered!",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
                 flag = false;
                 break;
-            }else {
-                Optional<QuestionTracker> o= trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
+            } else {
+                Optional<QuestionTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(question.getTitle())).findFirst();
                 QuestionTracker t = o.get();
-                if (lesson.getQuiz().getQuestionByTitle(t.getID()).checkAnswer(t.getAnswer())){
+                if (lesson.getQuiz().getQuestionByTitle(t.getID()).checkAnswer(t.getAnswer())) {
                     complete++;
                 }
             }
         }
-        if (flag){
-            double total = (complete * 100.0) / lesson.getQuiz().getQuestions().size();
-            if (total >= 70.0){
-                Lp.setComplete();
-                StudentCourseView parent = null;
-                if (progress != null){
-                    progress.completeLesson(lesson.getLessonID());
-                    Component comp = QuizPanel.this;
-                    while (!(comp instanceof StudentCourseView) && comp != null){
-                        comp = comp.getParent();
-                    }
-                    parent = (StudentCourseView) comp;
-                    assert parent != null;
+        if (flag) {
+            StudentCourseView parent = null;
+            if (progress != null) {
+                progress.completeLesson(lesson.getLessonID());
+                Component comp = QuizPanel.this;
+                while (!(comp instanceof StudentCourseView) && comp != null) {
+                    comp = comp.getParent();
                 }
+                parent = (StudentCourseView) comp;
+                assert parent != null;
+            }
+            double total = (complete * 100.0) / lesson.getQuiz().getQuestions().size();
+            if (progress != null) {
+                LessonTracker t = progress.getTrackerByLessonID(lesson.getLessonID());
+                assert t instanceof QuizLessonTracker;
+                ((QuizLessonTracker) t).addAttempt(new Attempt(((QuizLessonTracker) t).getNumberOfAttempts() + 1, total));
+                UserDatabaseManager.getDatabaseInstance().saveToFile();
+                parent.displayStatus(lesson);
+            }
+            if (total >= 70.0) {
+                Lp.setComplete();
+
                 JOptionPane.showMessageDialog(
                         dashboard,
                         "You Passed!",
@@ -239,10 +243,10 @@ public class QuizPanel extends JPanel {
                         JOptionPane.INFORMATION_MESSAGE,
                         UIManager.getIcon("OptionPane.informationIcon")
                 );
-                if (parent!= null){
+                if (parent != null) {
                     parent.certificateLogic();
                 }
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(
                         dashboard,
                         "You Failed, Try Again Later",

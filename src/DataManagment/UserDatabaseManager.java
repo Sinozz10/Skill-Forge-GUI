@@ -16,14 +16,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class UserDatabaseManager extends JsonDatabaseManager<User>{
+public class UserDatabaseManager extends JsonDatabaseManager<User> {
     private static final UserDatabaseManager userDB = new UserDatabaseManager("users.json");
 
     private UserDatabaseManager(String filename) {
         super(filename);
     }
 
-    public static UserDatabaseManager getDatabaseInstance(){
+    public static UserDatabaseManager getDatabaseInstance() {
         return userDB;
     }
 
@@ -55,15 +55,15 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
                 records.add(user);
             }
         } catch (IOException e) {
-            System.err.println("Error file not found: "+e.getMessage());
+            System.err.println("Error file not found: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
     @Override
-    public void saveToFile(){
-        try(FileWriter writer = new FileWriter(filename)){
+    public void saveToFile() {
+        try (FileWriter writer = new FileWriter(filename)) {
             JsonArray jsonArray = new JsonArray();
 
             for (User user : records) {
@@ -81,7 +81,7 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
             }
 
             writer.write(gson.toJson(jsonArray));
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error writing to file:" + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException();
@@ -89,38 +89,38 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
     }
 
     public User getRecordByEmail(String email) {
-        for(User record: records){
-            if (record.getEmail().equals(email)){
+        for (User record : records) {
+            if (record.getEmail().equals(email)) {
                 return record;
             }
         }
         return null;
     }
 
-    public ArrayList<Student> getStudents(){
+    public ArrayList<Student> getStudents() {
         ArrayList<Student> students = new ArrayList<>();
-        for (User record: records){
-            if (record.getRole().equals("student")){
+        for (User record : records) {
+            if (record.getRole().equals("student")) {
                 students.add((Student) record);
             }
         }
         return students;
     }
 
-    public ArrayList<Instructor> getInstructors(){
+    public ArrayList<Instructor> getInstructors() {
         ArrayList<Instructor> instructors = new ArrayList<>();
-        for (User record: records){
-            if (record.getRole().equals("instructor")){
+        for (User record : records) {
+            if (record.getRole().equals("instructor")) {
                 instructors.add((Instructor) record);
             }
         }
         return instructors;
     }
 
-    public ArrayList<Admin> getAdmins(){
+    public ArrayList<Admin> getAdmins() {
         ArrayList<Admin> admins = new ArrayList<>();
-        for (User record: records){
-            if (record.getRole().equals("admin")){
+        for (User record : records) {
+            if (record.getRole().equals("admin")) {
                 admins.add((Admin) record);
             }
         }
@@ -128,8 +128,8 @@ public class UserDatabaseManager extends JsonDatabaseManager<User>{
     }
 
     public User getRecordByUsername(String name) {
-        for(User record: records){
-            if (record.getUsername().equals(name)){
+        for (User record : records) {
+            if (record.getUsername().equals(name)) {
                 return record;
             }
         }

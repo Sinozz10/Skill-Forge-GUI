@@ -4,12 +4,11 @@ import CustomDataTypes.Course;
 import CustomDataTypes.Instructor;
 import CustomDataTypes.Student;
 import CustomUIElements.CollapsablePanel;
+import DataManagment.CourseDatabaseManager;
+import DataManagment.UserDatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
-import CustomDataTypes.*;
-import CustomUIElements.*;
-import DataManagment.*;
 
 public class ViewStudents extends JPanel {
 
@@ -43,7 +42,7 @@ public class ViewStudents extends JPanel {
         CollapsablePanel courseDropdown = new CollapsablePanel(crs.getID(), crs.getTitle());
         courseDropdown.setBackground(Color.GRAY);
         courseDropdown.setForeground(Color.BLACK);
-        for (String studentID : crs.getStudentIDs()){
+        for (String studentID : crs.getStudentIDs()) {
             UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
             Student stu = (Student) userDB.getRecordByID(studentID);
             JLabel stuLabel = new JLabel(stu.getID());

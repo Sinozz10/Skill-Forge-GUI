@@ -3,8 +3,9 @@ package CustomDataTypes;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class QuizLessonTracker extends LessonTracker{
+public class QuizLessonTracker extends LessonTracker {
     @Expose
     private ArrayList<Attempt> attempts = new ArrayList<>();
 
@@ -21,7 +22,15 @@ public class QuizLessonTracker extends LessonTracker{
         this.attempts = attempts;
     }
 
-    public void addAttempt(Attempt attempt){
+    public int getNumberOfAttempts() {
+        return attempts.size();
+    }
+
+    public Attempt getHighScore() {
+        return attempts.stream().max(Comparator.comparingDouble(Attempt::getScore)).orElse(null);
+    }
+
+    public void addAttempt(Attempt attempt) {
         attempts.add(attempt);
     }
 

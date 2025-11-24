@@ -11,14 +11,14 @@ public class Quiz {
     public Quiz() {
     }
 
-    public double checkAnswers(ArrayList<QuestionTracker> answers){
-        if (questions.isEmpty()){
+    public double checkAnswers(ArrayList<QuestionTracker> answers) {
+        if (questions.isEmpty()) {
             return 0.0;
         }
 
         long complete = 0;
-        for (QuestionTracker tracker: answers){
-            if (getQuestionByTitle(tracker.getID()).checkAnswer(tracker.getAnswer())){
+        for (QuestionTracker tracker : answers) {
+            if (getQuestionByTitle(tracker.getID()).checkAnswer(tracker.getAnswer())) {
                 complete++;
             }
         }
@@ -26,22 +26,22 @@ public class Quiz {
         return (complete * 100.0) / questions.size();
     }
 
-    public Question getQuestionByTitle(String title){
-        for (Question question: questions){
-            if (question.getTitle().equals(title)){
+    public Question getQuestionByTitle(String title) {
+        for (Question question : questions) {
+            if (question.getTitle().equals(title)) {
                 return question;
             }
         }
         return null;
     }
 
-    public void addQuestion(Question question){
-        if (!questions.contains(question)){
+    public void addQuestion(Question question) {
+        if (!questions.contains(question)) {
             questions.add(question);
         }
     }
 
-    public void removeQuestion(Question question){
+    public void removeQuestion(Question question) {
         questions.remove(question);
     }
 

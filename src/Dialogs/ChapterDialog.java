@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ChapterDialog extends JDialog{
+public class ChapterDialog extends JDialog {
     private JTextField orderField;
     private JTextField title;
     private JPanel managerPanel;
@@ -32,7 +32,8 @@ public class ChapterDialog extends JDialog{
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-    private void initComponents(){
+
+    private void initComponents() {
         setLayout(new BorderLayout(10, 10));
 
         JPanel formPanel = new JPanel();
@@ -59,7 +60,7 @@ public class ChapterDialog extends JDialog{
         add(formPanel, BorderLayout.CENTER);
     }
 
-    private void addListeners(){
+    private void addListeners() {
         title.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -80,7 +81,7 @@ public class ChapterDialog extends JDialog{
         cancelButton.addActionListener(_ -> handleCancel());
     }
 
-    private void createLesson(){
+    private void createLesson() {
         GenerationID generator = new GenerationID();
 
         String courID = course.getID();
@@ -96,11 +97,11 @@ public class ChapterDialog extends JDialog{
         }
     }
 
-    private void handleCancel(){
+    private void handleCancel() {
         dispose();
     }
 
-    public Chapter getResult(){
+    public Chapter getResult() {
         return chapter;
     }
 }

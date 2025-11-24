@@ -18,7 +18,7 @@ public class Question {
         this.order = order;
     }
 
-    public boolean checkAnswer(String ans){
+    public boolean checkAnswer(String ans) {
         return correctAnswer.equals(ans);
     }
 

@@ -8,15 +8,15 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class LoginDashboard extends JFrame{
+public class LoginDashboard extends JFrame {
     private JPanel mainFramePanel;
     private JPanel contentPanel;
     private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
 
-    public LoginDashboard(){
+    public LoginDashboard() {
         changeContentPanel(new Login(LoginDashboard.this));
         setContentPane(mainFramePanel);
-        setSize(550,400);
+        setSize(550, 400);
         setBackground(Color.gray);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -40,7 +40,7 @@ public class LoginDashboard extends JFrame{
         });
     }
 
-    public void changeContentPanel(JPanel panel){
+    public void changeContentPanel(JPanel panel) {
         contentPanel.removeAll();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(panel, BorderLayout.CENTER);
