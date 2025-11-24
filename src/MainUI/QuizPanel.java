@@ -21,6 +21,8 @@ public class QuizPanel extends JPanel {
     private final ArrayList<QuestionTracker> trackers = new ArrayList<>();
     private final Progress progress;
 
+    private final UserDatabaseManager userDB = UserDatabaseManager.getDatabaseInstance();
+
     public QuizPanel(DashBoard dashboard, Lesson lesson, LessonPanel Lp, Progress progress) {
         this.lesson = lesson;
         this.dashboard = dashboard;
@@ -228,9 +230,8 @@ public class QuizPanel extends JPanel {
             double total = (complete * 100.0) / lesson.getQuiz().getQuestions().size();
             if (progress != null) {
                 LessonTracker t = progress.getTrackerByLessonID(lesson.getLessonID());
-                assert t instanceof QuizLessonTracker;
-                ((QuizLessonTracker) t).addAttempt(new Attempt(((QuizLessonTracker) t).getNumberOfAttempts() + 1, total));
-                UserDatabaseManager.getDatabaseInstance().saveToFile();
+                t.addAttempt(new Attempt(t.getNumberOfAttempts() + 1, total));
+                userDB.saveToFile();
                 parent.displayStatus(lesson);
             }
             if (total >= 70.0) {

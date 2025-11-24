@@ -21,11 +21,7 @@ public class Progress {
         this.studentID = studentID;
         for (Chapter chapter : course.getChapters()) {
             for (Lesson lesson : chapter.getLessons()) {
-                if (lesson.hasQuiz()) {
-                    trackers.add(new QuizLessonTracker(lesson));
-                } else {
-                    trackers.add(new LessonTracker(lesson));
-                }
+                trackers.add(new LessonTracker(lesson));
             }
         }
     }
@@ -86,24 +82,18 @@ public class Progress {
         for (Chapter chapter : course.getChapters()) {
             for (Lesson lesson : chapter.getLessons()) {
                 Optional<LessonTracker> o = trackers.stream().filter(tracker -> tracker.getID().equals(lesson.getLessonID())).findFirst();
+
                 if (o.isPresent()) {
                     LessonTracker t = o.get();
-                    if (t instanceof QuizLessonTracker || lesson.hasQuiz()) {
-                        try {
-                            assert t instanceof QuizLessonTracker;
-                            newTrackers.add(new QuizLessonTracker(lesson, ((QuizLessonTracker) t).getAttempts(), t.isTrue()));
-                        } catch (ClassCastException _) {
-                            newTrackers.add(new QuizLessonTracker(lesson, t.isTrue()));
-                        }
-                    } else {
-                        newTrackers.add(new LessonTracker(lesson, t.isTrue()));
-                    }
+                    newTrackers.add(new LessonTracker(lesson, t.isTrue()));
+                } else {
+                    newTrackers.add(new LessonTracker(lesson));
                 }
             }
         }
 
         trackers.clear();
-        trackers = newTrackers;
+        trackers.addAll(newTrackers);
 
     }
 

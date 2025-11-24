@@ -143,9 +143,8 @@ public class StudentCourseView extends CourseView {
     protected void displayStatus(Lesson lesson){
         if (progress != null) {
             LessonTracker t = progress.getTrackerByLessonID(lesson.getLessonID());
-            assert t instanceof QuizLessonTracker;
-            Attempt a = ((QuizLessonTracker) t).getHighScore();
-            if (a != null) {
+            Attempt a = t.getHighScore();
+            if (a != null && lesson.hasQuiz()) {
                 lessonTitle.setText(lesson.getTitle() + "  --  Attempts: " + a.getAttemptNum() + "  --  HighScore: " + a.getScore());
             }
         }
