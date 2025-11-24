@@ -114,7 +114,7 @@ public class InstructorDashboard extends DashBoard{
                 String id = sel.substring(sel.lastIndexOf("[") + 1, sel.lastIndexOf("]"));
                 Course c = courseDB.getRecordByID(id);
                 if (c != null) {
-                    LessonChartCreation chartCreator = new LessonChartCreation("Quiz Completed", null);
+                    QuizAnalyticsCompletion chartCreator = new QuizAnalyticsCompletion("Quiz Completed", null);
                     org.jfree.chart.JFreeChart chart = chartCreator.createChart(c, userDB,
                             "Quiz Completed Rates", "Lessons", "%");
                     new LessonChartCreation("Quiz Completed", chart).setVisible(true);

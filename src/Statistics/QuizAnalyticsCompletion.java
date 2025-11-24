@@ -30,7 +30,7 @@ public class QuizAnalyticsCompletion extends SuperChart {
                             }
                         }
                     }
-                    double rate = course.getStudentIDs().size() > 0 ? rounder((completed * 100.0) / course.getStudentIDs().size()) : 0;
+                    double rate = !course.getStudentIDs().isEmpty() ? rounder((completed * 100.0) / course.getStudentIDs().size()) : 0;
                     dataset.addValue(rate, "Completion", l.getTitle() + " Quiz");
                 }
             }

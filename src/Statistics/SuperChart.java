@@ -68,8 +68,7 @@ public abstract class SuperChart extends JFrame {
     protected static double rounder(double mark){
         int decimalPlaces = 2;
         // Round to 2 decimal places
-        double roundedNumber = Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
 
-        return roundedNumber;
+        return Math.round(mark * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
 }
