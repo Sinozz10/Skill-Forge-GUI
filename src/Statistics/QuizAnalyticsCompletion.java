@@ -24,7 +24,7 @@ public class QuizAnalyticsCompletion extends SuperChart {
                             Progress progress = s.getProgressTrackerByCourseID(course.getID());
                             if (progress != null) {
                                 LessonTracker lt = progress.getTrackerByID(l.getLessonID());
-                                if (lt != null && lt.isComplete()) {
+                                if (lt != null && lt.isTrue()) {
                                     completed++;
                                 }
                             }

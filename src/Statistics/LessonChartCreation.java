@@ -22,7 +22,7 @@ public class LessonChartCreation extends SuperChart {
                         Progress progress = s.getProgressTrackerByCourseID(course.getID());
                         if (progress != null) {
                             LessonTracker lt = progress.getTrackerByID(lesson.getLessonID());
-                            if (lt != null && lt.isComplete()) {
+                            if (lt != null && lt.isTrue()) {
                                 completed++;
                             }
                         }

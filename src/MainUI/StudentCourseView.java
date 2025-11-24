@@ -49,7 +49,7 @@ public class StudentCourseView extends CourseView{
         };
         if (progress != null){
             LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
-            if (tracker != null && tracker.isComplete()){
+            if (tracker != null && tracker.isTrue()){
                 lp.setComplete();
             }
         }
@@ -103,7 +103,7 @@ public class StudentCourseView extends CourseView{
         Lp.setComplete();
         LessonTracker tracker = progress.getTrackerByID(lesson.getLessonID());
         if (tracker != null) {
-            tracker.setComplete(true);
+            tracker.setState(true);
         }
         progress.completeLesson(lesson.getLessonID());
         userDB.updateRecord(student);

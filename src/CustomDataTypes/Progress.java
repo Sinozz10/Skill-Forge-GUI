@@ -27,7 +27,7 @@ public class Progress {
 
     public LessonTracker getTrackerByID(String lessonID){
         for(LessonTracker tracker: trackers){
-            if (tracker.getLessonID().equals(lessonID)){
+            if (tracker.getID().equals(lessonID)){
                 return tracker;
             }
         }
@@ -36,7 +36,7 @@ public class Progress {
 
     public Double getCompletionPercentage(){
         long complete = trackers.stream()
-                .filter(LessonTracker::isComplete)
+                .filter(LessonTracker::isTrue)
                 .count();
         if (trackers.isEmpty()){
             return 0.0;
@@ -46,13 +46,13 @@ public class Progress {
 
     public boolean isCourseComplete() {
         if (trackers.isEmpty()) return false;
-        return trackers.stream().allMatch(LessonTracker::isComplete);
+        return trackers.stream().allMatch(LessonTracker::isTrue);
     }
 
     public void completeLesson(String lessonID) {
         LessonTracker tracker = getTrackerByID(lessonID);
         if (tracker != null){
-            tracker.setComplete(true);
+            tracker.setState(true);
         }else {
             throw new IllegalArgumentException("Lesson not found in tracker");
         }
@@ -61,7 +61,7 @@ public class Progress {
     public void unCompleteLesson(String lessonID) {
         LessonTracker tracker = getTrackerByID(lessonID);
         if (tracker != null){
-            tracker.setComplete(false);
+            tracker.setState(false);
         }else {
             throw new IllegalArgumentException("Lesson not found in tracker");
         }
@@ -78,8 +78,8 @@ public class Progress {
 
         ArrayList<String> completed = new ArrayList<>();
         for (LessonTracker tracker: trackers){
-            if (tracker.isComplete()){
-                completed.add(tracker.getLessonID());
+            if (tracker.isTrue()){
+                completed.add(tracker.getID());
             }
         }
 
